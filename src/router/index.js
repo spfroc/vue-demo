@@ -8,6 +8,7 @@ import ServiceBanner from "@/components/app/ServiceBanner";
 import CommunityBanner from "@/components/app/CommunityBanner";
 import Administrator from "@/components/admin/Administrator";
 import CommunityCategory from "../components/app/CommunityCategory";
+import Community from "../components/app/Community";
 
 Vue.use(Router)
 
@@ -50,7 +51,7 @@ export default new Router({
       {
         path: '/community/info',
         meta: {title: '社区信息列表'},
-        component: CommunityCategory
+        component: Community
       },
 
       // {
