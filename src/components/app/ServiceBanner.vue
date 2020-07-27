@@ -97,7 +97,6 @@
         components: {
             SingleImageUpload
         },
-        props: ['type'],
         data() {
             return {
                 tableData: [],
@@ -128,7 +127,9 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    type: 1
+                }
             },
             edit (row) {
                 this.editing = true
@@ -137,12 +138,11 @@
                 this.form = Object.assign({}, row)
             },
             remove (id) {
-                this.$confirm('确定删除此用户吗？', '提示', {
+                this.$confirm('确定删除此轮播图吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/admin/adminDel', {
-                        aid: id,
-                        id: this.getAuthUserId()
+                    this.$http.post('/apis/adminApi/bannerDelete', {
+                        id: id,
                     }).then(res => {
                         this.$message({
                             message: res.data.message,
@@ -151,7 +151,9 @@
                         this.fetchList(1)
                     })
                     this.editing = false
-                    this.form = {}
+                    this.form = {
+                        type: 1
+                    }
                 }).catch(() => {
                     // do nothing
                 })
@@ -168,31 +170,28 @@
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
-                        type: this.type
+                        type: this.form.type
                     }, this.search)
                 }, {
                     params: this.search
                 }).then(res => {
-                    this.tableData = res.data.data.map(d => {
-                        d.admin_permissions = parseInt(d.admin_permissions)
-                        return d
-                    })
                     this.page.total = res.data.total
                     this.search.pageNum = parseInt(res.data.pageNum)
+                    this.tableData = res.data.data;
+
                 })
             },
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/manager/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/bannerAddOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             })
                             this.form = {}
-                            this.fetchList()
+                            this.fetchList(1)
                             this.editing = false
                         })
                     } else {
@@ -204,8 +203,7 @@
         },
 
         mounted() {
-            console.log(this.type);
-            this.fetchList();
+            this.fetchList(1);
         }
     }
 </script>
