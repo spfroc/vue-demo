@@ -62,19 +62,13 @@
                 },
 
                 {
-                  index: '6',
-                  title: '社区管理',
-                  subs: [
-                    {
-                      index: '/community/info',
-                      title: '社区信息列表',
-                    },
-                    {
-                      index: '/community/category',
-                      title: '社区分类',
-                    }
-                  ]
+                  index: '/community/info',
+                  title: '社区信息列表',
                 },
+                {
+                  index: '/community/category',
+                  title: '社区分类',
+                }
                 // {
                 //   index: '7',
                 //   title: '商家管理',
@@ -317,6 +311,7 @@
             ]
           }
         })
+
       }
     },
     created() {

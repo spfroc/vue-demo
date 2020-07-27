@@ -174,7 +174,7 @@
 
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data;
+                    this.tableData = res.data.data.data;
                 })
             },
 

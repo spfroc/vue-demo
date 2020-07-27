@@ -11,26 +11,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
-                            label="名称">
-                    </el-table-column>
-                    <el-table-column
-                            label="图片"
-                            width="200">
-                        <template slot-scope="scope">
-                            <el-image
-                                    fit="contain"
-                                    :src="`/images/${scope.row.pic}`"
-                            >
-                            </el-image>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="link"
-                            label="链接">
-                    </el-table-column>
-                    <el-table-column
-                            prop="text"
-                            label="文本">
+                            label="分类">
                     </el-table-column>
                     <el-table-column prop="createTime" label="创建时间">
                     </el-table-column>
@@ -44,16 +25,6 @@
                     </el-table-column>
                 </el-table>
 
-                <el-pagination
-                        hide-on-single-page
-                        background
-                        layout="total, prev, pager, next"
-                        :page-size="this.page.pageSize"
-                        :total="this.page.total"
-                        :current-page="this.search.pageNum"
-                        @current-change="fetchList"
-                >
-                </el-pagination>
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
@@ -62,18 +33,6 @@
                         </el-form-item>
                         <el-form-item label="名称" prop="name">
                             <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item v-show="false">
-                            <el-input v-model="form.type"></el-input>
-                        </el-form-item>
-                        <el-form-item label="图片" prop="pic">
-                            <single-image-upload v-model="form.pic" width="400" height="200"></single-image-upload>
-                        </el-form-item>
-                        <el-form-item label="链接" prop="link">
-                            <el-input v-model="form.link"></el-input>
-                        </el-form-item>
-                        <el-form-item label="文本" prop="text">
-                            <el-input v-model="form.text"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -87,39 +46,21 @@
 </template>
 
 <script>
-    import SingleImageUpload from "../common/SingleImageUpload"
-    // import Vue from 'vue'
-
-    // Vue.component('single-image-upload', SingleImageUpload)
-
     export default {
-        name: "ServiceBanner",
-        components: {
-            SingleImageUpload
-        },
+        name: "CommunityCategory",
+
         data() {
             return {
                 tableData: [],
-                page: {
-                    pageSize: 10
-                },
+
                 editingRow: {},
                 form: {
                     id: '',
                     name: '',
-                    pic: '',
-                    link: '',
-                    text: '',
-                    type: 1,
-                    createTime: '',
-                    updateTime: '',
                 },
                 editing: false,
                 isUpdate: false,
-                search: {},
-                rules: {
-
-                }
+                rules: {}
             }
 
         },
@@ -127,9 +68,7 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {
-                    type: 1
-                }
+                this.form = {}
             },
             edit (row) {
                 this.editing = true
@@ -138,17 +77,17 @@
                 this.form = Object.assign({}, row)
             },
             remove (id) {
-                this.$confirm('确定删除此轮播图吗？', '提示', {
+                this.$confirm('确定删除此分类吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/bannerDelete', {
-                        id: id,
+                    this.$http.post('/apis/adminApi/communityCategory/delete', {
+                        id: id
                     }).then(res => {
                         this.$message({
                             message: res.data.message,
                             type: 'success'
                         })
-                        this.fetchList(1)
+                        this.fetchList()
                     })
                     this.editing = false
                     this.form = {
@@ -163,35 +102,23 @@
                 this.editing = false
             },
 
-            fetchList (currentPage) {
-                this.search.pageNum = currentPage || this.search.pageNum
-                // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/banner', {
-                    params: Object.assign({
-                        pageSize: 10,
-                        pageNum: 1,
-                        type: this.form.type
-                    }, this.search)
-                }, {
-                    params: this.search
-                }).then(res => {
-                    this.page.total = res.data.data.total
-                    this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
-
+            fetchList () {
+                this.$http.get('/apis/adminApi/communityCategory',).then(res => {
+                    this.tableData = res.data.data;
                 })
             },
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/bannerAddOrUpdate', this.form).then(res => {
+                        this.form.roleId = this.form.roleName
+                        this.$http.post('/apis/adminApi/communityCategory/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             })
                             this.form = {}
-                            this.fetchList(1)
+                            this.fetchList()
                             this.editing = false
                         })
                     } else {
@@ -203,7 +130,7 @@
         },
 
         mounted() {
-            this.fetchList(1);
+            this.fetchList();
         }
     }
 </script>
