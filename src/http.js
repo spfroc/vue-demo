@@ -1,0 +1,56 @@
+import axios from 'axios';
+import router from './router';
+import {Message} from 'element-ui'
+
+// axios 配置
+axios.defaults.timeout = 30000;
+
+// http request 拦截器
+axios.interceptors.request.use(
+    config => {
+        if (localStorage.getItem('auth-token')) { //判断token是否存在
+            config.headers.token = localStorage.getItem('auth-token');  //将token设置成请求头
+        }
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    }
+);
+
+// http response 拦截器
+// TODO 处理token失效
+axios.interceptors.response.use(
+    response => {
+        if (response.status === 200) {
+            console.log(response.data);
+            if (response.data.code === '0') {
+                return response
+            } else if (response.data.code === 419 || response.data.code === 403 || response.data.code === 5002 || response.data.code === 5001) {
+                // token 过期处理
+                Message.error({
+                    message: '登录超时，请重新登录',
+                    duration: 1500,
+                    onClose () {
+                        location.href = '/'
+                    }
+                })
+                localStorage.removeItem('auth-token')
+                localStorage.removeItem('auth-user-info')
+                localStorage.removeItem('auth-username')
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.message}`)
+            } else {
+                Message.error(response.data.message)
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.message}`)
+            }
+        } else {
+            Message.error(`请求失败，服务端状态码：${response.status}`)
+            return Promise.reject(`Http response code is ${response.status}`)
+        }
+    },
+    error => {
+        Message.error(`服务端错误：${error}`)
+        return Promise.reject(error);
+    }
+);
+export default axios
