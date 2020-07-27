@@ -25,12 +25,18 @@ export default new Router({
       {
         path: '/app/service-banner',
         meta: {title: '服务轮播图'},
-        component: ServiceBanner
+        component: ServiceBanner,
+        props: {
+          type: 1
+        }
       },
       {
         path: '/app/community-banner',
         meta: {title: '社区轮播图'},
-        component: CommunityBanner
+        component: CommunityBanner,
+        props: {
+          type: 2
+        }
       },
 
       {

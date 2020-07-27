@@ -97,6 +97,7 @@
         components: {
             SingleImageUpload
         },
+        props: ['type'],
         data() {
             return {
                 tableData: [],
@@ -167,7 +168,7 @@
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
-                        type: 1
+                        type: this.type
                     }, this.search)
                 }, {
                     params: this.search
@@ -203,6 +204,7 @@
         },
 
         mounted() {
+            console.log(this.type);
             this.fetchList();
         }
     }
