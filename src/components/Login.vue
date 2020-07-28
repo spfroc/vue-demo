@@ -66,7 +66,8 @@
               this.$message.success('登录成功');
               localStorage.setItem('auth-user-info', JSON.stringify(res.data));
               localStorage.setItem('auth-token', res.data.token);
-              localStorage.setItem('auth-username', res.data.userName);
+              localStorage.setItem('auth-username', 'dev-user');
+              // localStorage.setItem('auth-username', res.data.userName);
               // console.log(res);return
               this.$router.push('/');
 

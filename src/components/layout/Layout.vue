@@ -68,21 +68,15 @@
                 {
                   index: '/community/category',
                   title: '社区分类',
+                },
+                {
+                  index: '/store',
+                  title: '商家信息列表',
+                },
+                {
+                  index: '/store/category',
+                  title: '商家分类管理',
                 }
-                // {
-                //   index: '7',
-                //   title: '商家管理',
-                //   subs: [
-                //     {
-                //       index: '/store/info',
-                //       title: '商家信息列表',
-                //     },
-                //     {
-                //       index: '/store/category',
-                //       title: '分类管理',
-                //     }
-                //   ]
-                // },
                 // {
                 //   index: '8',
                 //   title: '评价管理',
