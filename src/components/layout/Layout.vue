@@ -44,6 +44,11 @@
         movieHref: '',
         allMenuItems: [
           {
+            index: '/',
+            title: '首页',
+            icon: 'el-icon-s-home'
+          },
+          {
               index: '1',
               title: 'APP管理',
               icon: 'el-icon-mobile',
@@ -71,12 +76,20 @@
                 },
                 {
                   index: '/store',
-                  title: '商家信息列表',
+                  title: '商家管理',
+                  subs: [
+                    {
+                      index: '/store',
+                      title: '商家信息列表',
+                    },
+                    {
+                      index: '/store/category',
+                      title: '商家分类管理',
+                    }
+                  ]
                 },
-                {
-                  index: '/store/category',
-                  title: '商家分类管理',
-                }
+
+
                 // {
                 //   index: '8',
                 //   title: '评价管理',
@@ -273,39 +286,57 @@
         return JSON.parse(localStorage.getItem('auth-user-info')).admin_permissions
       },
       processBreadcrumb (path) {
-        this.breadcrumb = []
-        this.menuItems.filter(item => {
-          return item.subs && item.subs.length
-        }).forEach(item => {
-          item.subs.forEach(subItem => {
-            if (subItem.index === path) {
-              this.breadcrumb = [
-                {
-                  icon: item.icon,
-                  title: item.title
-                },
-                {
-                  icon: subItem.icon,
-                  title: subItem.title
-                }
-              ]
-            }
-          })
-        })
 
-        this.menuItems.filter(item => {
-          return !item.subs || !item.subs.length
-        }).forEach(item => {
-          if (item.index === path) {
-            this.breadcrumb = [
-              {
-                icon: item.icon,
-                title: item.title
+        this.breadcrumb = []
+        this.menuItems.forEach(levelOne => {
+          if(levelOne.subs && levelOne.subs.length) {
+
+            levelOne.subs.forEach(levelTwo => {
+              if(levelTwo.subs && levelTwo.subs.length) {
+                levelTwo.subs.forEach(levelThree => {
+                  if(levelThree.index === path) {
+                    this.breadcrumb = []
+
+                    this.breadcrumb.push(
+                      {
+                        icon: levelOne.icon,
+                        title: levelOne.title
+                      },
+                      {
+                        icon: levelTwo.icon,
+                        title: levelTwo.title
+                      },
+                      {
+                        icon: levelThree.icon,
+                        title: levelThree.title
+                      },
+                    )
+                  }
+                })
+              } else {
+
+                if(levelTwo.index === path) {
+                  this.breadcrumb = []
+
+                  this.breadcrumb.push({
+                    icon: levelOne.icon,
+                    title: levelOne.title
+                  },{
+                    icon: levelTwo.icon,
+                    title: levelTwo.title
+                  })
+                }
               }
-            ]
+            });
+          } else {
+            this.breadcrumb = []
+
+            this.breadcrumb.push({
+              icon: levelOne.icon,
+              title: levelOne.title
+            },)
           }
         })
-
       }
     },
     created() {
