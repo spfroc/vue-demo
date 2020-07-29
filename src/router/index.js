@@ -11,6 +11,7 @@ import CommunityCategory from "../components/app/CommunityCategory";
 import Community from "../components/app/Community";
 import StoreCategory from "../components/store/StoreCategory";
 import Store from "../components/store/Store";
+import Village from "../components/app/Village";
 
 Vue.use(Router)
 
@@ -66,6 +67,12 @@ export default new Router({
         path: '/store',
         meta: {title: '商家信息列表'},
         component: Store
+      },
+
+      {
+        path: '/village',
+        meta: {title: '村庄管理'},
+        component: Village
       },
 
       // {

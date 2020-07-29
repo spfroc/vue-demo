@@ -220,7 +220,8 @@
                         return true;
                     }
                 }));
-                return categoryObj[0].name;
+                // console.log(categoryObj);
+                return categoryObj.length >=1 ? categoryObj[0].name: '未知';
                 // return this.categoryOptions[data] || '未知'
             }
         },

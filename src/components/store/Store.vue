@@ -1,6 +1,27 @@
 <template>
     <div>
         <section class="header-bar">
+            <el-form :inline="true" :model="search" size="mini" class="">
+                <el-form-item label="创建时间" prop="createTime">
+                    <el-date-picker
+                        v-model="search.createTime"
+                        type="daterange"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="商家名称" prop="name">
+                    <el-input v-model="search.name"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                </el-form-item>
+            </el-form>
+        </section>
+        <section class="header-bar">
             <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
         </section>
         <template>
@@ -10,35 +31,39 @@
                     <el-table-column type="index" label="序号">
                     </el-table-column>
                     <el-table-column
-                            prop="title"
-                            label="标题">
+                            prop="name"
+                            align="center"
+
+                            label="商家名称">
                     </el-table-column>
                     <el-table-column
-                            label="封面"
-                            width="200">
-                        <template slot-scope="scope">
-                            <el-image
-                                    fit="contain"
-                                    :src="`/images/${scope.row.cover}`"
-                            >
-                            </el-image>
-                        </template>
+                            prop="mobile"
+                            width="110px"
+                            align="center"
+                            label="商家电话">
                     </el-table-column>
                     <el-table-column
-                            :show-tooltip-when-overflow=true
-                            prop="content"
-                            label="内容">
+                            prop="address"
+                            align="center"
+
+                            label="商家地址">
                     </el-table-column>
                     <el-table-column
-                            class="content"
-                            prop="category"
-                            :formatter="getCategoryName"
-                            width="100"
-                            label="分类">
+                            prop="businessHours"
+                            align="center"
+
+                            label="营业时间">
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间">
+
+                    <el-table-column
+                            prop="createTime"
+                            align="center"
+                            label="创建时间">
                     </el-table-column>
-                    <el-table-column prop="updateTime" label="修改时间">
+                    <el-table-column
+                            prop="updateTime"
+                            align="center"
+                            label="修改时间">
                     </el-table-column>
                     <el-table-column width="120" label="操作">
                         <template slot-scope="scope">
@@ -60,29 +85,38 @@
                 </el-pagination>
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
-                    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+                    <el-form ref="form" :rules="rules" :model="form">
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="标题" prop="title">
-                            <el-input v-model="form.title"></el-input>
+                        <el-form-item label="商家名称" prop="name">
+                            <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="分类" prop="title">
-                            <el-select v-model="form.category" placeholder="请选择">
-                                <el-option
-                                        v-for="item in this.categoryOptions"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.id">
-                                </el-option>
-                            </el-select>
-
+                        <el-form-item label="商家电话" prop="mobile">
+                            <el-input v-model="form.mobile"></el-input>
                         </el-form-item>
-                        <el-form-item label="封面" prop="pic">
+                        <el-form-item label="商家地址" prop="address">
+                            <el-input v-model="form.address"></el-input>
+                        </el-form-item>
+                        <el-form-item label="营业时间" prop="businessHours">
+                            <el-input v-model="form.businessHours"></el-input>
+                        </el-form-item>
+                        <el-form-item label="头像" prop="avatar">
+                            <single-image-upload v-model="form.avatar" width="200" height="100"></single-image-upload>
+                        </el-form-item>
+                        <el-form-item label="优惠信息" prop="discount">
+                            <el-input v-model="form.discount"></el-input>
+                        </el-form-item>
+                        <el-form-item label="简介" prop="introduction">
+                            <multiple-image-upload
+                                    v-model="form.introduction"
+                                    :file-list="introductionFileList"
+                                    :add-file="addFile"
+                                    :remove-file-list="removeFileList"
+                                    width="100" height="100"></multiple-image-upload>
+                        </el-form-item>
+                        <el-form-item label="封面图" prop="cover">
                             <single-image-upload v-model="form.cover" width="400" height="200"></single-image-upload>
-                        </el-form-item>
-                        <el-form-item label="内容" prop="content">
-                            <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
                         </el-form-item>
 
                         <el-form-item>
@@ -99,11 +133,12 @@
 <script>
     import SingleImageUpload from "../common/SingleImageUpload"
     import Editor from "../common/Editor"
+    import MultipleImageUpload from "../common/MultipleImageUpload"
 
     export default {
         name: "Community",
         components: {
-            SingleImageUpload,Editor
+            SingleImageUpload,Editor,MultipleImageUpload
         },
         data() {
             return {
@@ -116,16 +151,24 @@
                     pageSize: 10
                 },
                 editingRow: {},
+                introductionFileList: [],
                 form: {
                     id: '',
-                    title: '',
-                    category: '',
-                    content: '',
+                    name: '',
+                    mobile: '',
+                    address: '',
+                    businessHours: '',
+                    avatar: '',
                     cover: '',
+                    discount: '',
+                    introduction: '',
                 },
                 editing: false,
                 isUpdate: false,
-                search: {},
+                search: {
+                    name: '',
+                    createTime: ''
+                },
                 rules: {
 
                 }
@@ -145,10 +188,10 @@
                 this.form = Object.assign({}, row)
             },
             remove (id) {
-                this.$confirm('确定删除此信息吗？', '提示', {
+                this.$confirm('确定删除此商家吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/communityInfo/delete', {
+                    this.$http.post('/apis/adminApi/store/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -168,10 +211,20 @@
                 this.editing = false
             },
 
+            addFile(fileList) {
+                console.log(fileList);
+                this.introductionFileList = fileList;
+            },
+
+            removeFileList(file) {
+                console.log(file);
+                this.introductionFileList.pop(file);
+            },
+
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/communityInfo', {
+                this.$http.get('/apis/adminApi/store', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -186,18 +239,27 @@
                 })
             },
 
-            getCategoryOptions () {
-                this.$http.get('/apis/adminApi/communityCategory',).then(res => {
-                    this.categoryOptions = res.data.data;
-                    console.log(res.data);
-                })
-            },
+
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+
+                    let fileInfoList = [];
+                    if(this.introductionFileList && this.introductionFileList.length) {
+                        this.introductionFileList.forEach(file => {
+                            fileInfoList.push({
+                                name: file.name,
+                                url: file.response.data,
+                                size: file.size,
+                                uid: file.uid,
+                            })
+                        })
+                    }
+                    this.form.introduction = JSON.stringify(fileInfoList);
+                    // console.log(this.form);return;
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/communityInfo/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/store/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
@@ -212,22 +274,10 @@
                     }
                 })
             },
-
-            getCategoryName(row, col, data) {
-                let categoryObj = (this.categoryOptions.filter((item) => {
-                    // console.log(item.id + '=' + data);
-                    if(data == item.id) {
-                        return true;
-                    }
-                }));
-                return categoryObj[0].name;
-                // return this.categoryOptions[data] || '未知'
-            }
         },
 
         mounted() {
             this.fetchList(1);
-            this.getCategoryOptions();
         }
     }
 </script>

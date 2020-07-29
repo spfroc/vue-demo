@@ -6,7 +6,7 @@
       <i v-else class="el-icon-s-unfold"></i>
     </div>
     <div class="logo-container">
-      <div class="logo"></div>
+      <div class="logo">logo</div>
       <span>魏善庄养老后台</span>
     </div>
     <div class="header-right">
@@ -116,10 +116,11 @@
     left: 58px;
     width: 60px;
     height: 60px;
-    background-image: url("../../assets/logo.png");
-    background-position-x: -60px;
-    background-position-y: 12px;
+    /*background-image: url("../../assets/logo.png");*/
+    /*background-position-x: -60px;*/
+    /*background-position-y: 12px;*/
     background-repeat: no-repeat;
+    padding: 20px 5px;
   }
 
   .logo-container {

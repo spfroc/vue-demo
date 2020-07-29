@@ -65,15 +65,21 @@
                   index: '/app/community-banner',
                   title: '社区播图管理'
                 },
+                {
+                  index: '2',
+                  title: '社区管理',
+                  subs: [
+                    {
+                      index: '/community/info',
+                      title: '社区信息列表',
+                    },
+                    {
+                      index: '/community/category',
+                      title: '社区分类',
+                    },
+                  ]
+                },
 
-                {
-                  index: '/community/info',
-                  title: '社区信息列表',
-                },
-                {
-                  index: '/community/category',
-                  title: '社区分类',
-                },
                 {
                   index: '/store',
                   title: '商家管理',
@@ -137,7 +143,7 @@
           //       title: '审核列表'
           //     },
           //     {
-          //       index: '/user/village',
+          //       index: '/village',
           //       title: '村庄管理',
           //     },
           //     {
