@@ -96,20 +96,20 @@
                 },
 
 
-                // {
-                //   index: '8',
-                //   title: '评价管理',
-                //   subs: [
-                //     {
-                //       index: '/comment/store',
-                //       title: '商家评价管理',
-                //     },
-                //     {
-                //       index: '/comment/community',
-                //       title: '社区评价管理',
-                //     }
-                //   ]
-                // },
+                {
+                  index: '/comment',
+                  title: '评价管理',
+                  subs: [
+                    {
+                      index: '/comment/store',
+                      title: '商家评价管理',
+                    },
+                    {
+                      index: '/comment/community',
+                      title: '社区评价管理',
+                    }
+                  ]
+                },
 
                 // {
                 //   index: '9',

@@ -9,7 +9,7 @@
 
 <script>
 
-  const defaultContent = `<h2 style="text-align: center;">请在这里输入标题</h2><p>&nbsp; &nbsp; &nbsp; 这是第一个自然段。请替换为您的内容。可以设置<span style="font-weight: bold;">黑体</span>、<span style="font-style: italic;">斜体</span>、<span style="text-decoration-line: underline;">下划线</span>及<span style="text-decoration-line: line-through;">删除线</span>。您还可以设置<span style="color: rgb(249, 150, 59);">字体颜色</span>、<span style="background-color: rgb(249, 150, 59);">背景色</span>等。支持插入emoji表情😄😄。</p><p><br></p><p>可以插入有序列表：</p><ol><li>有序列表项目</li><li>有序列表项目</li><li>有序列表项目</li></ol><p>可以插入无序列表：</p><ul><li>无序列表项目</li><li>无序列表项目</li><li>无序列表项目</li></ul><p>您可以在任何地方<a href="http://bing.com/" target="_blank">插入链接</a>。</p><p><br></p><p></p><p>还可以插入图片：</p><p style="text-align: center;"><img src="http://hrc.cssn.cn/indcont/indtop/201910/W020191023362475509092.jpg"></p>`
+  const defaultContent = `<h2 style="text-align: center;">请在这里输入标题</h2><p>&nbsp; &nbsp; &nbsp; 这是第一个自然段。请替换为您的内容。可以设置<span style="font-weight: bold;">黑体</span>、<span style="font-style: italic;">斜体</span>、<span style="text-decoration-line: underline;">下划线</span>及<span style="text-decoration-line: line-through;">删除线</span>。您还可以设置<span style="color: rgb(249, 150, 59);">字体颜色</span>、<span style="background-color: rgb(249, 150, 59);">背景色</span>等。支持插入emoji表情😄😄。</p><p><br></p><p>可以插入有序列表：</p><ol><li>有序列表项目</li><li>有序列表项目</li><li>有序列表项目</li></ol><p>可以插入无序列表：</p><ul><li>无序列表项目</li><li>无序列表项目</li><li>无序列表项目</li></ul><p>您可以在任何地方<a href="http://bing.com/" target="_blank">插入链接</a>。</p><p><br></p><p></p><p>还可以插入图片：</p><p style="text-align: center;"><img src="http://thumb.takefoto.cn/wp-content/uploads/2019/04/201904080619552096-680x448.jpg"></p>`
 
   import E from 'wangeditor'
   export default {

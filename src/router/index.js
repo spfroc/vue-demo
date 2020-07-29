@@ -12,6 +12,8 @@ import Community from "../components/app/Community";
 import StoreCategory from "../components/store/StoreCategory";
 import Store from "../components/store/Store";
 import Village from "../components/app/Village";
+import StoreComment from "../components/comment/Store";
+import CommunityComment from "../components/comment/Community";
 
 Vue.use(Router)
 
@@ -74,6 +76,18 @@ export default new Router({
         meta: {title: '村庄管理'},
         component: Village
       },
+      {
+        path: '/comment/store',
+        meta: {title: '商家评价'},
+        component: StoreComment
+      },
+
+      {
+        path: '/comment/community',
+        meta: {title: '社区评价'},
+        component: CommunityComment
+      },
+
 
       // {
       //   path: '/museum/traffic',
