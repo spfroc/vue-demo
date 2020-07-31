@@ -145,10 +145,6 @@
                 title: '子女信息'
               },
               {
-                index: '/user/approval',
-                title: '审核列表'
-              },
-              {
                 index: '/village',
                 title: '村庄管理',
               },
