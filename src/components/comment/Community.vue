@@ -1,23 +1,23 @@
 <template>
     <div>
         <section class="header-bar">
-        <el-form :inline="true" :model="search" size="mini" class="">
-            <el-form-item label="" prop="name">
-                <el-input v-model="search.name" placeholder="按标题搜索"></el-input>
-            </el-form-item>
-            <el-form-item label="" prop="createTime">
-                <el-date-picker
-                    v-model="search.createTime"
-                    type="daterange"
-                    value-format="yyyy-MM-dd"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                </el-date-picker>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
-            </el-form-item>
+            <el-form :inline="true" :model="search" size="mini" class="">
+                <el-form-item label="" prop="name">
+                    <el-input v-model="search.name" placeholder="按标题搜索"></el-input>
+                </el-form-item>
+                <el-form-item label="" prop="createTime">
+                    <el-date-picker
+                        v-model="search.createTime"
+                        type="daterange"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                </el-form-item>
             </el-form>
         </section>
         <!--<section class="header-bar">-->
@@ -61,7 +61,7 @@
                             <el-button @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="success" size="mini">通过</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 3) }" type="danger" size="mini">不通过</el-button>
-                            <!--<el-button @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" circle></el-button>-->
+
                         </template>
                     </el-table-column>
                 </el-table>

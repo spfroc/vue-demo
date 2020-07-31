@@ -16,6 +16,8 @@ import StoreComment from "../components/comment/Store";
 import CommunityComment from "../components/comment/Community";
 import Template from "../components/care/Template";
 import Birthday from "../components/care/Birthday";
+import CommonSense from "../components/health/CommonSense";
+import Children from "../components/user/Children";
 
 Vue.use(Router)
 
@@ -100,6 +102,18 @@ export default new Router({
         path: '/care/birthday',
         meta: {title: '生日祝福'},
         component: Birthday
+      },
+
+      {
+        path: '/health/commonSense',
+        meta: {title: '健康常识'},
+        component: CommonSense
+      },
+
+      {
+        path: '/user/children',
+        meta: {title: '子女信息'},
+        component: Children
       },
 
 

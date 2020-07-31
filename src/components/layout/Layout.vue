@@ -66,7 +66,7 @@
                   title: '社区播图管理'
                 },
                 {
-                  index: '2',
+                  index: '/community',
                   title: '社区管理',
                   subs: [
                     {
@@ -112,7 +112,7 @@
                 },
 
                 {
-                  index: '3',
+                  index: '/care',
                   title: '关怀管理',
                   subs: [
                     {
@@ -127,63 +127,53 @@
 
                 },
 
-                // {
-                //   index: '9',
-                //   title: '关怀管理',
-                //   subs: [
-                //     {
-                //       index: '/care/birthday',
-                //       title: '生日祝福模板',
-                //     },
-                //   ]
-                // },
-                // {
-                //   index: '/health/nous',
-                //   title: '健康常识',
-                // },
+                {
+                  index: '/health/commonSense',
+                  title: '健康常识',
+                },
 
               ]
           },
 
-          // {
-          //   icon: 'el-icon-user',
-          //   index: '2',
-          //   title: '用户管理',
-          //   subs: [
-          //     {
-          //       index: '/user/children',
-          //       title: '子女信息'
-          //     },
-          //     {
-          //       index: '/user/approval',
-          //       title: '审核列表'
-          //     },
-          //     {
-          //       index: '/village',
-          //       title: '村庄管理',
-          //     },
-          //     {
-          //       index: '/user/aged',
-          //       title: '老人信息列表'
-          //     },
-          //     {
-          //       index: '/user/aged-archives',
-          //       title: '老人档案',
-          //     },
-          //     {
-          //       index: '/user/post-station',
-          //       title: '驿站管理'
-          //     },
-          //     {
-          //       index: '/user/social-worker',
-          //       title: '社工信息管理'
-          //     },
-          //     {
-          //       index: '/user/doctor',
-          //       title: '医生管理',
-          //     }
-          //   ]
-          // },
+          {
+            icon: 'el-icon-user',
+            index: '2',
+            title: '用户管理',
+            subs: [
+              {
+                index: '/user/children',
+                title: '子女信息'
+              },
+              {
+                index: '/user/approval',
+                title: '审核列表'
+              },
+              {
+                index: '/village',
+                title: '村庄管理',
+              },
+              {
+                index: '/user/aged',
+                title: '老人信息列表'
+              },
+              {
+                index: '/user/aged-archives',
+                title: '老人档案',
+              },
+              {
+                index: '/user/post-station',
+                title: '驿站管理'
+              },
+              {
+                index: '/user/social-worker',
+                title: '社工信息管理'
+              },
+              {
+                index: '/user/doctor',
+                title: '医生管理',
+              }
+            ]
+          },
 
           // {
           //   icon: 'el-icon-service',
