@@ -14,6 +14,8 @@ import Store from "../components/store/Store";
 import Village from "../components/app/Village";
 import StoreComment from "../components/comment/Store";
 import CommunityComment from "../components/comment/Community";
+import Template from "../components/care/Template";
+import Birthday from "../components/care/Birthday";
 
 Vue.use(Router)
 
@@ -86,6 +88,18 @@ export default new Router({
         path: '/comment/community',
         meta: {title: '社区评价'},
         component: CommunityComment
+      },
+
+      {
+        path: '/care/template',
+        meta: {title: '关怀管理'},
+        component: Template
+      },
+
+      {
+        path: '/care/birthday',
+        meta: {title: '生日祝福'},
+        component: Birthday
       },
 
 

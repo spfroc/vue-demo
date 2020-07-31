@@ -111,6 +111,22 @@
                   ]
                 },
 
+                {
+                  index: '3',
+                  title: '关怀管理',
+                  subs: [
+                    {
+                      index: '/care/template',
+                      title: '关怀管理',
+                    },
+                    {
+                      index: '/care/birthday',
+                      title: '生日祝福',
+                    }
+                  ]
+
+                },
+
                 // {
                 //   index: '9',
                 //   title: '关怀管理',
