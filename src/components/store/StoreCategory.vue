@@ -58,6 +58,7 @@
                     id: '',
                     name: '',
                 },
+                page: {},
                 editing: false,
                 isUpdate: false,
                 rules: {}
@@ -103,9 +104,10 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/storeCategory',).then(res => {
-                    this.tableData = res.data.data;
-                })
+                this.$http.get('/apis/adminApi/storeCategory/list',).then(res => {
+                    this.page.total = res.data.data.total
+                    this.page.pageNum = parseInt(res.data.data.pageNum)
+                    this.tableData = res.data.data.list;                         })
             },
 
             onSubmit () {

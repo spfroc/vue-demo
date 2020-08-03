@@ -59,8 +59,8 @@
                     <el-table-column width="250" label="操作">
                         <template slot-scope="scope">
                             <el-button @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
-                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="success" size="mini">通过</el-button>
-                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 3) }" type="danger" size="mini">不通过</el-button>
+                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 1) }" type="success" size="mini">通过</el-button>
+                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="danger" size="mini">不通过</el-button>
 
                         </template>
                     </el-table-column>
@@ -98,8 +98,8 @@
 
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--success">通过</el-button>
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 3)" class="el-button--danger">不通过</el-button>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>
@@ -176,7 +176,7 @@
             },
 
             showOperationButton(status) {
-                return status == 1 ? true : false;
+                return status == 0 ? true : false;
             },
             remove (id) {
                 this.$confirm('确定删除此评论吗？', '提示', {
@@ -206,7 +206,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/community/comment', {
+                this.$http.get('/apis/adminApi/communityComment/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -217,12 +217,14 @@
 
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
             operation(id, status) {
-                this.$http.post('/apis/adminApi/comment/approval', {
+                //暂时没有社区评论审核接口，使用商家评论接口代替
+                this.$http.post('/apis/adminApi/communityComment/audit', {
+                // this.$http.post('/apis/adminApi/storeComment/audit', {
                     id: id,
                     status: status,
                 }).then(res => {

@@ -98,16 +98,6 @@
                 },
                 search: {},
 
-                pushSettingOptions: [
-                    {
-                        value: 1,
-                        label: '当天',
-                    },
-                    {
-                        value: 2,
-                        label: '提前三天',
-                    },
-                ],
                 editingRow: {},
                 form: {
                     id: '',
@@ -135,10 +125,10 @@
                 this.form = Object.assign({}, row)
             },
             remove (id) {
-                this.$confirm('确定删除此模板吗？', '提示', {
+                this.$confirm('确定删除此健康知识吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/healthCommonSense/delete', {
+                    this.$http.post('/apis/adminApi/healthyKnowledge/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -161,18 +151,18 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/health/commonSense',).then(res => {
+                this.$http.get('/apis/adminApi/healthyKnowledge/list',).then(res => {
                     // this.tableData = res.data.data;
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/healthCommonSense/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/healthyKnowledge/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

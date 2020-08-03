@@ -42,15 +42,15 @@
                         <el-form-item label="祝福内容" prop="content">
                             <el-input type="textarea" v-model="form.content"></el-input>
                         </el-form-item>
-                        <el-form-item label="日期" prop="date">
+                        <el-form-item label="日期" prop="careDate">
                             <el-date-picker
-                                    v-model="form.date"
+                                    v-model="form.careDate"
                                     type="date"
                                     placeholder="选择日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="推送设置" prop="pushSetting">
-                            <el-select v-model="form.pushSetting" placeholder="请选择">
+                        <el-form-item label="推送设置" prop="alertSet">
+                            <el-select v-model="form.alertSet" placeholder="请选择">
                                 <el-option
                                         v-for="item in pushSettingOptions"
                                         :key="item.value"
@@ -93,9 +93,12 @@
                     id: '',
                     name: '',
                     content: '',
-                    pushSetting: 1,
-                    date: ''
+                    alertSet: 1,
+                    careDate: '',
+                    type: 1
                 },
+                page: {},
+                search: {},
                 editing: false,
                 isUpdate: false,
                 rules: {}
@@ -106,7 +109,13 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    name: '',
+                    content: '',
+                    alertSet: 1,
+                    careDate: '',
+                    type: 1
+                }
             },
             edit (row) {
                 this.editing = true
@@ -118,7 +127,7 @@
                 this.$confirm('确定删除此模板吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/careTemplate/delete', {
+                    this.$http.post('/apis/adminApi/careInfo/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -129,6 +138,10 @@
                     })
                     this.editing = false
                     this.form = {
+                        name: '',
+                        content: '',
+                        alertSet: 1,
+                        careDate: '',
                         type: 1
                     }
                 }).catch(() => {
@@ -141,20 +154,32 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/care/template',).then(res => {
-                    this.tableData = res.data.data;
+                this.$http.get('/apis/adminApi/careInfo/list', {
+                    params: {
+                        type: 1
+                    }
+                }).then(res => {
+                    this.page.total = res.data.data.total
+                    this.search.pageNum = parseInt(res.data.data.pageNum)
+                    this.tableData = res.data.data.list;
                 })
             },
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/careTemplate/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/careInfo/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             })
-                            this.form = {}
+                            this.form = {
+                                name: '',
+                                content: '',
+                                alertSet: 1,
+                                careDate: '',
+                                type: 1
+                            }
                             this.fetchList()
                             this.editing = false
                         })

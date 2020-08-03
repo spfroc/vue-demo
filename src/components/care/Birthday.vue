@@ -42,8 +42,8 @@
                         <el-form-item label="祝福内容" prop="content">
                             <el-input v-model="form.content"></el-input>
                         </el-form-item>
-                        <el-form-item label="推送设置" prop="pushSetting">
-                            <el-select v-model="form.pushSetting" placeholder="请选择">
+                        <el-form-item label="推送设置" prop="alertSet">
+                            <el-select v-model="form.alertSet" placeholder="请选择">
                                 <el-option
                                         v-for="item in pushSettingOptions"
                                         :key="item.value"
@@ -84,14 +84,17 @@
                 editingRow: {},
                 form: {
                     id: '',
-                    name: '',
+                    name: '生日祝福',
                     content: '',
-                    pushSetting: 1,
-                    date: ''
+                    alertSet: 1,
+                    careDate: '',
+                    type: 2
                 },
                 editing: false,
                 isUpdate: false,
-                rules: {}
+                rules: {},
+                page: {},
+                search: {}
             }
 
         },
@@ -99,7 +102,13 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    name: '生日祝福',
+                    content: '',
+                    alertSet: 1,
+                    careDate: '',
+                    type: 2
+                }
             },
             edit (row) {
                 this.editing = true
@@ -134,21 +143,32 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/care/birthday',).then(res => {
-                    this.tableData = res.data.data;
-                })
+                this.$http.get('/apis/adminApi/careInfo/list', {
+                    params: {
+                        type: 2
+                    }
+                }).then(res => {
+                    this.page.total = res.data.data.total
+                    this.search.pageNum = parseInt(res.data.data.pageNum)
+                    this.tableData = res.data.data.list;                })
             },
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/careBirthday/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/careInfo/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             })
-                            this.form = {}
+                            this.form = {
+                                name: '生日祝福',
+                                content: '',
+                                alertSet: 1,
+                                careDate: '',
+                                type: 2
+                            }
                             this.fetchList()
                             this.editing = false
                         })

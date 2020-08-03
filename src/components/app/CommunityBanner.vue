@@ -124,7 +124,7 @@
                 this.editing = true
                 this.isUpdate = false
                 this.form = {
-                    type: 1
+                    type: 2
                 }
             },
             edit (row) {
@@ -137,7 +137,7 @@
                 this.$confirm('确定删除此轮播图吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/bannerDelete', {
+                    this.$http.post('/apis/adminApi/banner/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -148,7 +148,7 @@
                     })
                     this.editing = false
                     this.form = {
-                        type: 1
+                        type: 2
                     }
                 }).catch(() => {
                     // do nothing
@@ -162,7 +162,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/banner', {
+                this.$http.get('/apis/adminApi/banner/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -174,7 +174,7 @@
 
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
@@ -182,7 +182,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/manager/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/banner/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

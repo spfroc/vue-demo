@@ -85,7 +85,7 @@
                 </el-pagination>
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
-                    <el-form ref="form" :rules="rules" :model="form">
+                    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
@@ -180,12 +180,15 @@
                 this.editing = true
                 this.isUpdate = false
                 this.form = {}
+                this.introductionFileList = [];
             },
             edit (row) {
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
                 this.form = Object.assign({}, row)
+                this.introductionFileList = this.form.introduction
+
             },
             remove (id) {
                 this.$confirm('确定删除此商家吗？', '提示', {
@@ -224,7 +227,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/store', {
+                this.$http.get('/apis/adminApi/store/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -235,7 +238,7 @@
 
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
@@ -243,20 +246,28 @@
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+                    // console.log(this.introductionFileList);return;
 
-                    let fileInfoList = [];
+                    // let fileInfoList = [];
                     if(this.introductionFileList && this.introductionFileList.length) {
+                        this.form.introduction = '';
                         this.introductionFileList.forEach(file => {
-                            fileInfoList.push({
-                                name: file.name,
-                                url: file.response.data,
-                                size: file.size,
-                                uid: file.uid,
-                            })
+                            console.log(file.url.toString());
+                            if(this.isUpdate) {
+                                this.form.introduction += file.url.toString()+',';
+                            } else {
+                                this.form.introduction += file.response.data.toString()+',';
+                            }
+                            // fileInfoList.push({
+                            //     name: file.name ? file.name : '',
+                            //     url: file.response.data ? file.response.data : file.url,
+                            //     size: file.size ? file.size : '',
+                            //     uid: file.uid ? file.uid : '',
+                            // })
                         })
                     }
-                    this.form.introduction = JSON.stringify(fileInfoList);
-                    // console.log(this.form);return;
+                    // this.form.introduction = JSON.stringify(fileInfoList);
+                    // console.log(this.form.introduction);return;
                     if (valid) {
                         this.form.roleId = this.form.roleName
                         this.$http.post('/apis/adminApi/store/addOrUpdate', this.form).then(res => {

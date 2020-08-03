@@ -171,7 +171,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/communityInfo', {
+                this.$http.get('/apis/adminApi/communityInfo/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -182,14 +182,19 @@
 
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
             getCategoryOptions () {
-                this.$http.get('/apis/adminApi/communityCategory',).then(res => {
-                    this.categoryOptions = res.data.data;
-                    console.log(res.data);
+                this.$http.get('/apis/adminApi/communityCategory/list', {
+                    params: Object.assign({
+                        pageSize: 10,
+                        pageNum: 1,
+                    })
+                }).then(res => {
+
+                    this.categoryOptions = res.data.data.list;
                 })
             },
 
@@ -214,8 +219,12 @@
             },
 
             getCategoryName(row, col, data) {
+                console.log(1242324);
+                console.log(this.categoryOptions);
+                console.log(1242324);
+
                 let categoryObj = (this.categoryOptions.filter((item) => {
-                        // console.log(item.id + '=' + data);
+                        console.log(item.id + '=' + data);
                     if(data == item.id) {
                         return true;
                     }

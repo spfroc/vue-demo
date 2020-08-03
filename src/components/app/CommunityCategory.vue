@@ -60,7 +60,10 @@
                 },
                 editing: false,
                 isUpdate: false,
-                rules: {}
+                rules: {},
+                page: {
+
+                }
             }
 
         },
@@ -87,12 +90,10 @@
                             message: res.data.message,
                             type: 'success'
                         })
-                        this.fetchList()
                     })
+                    this.fetchList()
                     this.editing = false
-                    this.form = {
-                        type: 1
-                    }
+
                 }).catch(() => {
                     // do nothing
                 })
@@ -103,9 +104,10 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/communityCategory',).then(res => {
-                    this.tableData = res.data.data;
-                })
+                this.$http.get('/apis/adminApi/communityCategory/list',).then(res => {
+                    this.page.total = res.data.data.total
+                    this.page.pageNum = parseInt(res.data.data.pageNum)
+                    this.tableData = res.data.data.list;                })
             },
 
             onSubmit () {
