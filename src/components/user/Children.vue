@@ -62,22 +62,24 @@
                             label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="IDNumber"
+                            prop="idCardNumber"
                             align="center"
                             label="身份证号">
                     </el-table-column>
                     <el-table-column
                             v-if="activeName == 'approval' ? true : false"
-                            prop="relationShip"
+                            prop="relation"
                             align="center"
                             label="与老人关系">
                     </el-table-column>
                     <el-table-column
                             v-if="activeName == 'approval' ? true : false"
-                            prop="elderInfo.name"
+                            prop="oldManName"
                             align="center"
                             label="老人姓名">
                     </el-table-column>
+
+
                     <el-table-column
                             prop="createTime"
                             align="center"
@@ -91,8 +93,8 @@
                     <el-table-column width="250" label="操作">
                         <template slot-scope="scope">
                             <el-button v-if="activeName=='approval'" @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
-                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="success" size="mini">通过</el-button>
-                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 3) }" type="danger" size="mini">不通过</el-button>
+                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 1) }" type="success" size="mini">通过</el-button>
+                            <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="danger" size="mini">不通过</el-button>
                             <el-button v-if="activeName=='children'" @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
                             <el-button v-if="activeName=='children'" @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
                         </template>
@@ -118,8 +120,8 @@
                         <el-form-item label="姓名" prop="name">
                             <el-input v-model="form.name" ></el-input>
                         </el-form-item>
-                        <el-form-item label="性别" prop="gender">
-                            <el-select v-model="form.gender" placeholder="请选择">
+                        <el-form-item label="性别" prop="sex">
+                            <el-select v-model="form.sex" placeholder="请选择">
                                 <el-option
                                         v-for="item in genderOptions"
                                         :key="item.value"
@@ -135,40 +137,83 @@
                                     v-model="form.mobile"
                             ></el-input>
                         </el-form-item>
-                        <el-form-item label="身份证号" prop="IDNumber">
+                        <el-form-item label="身份证号" prop="idCardNumber">
                             <el-input
                                     :disabled=!canInputEdit
-                                    v-model="form.IDNumber"
+                                    v-model="form.idCardNumber"
                             ></el-input>
                         </el-form-item>
-                        <el-form-item label="家庭住址" prop="address">
+                        <el-form-item label="家庭住址" prop="homeAddress">
                             <el-input
                                     :disabled=!canInputEdit
-                                    v-model="form.address"
-                            ></el-input>
-                        </el-form-item>
-
-                        <el-form-item label="老人姓名" prop="elderName" v-if="!canInputEdit">
-                            <el-input
-
-                                    :disabled=!canInputEdit
-                                    v-model="form.elderInfo.name"
+                                    v-model="form.homeAddress"
                             ></el-input>
                         </el-form-item>
 
-                        <el-form-item label="老人身份证号" prop="elderIDNumber" v-if="!canInputEdit">
+                        <el-form-item label="老人姓名" prop="oldManName" v-if="!canInputEdit">
                             <el-input
 
                                     :disabled=!canInputEdit
-                                    v-model="form.elderInfo.IDNumber"
+                                    v-model="form.oldManName"
                             ></el-input>
                         </el-form-item>
+
+                        <el-form-item label="老人身份证号" prop="oldManIdCardNumber" v-if="!canInputEdit">
+                            <el-input
+
+                                    :disabled=!canInputEdit
+                                    v-model="form.oldManIdCardNumber"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="绑定老人">
+                            <section
+                                v-if="form.bindOldManList && form.bindOldManList.length > 0">
+                                <el-tag v-for="oldMan in form.bindOldManList"
+                                        :closable=true
+                                        @close="removeOldMan(oldMan)"
+                                        v-bind:key="oldMan.id">{{oldMan.name}}</el-tag>
+                            </section>
+                            <el-button @click="bindButton" size="small" type="primary">添加绑定</el-button>
+                        </el-form-item>
+
+                        <section
+                            v-if="bindCount > 0 && activeName == 'children'"
+                            v-for="item in bindCount"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                        >
+                            <el-form-item label="选择老人" label-width="100px">
+                                <el-select v-model="form.sex" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in genderOptions"
+                                            :key="item.value"
+                                            :disabled=!canInputEdit
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                                <el-select v-model="form.sex" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in genderOptions"
+                                            :key="item.value"
+                                            :disabled=!canInputEdit
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <el-form-item label="亲属关系" label-width="100px">
+                                <el-input :style="{width:'20%'}" v-model="bindOldMan.relation"></el-input>
+                            </el-form-item>
+                        </section>
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
                             <el-button v-if="activeName=='children'" type="primary" @click="onSubmit">确定</el-button>
-
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--success">通过</el-button>
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 3)" class="el-button--danger">不通过</el-button>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>
@@ -219,7 +264,11 @@
         },
         data() {
             return {
-
+                bindOldMan: {
+                    id: '',
+                    relation: '',
+                },
+                bindCount: 0,
                 genderOptions: [
                     {
                         label: '男',
@@ -231,8 +280,8 @@
                     },
                 ],
                 activeName: 'children',
-                childrenListApi: '/apis/adminApi/user/children',
-                approvalListApi: '/apis/adminApi/user/childrenApproval',
+                childrenListApi: '/apis/adminApi/user/list?userType=1',
+                approvalListApi: '/apis/adminApi/childApply/list',
                 editorOption: {
                     placeholder: ''
                 },
@@ -246,18 +295,18 @@
                 form: {
                     id: '',
                     name: '',
-                    address: '',
-                    gender: '',
+                    homeAddress: '',
+                    sex: '',
+                    userType: 1,
                     mobile: '',
                     // status: '',
                     createTime: '',
-                    IDNumber:'',
+                    idCardNumber:'',
                     updateTime: '',
-                    elderInfo: {
-                        id: '',
-                        name: '',
-                        IDNumber: '',
-                    }
+                    oldManName: '',
+                    oldManIdCardNumber: '',
+                    relation:'',
+                    bindOldManList: [],
                     // approvedAt: '',
                     // rejectedAt: '',
                 },
@@ -274,8 +323,17 @@
 
         },
         methods: {
+
+            removeOldMan (oldMan) {
+                console.log(this.form.bindOldManList.indexOf(oldMan));
+                this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
+            },
+            bindButton () {
+                this.bindCount ++;
+            },
+
             genderFormatter (row, col, data) {
-                return row.gender == 1 ? '男' : '女';
+                return row.sex == 1 ? '男' : '女';
             },
             tabSwitch(tab, event) {
                 this.search = {};
@@ -285,14 +343,28 @@
             },
             add () {
                 this.editing = true
+                this.bindCount = 0;
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    userType: 1,
+                }
             },
             edit (row) {
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.form = Object.assign({}, row)
+                this.$http.get('/apis/adminApi/user/detailForChild', {
+                    params: {
+                        id: row.id
+                    }
+                }).then(res => {
+                    console.log(res.data.data.bindOldManList);
+                    this.form = Object.assign({}, res.data.data)
+
+                });
+                // this.form = Object.assign({}, row)
+                this.form.userType = 1;
+                this.bindCount = 0;
             },
 
             showOperationButton(status) {
@@ -306,7 +378,7 @@
                 this.$confirm('确定删除此子女信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/userChildren/delete', {
+                    this.$http.post('/apis/adminApi/user/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -316,7 +388,11 @@
                         this.fetchList(1)
                     })
                     this.editing = false
-                    this.form = {}
+                    this.form = {
+                        userType: 1,
+                    }
+                    this.bindCount = 0;
+
                 }).catch(() => {
                     // do nothing
                 })
@@ -324,6 +400,7 @@
 
             cancel () {
                 this.editing = false
+                this.bindCount = 0;
             },
 
 
@@ -338,15 +415,15 @@
                 }, {
                     params: this.search
                 }).then(res => {
-
+                    this.bindCount = 0;
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
             operation(id, status) {
-                this.$http.post('/apis/adminApi/userChildren/approval', {
+                this.$http.post('/apis/adminApi/childApply/audit', {
                     id: id,
                     status: status,
                 }).then(res => {
@@ -362,12 +439,14 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/userChildren/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/user/addOrUpdateForChild', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
                             })
-                            this.form = {}
+                            this.form = {
+                                userType: 1,
+                            }
                             this.fetchList()
                             this.editing = false
                         })
@@ -386,4 +465,7 @@
 </script>
 
 <style scoped>
+    ul li {
+
+    }
 </style>

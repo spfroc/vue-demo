@@ -24,7 +24,7 @@ axios.interceptors.response.use(
     response => {
         if (response.status === 200) {
             console.log(response.data);
-            if (response.data.code === '0') {
+            if (response.data.code == 0) {
                 return response
             } else if (response.data.code === 419 || response.data.code === 403 || response.data.code === 5002 || response.data.code === 5001) {
                 // token 过期处理
