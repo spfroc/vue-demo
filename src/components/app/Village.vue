@@ -140,32 +140,12 @@
               rules: {},
               page: {},
               search: {},
-              amapManager:new Amap.AMapManager(),
-              events: {
-                  init: (o) => {
-                      console.log(o.getCenter())
-
-                  },
-                  'moveend': () => {
-                      console.log(123213);
-                  },
-                  'zoomchange': () => {
-                  },
-                  'click': (e) => {
-                      alert('map clicked');
-                  }
-              }
           }
         },
 
         methods: {
-            add () {
-                this.editing = true
-                this.isUpdate = false
-                this.form = {
-                    railRadius: 500,
-                }
 
+            mapInit () {
                 Amap.initAMapApiLoader({
                     key: 'e026d6af144d5a75ed717f7c18f10fff',
                     plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
@@ -187,6 +167,15 @@
 
 
                 });
+            },
+            add () {
+                this.editing = true
+                this.isUpdate = false
+                this.form = {
+                    railRadius: 500,
+                }
+
+                this.mapInit();
 
 
             },
@@ -211,7 +200,6 @@
 
             addMarker() {
                 let marker = new AMap.CircleMarker({
-                // position: new AMap.LngLat(117.11, 36.67),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                     map: this.map,
                     center:this.map.getCenter(),
                     radius: '5px',
@@ -219,14 +207,11 @@
                     fillOpacity: '0.5',
                     strokeWeight: 1
                 });
-                console.log(this.map.getCenter())
                 this.markers.push(marker);
             },
 
             radiusChanged() {
-                console.log();
                 this.circle.setRadius(parseInt(this.form.railRadius))
-
             },
 
             addCircle() {
@@ -258,7 +243,16 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.form = Object.assign({}, row)
+                this.$http.get('/apis/adminApi/village/detail', {
+                    params: {
+                        id: row.id
+                    }
+                }).then(res => {
+                    console.log(res.data.data);
+                    this.form = Object.assign({}, res.data.data)
+                    this.mapInit()
+
+                })
             },
 
             railRadiusFormatter (row) {
