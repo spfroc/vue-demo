@@ -15,7 +15,8 @@
                     </el-table-column>
 
                     <el-table-column
-                            prop="electronicFence"
+                            :formatter="railRadiusFormatter"
+                            prop="isSetRailRadius"
                             label="电子围栏">
                     </el-table-column>
                     <el-table-column prop="createTime" label="创建时间">
@@ -62,23 +63,24 @@
                         </el-row>
                         <el-row :gutter="20">
                             <el-col :span="12">
-                                <el-form-item label="村专干" prop="assistantName">
-                                    <el-input v-model="form.assistantName"></el-input>
+                                <el-form-item label="村专干" prop="cadreName">
+                                    <el-input v-model="form.cadreName"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="联系方式" prop="assistantMobile">
-                                    <el-input v-model="form.assistantMobile"></el-input>
+                                <el-form-item label="联系方式" prop="cadreMobile">
+                                    <el-input v-model="form.cadreMobile"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>
-                        <el-form-item label="电子围栏" prop="electronicFence">
-                            <el-input v-model="form.electronicFence" @change="radiusChanged"></el-input>
+                        <el-form-item label="电子围栏" prop="railRadius">
+                            <el-input v-model="form.railRadius" @change="radiusChanged"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <div id="container">
 
                             </div>
+
                         </el-form-item>
 
                         <el-input type="hidden" v-model="form.latitude"></el-input>
@@ -96,14 +98,18 @@
 
 <script>
     import {TMap} from "../common/map-import";
+    import Amap from 'vue-amap';
+    import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
     export default {
+
         name: "Village",
         components:{
-            TMap
+            TMap, Amap, lazyAMapApiLoaderInstance
         },
         data () {
           return {
+              center: [117.11, 36.67],
               tableData: [],
               map: '',
               mapData: {
@@ -119,21 +125,36 @@
               form: {
                   id: '',
                   name: '',
-                  electronicFence: 10,
+                  railRadius: 10,
                   secretaryId: '',
                   secretaryName: '',
                   secretaryMobile: '',
-                  assistantId: '',
-                  assistantName: '',
-                  assistantMobile: '',
-                  latitude: '',
-                  longitude: '',
+                  cadreId: '',
+                  cadreName: '',
+                  cadreMobile: '',
+                  lng: '',
+                  lat: '',
               },
               editing: false,
               isUpdate: false,
               rules: {},
               page: {},
-              search: {}
+              search: {},
+              amapManager:new Amap.AMapManager(),
+              events: {
+                  init: (o) => {
+                      console.log(o.getCenter())
+
+                  },
+                  'moveend': () => {
+                      console.log(123213);
+                  },
+                  'zoomchange': () => {
+                  },
+                  'click': (e) => {
+                      alert('map clicked');
+                  }
+              }
           }
         },
 
@@ -142,45 +163,41 @@
                 this.editing = true
                 this.isUpdate = false
                 this.form = {
-                    electronicFence: 500,
+                    railRadius: 500,
                 }
 
-                TMap('HFTBZ-3IO66-I4MSE-M57DC-7TEF5-2WF4Y').then(qq => {
-                    this.map = new qq.maps.Map(document.getElementById("container"),{
-                        //地图的中心地理坐标
-                        center:new qq.maps.LatLng(36.67,117.11),
-                        zoom:14,
-                        disableDoubleClickZoom: false,
-                        zoomControl: false,
-                        panControl: false
+                Amap.initAMapApiLoader({
+                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
+                    v: '1.4.4'
+                });
+
+                lazyAMapApiLoaderInstance.load().then(() => {
+                    // your code ...
+                    this.map = new AMap.Map('container', {
+                        center: new AMap.LngLat(117.11, 36.67),
+                        zoom: 14,
                     });
-                    this.mapData.anchor = new qq.maps.Point(0, 0);
-                    this.mapData.size = new qq.maps.Size(10, 10);
-                    this.mapData.origin = new qq.maps.Point(0, 0);
-                    this.mapData.icon = new qq.maps.MarkerImage('http://www.geocodezip.com/mapIcons/small_red_dot.png', this.mapData.size, this.mapData.origin, this.mapData.anchor);
+                    this.map.on('mapmove', this.centerChanged)
 
                     this.addMarker();
                     this.addCircle();
-                    qq.maps.event.addListener(this.map, 'center_changed', this.centerChanged);
-
-                    // let container = document.getElementById('container')
+                    // this.map.add(marker);
+                    this.map.add(this.circle);
 
 
                 });
 
-                setTimeout(() => {
-                    let img = document.getElementsByTagName('img');
-                    img.item(1).parentNode.parentNode.parentNode.nextSibling.remove();
-                    img.item(1).parentNode.parentNode.parentNode.remove();
 
-                }, 1500)
             },
 
             centerChanged() {
-                console.log(this.map.getCenter());
+                this.form.lat = this.map.getCenter().lat
+                this.form.lng = this.map.getCenter().lng
                 this.clearMarker();
                 this.addMarker();
                 this.addCircle();
+                this.map.add(this.circle);
             },
 
             clearMarker () {
@@ -193,25 +210,36 @@
             },
 
             addMarker() {
-                let marker = new qq.maps.Marker({
-                    icon: this.mapData.icon,
+                let marker = new AMap.CircleMarker({
+                // position: new AMap.LngLat(117.11, 36.67),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                     map: this.map,
-                    position:this.map.getCenter()});
+                    center:this.map.getCenter(),
+                    radius: '5px',
+                    fillColor: '#561a12',
+                    fillOpacity: '0.5',
+                    strokeWeight: 1
+                });
+                console.log(this.map.getCenter())
                 this.markers.push(marker);
             },
 
             radiusChanged() {
-                this.circle.setRadius(parseInt(this.form.electronicFence))
+                console.log();
+                this.circle.setRadius(parseInt(this.form.railRadius))
+
             },
 
             addCircle() {
                 this.clearCircle();
-                this.circle=new qq.maps.Circle({
-                    map:this.map,
-                    center:this.map.getCenter(),
-                    radius:parseInt(this.form.electronicFence),
-                    // fillColor:"#0f0",
-                    strokeWeight:2
+
+                this.circle = new AMap.Circle({
+                    center: new AMap.LngLat(this.map.getCenter().lng, this.map.getCenter().lat), // 圆心位置
+                    radius: this.form.railRadius,  //半径
+                    strokeColor: "#F33",  //线颜色
+                    strokeOpacity: 1,  //线透明度
+                    strokeWeight: 3,  //线粗细度
+                    fillColor: "#ee2200",  //填充颜色
+                    fillOpacity: 0.35 //填充透明度
                 });
 
                 this.circles.push(this.circle);
@@ -232,6 +260,11 @@
                 this.editingRow = row
                 this.form = Object.assign({}, row)
             },
+
+            railRadiusFormatter (row) {
+                return row.isSetRailRadius == 0 ? '未划分' : '已划分';
+            },
+
             remove (id) {
                 this.$confirm('确定删除此村庄吗？', '提示', {
                     type: 'warning'
@@ -259,10 +292,10 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/user/village', this.search).then(res => {
+                this.$http.get('/apis/adminApi/village/list', this.search).then(res => {
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.data;
+                    this.tableData = res.data.data.list;
                 })
             },
 
@@ -270,7 +303,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/careBirthday/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/adminApi/village/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
