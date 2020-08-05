@@ -149,7 +149,7 @@
                 title: '村庄管理',
               },
               {
-                index: '/user/aged',
+                index: '/user/elders',
                 title: '老人信息列表'
               },
               {

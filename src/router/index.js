@@ -18,6 +18,7 @@ import Template from "../components/care/Template";
 import Birthday from "../components/care/Birthday";
 import CommonSense from "../components/health/CommonSense";
 import Children from "../components/user/Children";
+import Elders from "../components/user/Elders";
 
 Vue.use(Router)
 
@@ -114,6 +115,12 @@ export default new Router({
         path: '/user/children',
         meta: {title: '子女信息'},
         component: Children
+      },
+
+      {
+        path: '/user/elders',
+        meta: {title: '老人信息列表'},
+        component: Elders
       },
 
 
