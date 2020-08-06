@@ -31,8 +31,6 @@
             },
 
             handleSuccess(response, file, list) {
-
-                console.log(111);
                 this.addFile(list)
             }
         }

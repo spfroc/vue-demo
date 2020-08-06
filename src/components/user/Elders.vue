@@ -24,9 +24,9 @@
                 </el-form-item>
             </el-form>
         </section>
-        <!--<section class="header-bar">-->
-        <!--<el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>-->
-        <!--</section>-->
+        <section class="header-bar">
+        <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
+        </section>
         <template>
             <div>
                 <el-table
@@ -103,25 +103,37 @@
 
                 <el-dialog :close-on-click-modal="false" title="详情" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="100px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="性别" prop="sex">
-                            <el-select v-model="form.sex" placeholder="请选择">
-                                <el-option
-                                    v-for="item in genderOptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="民族" prop="nation">
-                            <el-input v-model="form.nation"></el-input>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="16">
+                                <el-form-item v-show="form.id" label="ID" prop="id">
+                                    <el-input :disabled="true" v-model="form.id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名" prop="name">
+                                    <el-input v-model="form.name"></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别" prop="sex">
+                                    <el-select v-model="form.sex" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in genderOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="民族" prop="nation">
+                                    <el-input v-model="form.nation"></el-input>
+                                </el-form-item>
+
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="一寸照片" prop="avatar">
+                                    <single-image-upload v-model="form.avatar" width="150" height="400"></single-image-upload>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+
+
                         <el-form-item label="手机号" prop="mobile">
                             <el-input v-model="form.mobile"></el-input>
                         </el-form-item>
@@ -195,11 +207,12 @@
 
 <script>
     import Editor from "../common/Editor"
+    import SingleImageUpload from "../common/SingleImageUpload"
 
     export default {
         name: "Elders",
         components: {
-            Editor
+            Editor, SingleImageUpload
         },
 
         computed : {

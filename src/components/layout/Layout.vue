@@ -153,11 +153,11 @@
                 title: '老人信息列表'
               },
               {
-                index: '/user/aged-archives',
+                index: '/user/elderFile',
                 title: '老人档案',
               },
               {
-                index: '/user/post-station',
+                index: '/user/stage',
                 title: '驿站管理'
               },
               {
@@ -219,11 +219,11 @@
           //   index: '/system/statistics'
           // },
           //
-          // {
-          //   icon: 'el-icon-picture',
-          //   title: '胸牌管理',
-          //   index: '/breastpiece'
-          // },
+          {
+            icon: 'el-icon-picture',
+            title: '胸牌管理',
+            index: '/chest/card'
+          },
           {
             icon: 'el-icon-setting',
             title: '系统管理',
@@ -294,17 +294,15 @@
         return JSON.parse(localStorage.getItem('auth-user-info')).admin_permissions
       },
       processBreadcrumb (path) {
-
         this.breadcrumb = []
         this.menuItems.forEach(levelOne => {
-          if(levelOne.subs && levelOne.subs.length) {
 
+          if(levelOne.subs && levelOne.subs.length) {
             levelOne.subs.forEach(levelTwo => {
               if(levelTwo.subs && levelTwo.subs.length) {
                 levelTwo.subs.forEach(levelThree => {
                   if(levelThree.index === path) {
                     this.breadcrumb = []
-
                     this.breadcrumb.push(
                       {
                         icon: levelOne.icon,
@@ -319,13 +317,13 @@
                         title: levelThree.title
                       },
                     )
+                    return;
                   }
                 })
               } else {
 
                 if(levelTwo.index === path) {
                   this.breadcrumb = []
-
                   this.breadcrumb.push({
                     icon: levelOne.icon,
                     title: levelOne.title
@@ -333,16 +331,24 @@
                     icon: levelTwo.icon,
                     title: levelTwo.title
                   })
+                  return;
                 }
               }
             });
           } else {
-            this.breadcrumb = []
 
-            this.breadcrumb.push({
-              icon: levelOne.icon,
-              title: levelOne.title
-            },)
+
+            if(path == levelOne.index) {
+              this.breadcrumb = []
+              console.log("levelOne:",levelOne.index);
+
+              this.breadcrumb.push({
+                icon: levelOne.icon,
+                title: levelOne.title
+              })
+              console.log(this.breadcrumb);
+              return;
+            }
           }
         })
       }

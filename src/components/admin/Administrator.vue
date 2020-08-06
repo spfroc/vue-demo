@@ -15,7 +15,6 @@
           </el-table-column>
           <el-table-column
             prop="roleName"
-            :formatter="roleFormatter"
             label="权限">
           </el-table-column>
           <el-table-column prop="createTime" label="创建时间">
@@ -119,9 +118,9 @@
       }
     },
     methods: {
-      roleFormatter (row, col, data) {
-        return ['超级管理员', '子女', '社工', '医生', '村干部'][data] || '未知'
-      },
+      // roleFormatter (row, col, data) {
+      //   return ['超级管理员', '子女', '社工', '医生', '村干部'][data] || '未知'
+      // },
       getAuthUserId () {
         return JSON.parse(localStorage.getItem('auth-user-info')).id
       },
@@ -137,7 +136,7 @@
         }, {
           params: this.search
         }).then(res => {
-          this.tableData = res.data.data.data.map(d => {
+          this.tableData = res.data.data.list.map(d => {
             d.admin_permissions = parseInt(d.admin_permissions)
             return d
           })

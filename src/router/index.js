@@ -19,6 +19,9 @@ import Birthday from "../components/care/Birthday";
 import CommonSense from "../components/health/CommonSense";
 import Children from "../components/user/Children";
 import Elders from "../components/user/Elders";
+import ChestCard from "../components/device/ChestCard";
+import ElderFile from "../components/user/ElderFile";
+import Stage from "../components/user/Stage";
 
 Vue.use(Router)
 
@@ -121,6 +124,24 @@ export default new Router({
         path: '/user/elders',
         meta: {title: '老人信息列表'},
         component: Elders
+      },
+
+      {
+        path: '/user/elderFile',
+        meta: {title: '老人档案'},
+        component: ElderFile
+      },
+
+      {
+        path: '/user/stage',
+        meta: {title: '驿站管理'},
+        component: Stage
+      },
+
+      {
+        path: '/chest/card',
+        meta: {title: '胸牌管理'},
+        component: ChestCard
       },
 
 
