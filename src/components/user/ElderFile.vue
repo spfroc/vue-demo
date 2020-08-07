@@ -252,9 +252,7 @@
                 console.log(file);
                 this.imgListArr.pop(file);
             },
-            searchLeftSide() {
-                console.log(this.leftForm)
-            },
+
             typeFormatter (row) {
                 return this.typeFormatterMap[row.type];
             },

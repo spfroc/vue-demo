@@ -22,6 +22,8 @@ import Elders from "../components/user/Elders";
 import ChestCard from "../components/device/ChestCard";
 import ElderFile from "../components/user/ElderFile";
 import Stage from "../components/user/Stage";
+import Doctor from "../components/user/Doctor";
+import SocialWorker from "../components/user/SocialWorker";
 
 Vue.use(Router)
 
@@ -136,6 +138,18 @@ export default new Router({
         path: '/user/stage',
         meta: {title: '驿站管理'},
         component: Stage
+      },
+
+      {
+        path: '/user/doctor',
+        meta: {title: '医生管理'},
+        component: Doctor
+      },
+
+      {
+        path: '/user/social-worker',
+        meta: {title: '社工管理'},
+        component: SocialWorker
       },
 
       {

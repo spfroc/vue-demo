@@ -12,6 +12,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 
+import common from './assets/js/common'
+Vue.use(common)
+
 Vue.config.productionTip = false
 
 // 使用钩子函数对路由进行权限跳转
