@@ -97,7 +97,6 @@
 </template>
 
 <script>
-    import {TMap} from "../common/map-import";
     import Amap from 'vue-amap';
     import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
@@ -105,7 +104,7 @@
 
         name: "Village",
         components:{
-            TMap, Amap, lazyAMapApiLoaderInstance
+            Amap, lazyAMapApiLoaderInstance
         },
         data () {
           return {

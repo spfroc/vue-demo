@@ -24,6 +24,7 @@ import ElderFile from "../components/user/ElderFile";
 import Stage from "../components/user/Stage";
 import Doctor from "../components/user/Doctor";
 import SocialWorker from "../components/user/SocialWorker";
+import Chart from "../components/statistics/Chart";
 
 Vue.use(Router)
 
@@ -150,6 +151,12 @@ export default new Router({
         path: '/user/social-worker',
         meta: {title: '社工管理'},
         component: SocialWorker
+      },
+
+      {
+        path: '/statistics',
+        meta: {title: '统计分析'},
+        component: Chart
       },
 
       {

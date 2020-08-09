@@ -171,6 +171,12 @@
             ]
           },
 
+          {
+            index: '/statistics',
+            title: '统计分析',
+            icon: 'el-icon-pie-chart'
+          },
+
           // {
           //   icon: 'el-icon-service',
           //   title: '志愿者管理',

@@ -1,21 +1,54 @@
 <template>
-    <div id="container">
-
-        <!--<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=HFTBZ-3IO66-I4MSE-M57DC-7TEF5-2WF4Y"></script>-->
-
-    </div>
-
+    <section id="a-map-container" style="width: 100%;height:400px;"></section>
 </template>
 <script>
 
-    import VueAMap from 'vue-amap';
+    import Amap from 'vue-amap';
+    import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
-    VueAMap.initAMapApiLoader({
-        key: 'e026d6af144d5a75ed717f7c18f10fff',
-        plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
-        // 默认高德 sdk 版本为 1.4.4
-        v: '1.4.4'
-    });
+    export default {
+
+        name: "AMap",
+        components:{
+            Amap, lazyAMapApiLoaderInstance
+        },
+
+        props: ['width', 'height', 'lng', 'lat'],
+        data () {
+            return {
+                map: '',
+            }
+        },
+
+        methods: {
+
+            mapInit () {
+                Amap.initAMapApiLoader({
+                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
+                    v: '1.4.4'
+                });
+
+                lazyAMapApiLoaderInstance.load().then(() => {
+                    this.map = new AMap.Map('a-map-container', {
+                        center: new AMap.LngLat(this.lng, this.lat),
+                        zoom: 14,
+                    });
+                    this.map.on('mapmove', this.centerChanged)
+                });
+            },
+
+            centerChanged() {
+                // console.log(this.map.getCenter());
+            },
+        },
+
+        mounted() {
+            console.log(this.width, this.height);
+            this.mapInit();
+        }
+
+    }
 
 
 </script>
