@@ -210,11 +210,11 @@
           //   index: '/electronic/fence'
           // },
 
-          // {
-          //   icon: 'el-icon-document',
-          //   title: '城市大脑',
-          //   index: '/city/brain'
-          // },
+          {
+            icon: 'el-icon-document',
+            title: '城市大脑',
+            index: '/city/brain'
+          },
           // {
           //   icon: 'el-icon-info',
           //   title: '统计分析',

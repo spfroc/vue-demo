@@ -27,6 +27,7 @@ import SocialWorker from "../components/user/SocialWorker";
 import Chart from "../components/statistics/Chart";
 import Activity from "../components/volunteer/Activity";
 import Approval from "../components/volunteer/Approval";
+import Brain from "../components/city/Brain";
 
 Vue.use(Router)
 
@@ -154,7 +155,11 @@ export default new Router({
         meta: {title: '社工管理'},
         component: SocialWorker
       },
-
+      {
+        path: '/city/brain',
+        meta: {title: '城市大脑'},
+        component: Brain
+      },
       {
         path: '/statistics',
         meta: {title: '统计分析'},
@@ -178,6 +183,8 @@ export default new Router({
         meta: {title: '审核列表'},
         component: Approval
       },
+
+
 
 
       // {
