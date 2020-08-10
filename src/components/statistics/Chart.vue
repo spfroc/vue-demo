@@ -362,7 +362,7 @@
                     title: {
                         text: '数据统计',
                         left: 'center',
-                        backgroundColor: '#255788',
+                        // backgroundColor: '#255788',
 
                         textStyle: {
                             width: '100%'
@@ -380,7 +380,11 @@
                     legend: {
                         left: 'center',
                         top: 'bottom',
-                        data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+                        data: ['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],
+                        itemGap: 20,
+                        textStyle: {
+                            color: 'white'
+                        }
                     },
                     toolbox: {
                         // show: true,
@@ -403,14 +407,27 @@
                             center: ['50%', '50%'],
                             roseType: 'area',
                             data: [
-                                {value: 10, name: 'rose1'},
-                                {value: 5, name: 'rose2'},
-                                {value: 15, name: 'rose3'},
-                                {value: 25, name: 'rose4'},
-                                {value: 20, name: 'rose5'},
-                                {value: 35, name: 'rose6'},
-                                {value: 30, name: 'rose7'},
-                                {value: 40, name: 'rose8'}
+                                {value: 10, name: '驿工', itemStyle: {
+                                    color: '#1E90FF'
+                                    }},
+                                {value: 5, name: '总接待电话数', itemStyle: {
+                                    color: '#708090'
+                                    }},
+                                {value: 15, name: '老人', itemStyle: {
+                                    color: '#32CD32'
+                                    }},
+                                {value: 25, name: '驿站数', itemStyle: {
+                                    color: '#40E0D0'
+                                }},
+                                {value: 20, name: '医生', itemStyle: {
+                                    color: '#FF4500'
+                                    }},
+                                {value: 35, name: '子女用户数', itemStyle: {
+                                        color: '#4169E1'
+                                    }},
+                                {value: 30, name: '总工单数', itemStyle: {
+                                        color: '#838B8B'
+                                    }},
                             ]
                         }
                     ]

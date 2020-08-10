@@ -25,6 +25,8 @@ import Stage from "../components/user/Stage";
 import Doctor from "../components/user/Doctor";
 import SocialWorker from "../components/user/SocialWorker";
 import Chart from "../components/statistics/Chart";
+import Activity from "../components/volunteer/Activity";
+import Approval from "../components/volunteer/Approval";
 
 Vue.use(Router)
 
@@ -163,6 +165,18 @@ export default new Router({
         path: '/chest/card',
         meta: {title: '胸牌管理'},
         component: ChestCard
+      },
+
+      {
+        path: '/volunteer/activity',
+        meta: {title: '活动管理'},
+        component: Activity
+      },
+
+      {
+        path: '/volunteer/approval',
+        meta: {title: '审核列表'},
+        component: Approval
       },
 
 

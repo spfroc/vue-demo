@@ -404,9 +404,7 @@
                                 message: res.data.message,
                                 type: 'success'
                             })
-                            this.form = {
-                                userType: 1,
-                            }
+                            this.form = {}
                             this.fetchList()
                             this.editing = false
                         })

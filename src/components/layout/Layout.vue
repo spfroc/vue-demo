@@ -177,25 +177,21 @@
             icon: 'el-icon-pie-chart'
           },
 
-          // {
-          //   icon: 'el-icon-service',
-          //   title: '志愿者管理',
-          //   index: '3',
-          //   subs: [
-          //     {
-          //       index: '/volunteer/activity',
-          //       title: '活动管理'
-          //     },
-          //     {
-          //       index: '/volunteer/activity-approval',
-          //       title: '活动审核'
-          //     },
-          //     {
-          //       index: '/volunteer',
-          //       title: '志愿者信息'
-          //     }
-          //   ]
-          // },
+          {
+            icon: 'el-icon-service',
+            title: '志愿者管理',
+            index: '3',
+            subs: [
+              {
+                index: '/volunteer/activity',
+                title: '活动管理'
+              },
+              {
+                index: '/volunteer/approval',
+                title: '活动审核'
+              },
+            ]
+          },
           // {
           //   icon: 'el-icon-service',
           //   title: '呼叫中心',

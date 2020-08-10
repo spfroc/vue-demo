@@ -206,7 +206,7 @@
             },
 
             remove (id) {
-                this.$confirm('确定删除此社工信息吗？', '提示', {
+                this.$confirm('确定删除此医生信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
                     this.$http.post('/apis/adminApi/user/delete', {
