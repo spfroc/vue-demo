@@ -204,23 +204,18 @@
           //   index: '/post-station/monitor'
           // },
 
-          // {
-          //   icon: 'el-icon-tickets',
-          //   title: '电子围栏',
-          //   index: '/electronic/fence'
-          // },
+          {
+            icon: 'el-icon-tickets',
+            title: '电子围栏',
+            index: '/electronic/fence'
+          },
 
           {
             icon: 'el-icon-document',
             title: '城市大脑',
             index: '/city/brain'
           },
-          // {
-          //   icon: 'el-icon-info',
-          //   title: '统计分析',
-          //   index: '/system/statistics'
-          // },
-          //
+
           {
             icon: 'el-icon-picture',
             title: '胸牌管理',

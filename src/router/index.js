@@ -28,6 +28,7 @@ import Chart from "../components/statistics/Chart";
 import Activity from "../components/volunteer/Activity";
 import Approval from "../components/volunteer/Approval";
 import Brain from "../components/city/Brain";
+import ElectronicFence from "../components/device/ElectronicFence";
 
 Vue.use(Router)
 
@@ -182,6 +183,12 @@ export default new Router({
         path: '/volunteer/approval',
         meta: {title: '审核列表'},
         component: Approval
+      },
+
+      {
+        path: '/electronic/fence',
+        meta: {title: '电子围栏'},
+        component: ElectronicFence
       },
 
 
