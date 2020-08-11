@@ -13,7 +13,11 @@
                 <div class="grid-content bg-purple">
                     <el-form :inline="true" :model="search" size="mini" class="">
                         <el-form-item label="" prop="name">
-                            <el-input v-model="search.name" placeholder="按标题搜索"></el-input>
+                            <el-input v-model="search.name" placeholder="按姓名搜索"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="" prop="mobile">
+                            <el-input v-model="search.mobile" placeholder="按手机号搜索"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="createTime">
                             <el-date-picker
@@ -25,6 +29,10 @@
                                     end-placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
+                        <el-form-item label="" prop="activeTitle">
+                            <el-input v-model="search.activeTitle" placeholder="按活动搜索"></el-input>
+                        </el-form-item>
+
                         <el-form-item>
                             <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                         </el-form-item>
@@ -59,23 +67,15 @@
                             label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="idCardNumber"
+                            prop="activityTitle"
                             align="center"
                             label="活动">
                     </el-table-column>
                     <el-table-column
-                            v-if="activeName == 'approval' ? true : false"
-                            prop="relation"
+                            prop="politicalStatus"
                             align="center"
-                            label="与老人关系">
+                            label="政治面貌">
                     </el-table-column>
-                    <el-table-column
-                            v-if="activeName == 'approval' ? true : false"
-                            prop="oldManName"
-                            align="center"
-                            label="老人姓名">
-                    </el-table-column>
-
 
                     <el-table-column
                             prop="createTime"
@@ -92,8 +92,8 @@
                             <el-button v-if="activeName=='approval'" @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 1) }" type="success" size="mini">通过</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="danger" size="mini">不通过</el-button>
-                            <el-button v-if="activeName=='children'" @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
-                            <el-button v-if="activeName=='children'" @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
+                            <el-button v-if="activeName=='info'" @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+                            <el-button v-if="activeName=='info'" @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" size="mini">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -111,104 +111,68 @@
 
                 <el-dialog :close-on-click-modal="false" :title="dialogTitle" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="100px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="form.name" ></el-input>
-                        </el-form-item>
-                        <el-form-item label="性别" prop="sex">
-                            <el-select v-model="form.sex" placeholder="请选择">
-                                <el-option
-                                        v-for="item in genderOptions"
-                                        :key="item.value"
-                                        :disabled=!canInputEdit
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="手机号" prop="mobile">
-                            <el-input
-                                    :disabled=!canInputEdit
-                                    v-model="form.mobile"
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item label="身份证号" prop="idCardNumber">
-                            <el-input
-                                    :disabled=!canInputEdit
-                                    v-model="form.idCardNumber"
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item label="家庭住址" prop="homeAddress">
-                            <el-input
-                                    :disabled=!canInputEdit
-                                    v-model="form.homeAddress"
-                            ></el-input>
-                        </el-form-item>
 
-                        <el-form-item label="老人姓名" prop="oldManName" v-if="!canInputEdit">
-                            <el-input
+                        <el-row>
+                            <el-col :span="18">
+                                <el-form-item v-show="form.id" label="ID" prop="id">
+                                    <el-input :disabled="true" v-model="form.id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名" prop="name">
+                                    <el-input v-model="form.name" ></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别" prop="sex">
+                                    <el-select v-model="form.sex" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in genderOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="民族" prop="nation">
+                                    <el-input v-model="form.nation" ></el-input>
+                                </el-form-item>
+                                <el-form-item label="出生年月" prop="birthdate">
+                                    <el-date-picker
+                                            v-model="form.birthdate"
+                                            type="date"
+                                            placeholder="出生年月">
+                                    </el-date-picker>
+                                </el-form-item>
 
-                                    :disabled=!canInputEdit
-                                    v-model="form.oldManName"
-                            ></el-input>
-                        </el-form-item>
+                                <el-form-item label="手机号" prop="mobile">
+                                    <el-input v-model="form.mobile"></el-input>
+                                </el-form-item>
+                                <el-form-item label="活动" prop="activeTitle">
+                                    <el-input v-model="form.activityTitle"></el-input>
+                                </el-form-item>
+                                <el-form-item label="身份证号" prop="idCardNumber">
+                                    <el-input v-model="form.idCardNumber"></el-input>
+                                </el-form-item>
+                                <el-form-item label="籍贯" prop="nativePlace">
+                                    <el-input v-model="form.nativePlace"></el-input>
+                                </el-form-item>
+                                <el-form-item label="政治面貌" prop="politicalStatus">
+                                    <el-input v-model="form.politicalStatus"></el-input>
+                                </el-form-item>
+                                <el-form-item label="职业" prop="career">
+                                    <el-input v-model="form.career"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="6">
+                                <el-form-item label="" prop="photo" label-width="20px">
+                                    <single-image-upload v-model="form.photo" width="150" height="250"></single-image-upload>
+                                    <section>个人一寸照片</section>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
 
-                        <el-form-item label="老人身份证号" prop="oldManIdCardNumber" v-if="!canInputEdit">
-                            <el-input
 
-                                    :disabled=!canInputEdit
-                                    v-model="form.oldManIdCardNumber"
-                            ></el-input>
-                        </el-form-item>
 
-                        <el-form-item label="绑定老人">
-                            <section
-                                    v-if="form.bindOldManList && form.bindOldManList.length > 0">
-                                <el-tag v-for="oldMan in form.bindOldManList"
-                                        :closable=true
-                                        @close="removeOldMan(oldMan)"
-                                        v-bind:key="oldMan.id">{{oldMan.name}}</el-tag>
-                            </section>
-                            <el-button @click="bindButton" size="small" type="primary">添加绑定</el-button>
-                        </el-form-item>
-
-                        <section
-                                v-if="bindCount > 0 && activeName == 'children'"
-                                v-for="item in bindCount"
-                                :key="item"
-                                :label="item"
-                                :value="item"
-                        >
-                            <el-form-item label="选择老人" label-width="100px">
-                                <el-select v-model="form.sex" placeholder="请选择">
-                                    <el-option
-                                            v-for="item in genderOptions"
-                                            :key="item.value"
-                                            :disabled=!canInputEdit
-                                            :label="item.label"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
-                                <el-select v-model="form.sex" placeholder="请选择">
-                                    <el-option
-                                            v-for="item in genderOptions"
-                                            :key="item.value"
-                                            :disabled=!canInputEdit
-                                            :label="item.label"
-                                            :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-
-                            <el-form-item label="亲属关系" label-width="100px">
-                                <el-input :style="{width:'20%'}" v-model="bindOldMan.relation"></el-input>
-                            </el-form-item>
-                        </section>
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
-                            <el-button v-if="activeName=='children'" type="primary" @click="onSubmit">确定</el-button>
+                            <el-button v-if="activeName=='info'" type="primary" @click="onSubmit">确定</el-button>
                             <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
                             <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
@@ -221,22 +185,193 @@
 </template>
 
 <script>
+    import Editor from '../common/Editor'
+    import SingleImageUpload from '../common/SingleImageUpload'
+
     export default {
         name: "Approval",
-
+        components: {
+            Editor,SingleImageUpload
+        },
         data () {
             return {
                 activeName: 'info',
                 tableData: [],
                 search: {},
                 page: {},
-                form: {
+                infoListApi: '/apis/adminApi/volunteer/list',
+                approvalListApi: '/apis/adminApi/volunteer/auditList',
 
+                genderOptions: [
+                    {
+                        label: '男',
+                        value: 1,
+                    },
+                    {
+                        label: '女',
+                        value: 2,
+                    },
+                ],
+                form: {
+                    id: '',
+                    name: '',
+                    sex: '',
+                    nation: '',
+                    birthdate: '',
+                    mobile: '',
+                    idCardNumber: '',
+                    nativePlace: '',
+                    politicalStatus: '',
+                    career: '',
+                    description: '',
+                    photo: '',
+                    activityTitle: '',
+                    status: ''
                 },
                 editing: false,
                 isUpdate: false,
+                editingRow: {},
+                rules: {},
             }
         },
+        computed: {
+            currentListApi: function() {
+                return this.activeName == 'info' ? this.infoListApi : this.approvalListApi
+            },
+
+            showApprovalButton: function() {
+                if(this.editingRow.status == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
+            dialogTitle: function() {
+                if(this.activeName == 'info') {
+                    if(this.isUpdate) {
+                        return '编辑';
+                    } else {
+                        return '添加';
+                    }
+                } else {
+                    return '详情';
+                }
+            },
+        },
+        methods: {
+            tabSwitch(tab, event) {
+                this.search = {};
+                this.fetchList(1);
+            },
+
+            add () {
+                this.editing = true
+                this.isUpdate = false
+                this.form = {
+                    userType: 1,
+                }
+            },
+            edit (row) {
+                this.editing = true
+                this.isUpdate = true
+                this.editingRow = row
+                this.form = Object.assign({}, row)
+
+            },
+
+            remove (id) {
+                this.$confirm('确定删除此志愿者吗？', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.post('/apis/adminApi/volunteer/delete', {
+                        id: id
+                    }).then(res => {
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        })
+                        this.fetchList(1)
+                    })
+                    this.editing = false
+                    this.form = {
+                        userType: 1,
+                    }
+
+                }).catch(() => {
+                    // do nothing
+                })
+            },
+
+            cancel () {
+                this.editing = false
+            },
+
+
+            fetchList (currentPage) {
+                this.search.pageNum = currentPage || this.search.pageNum
+                // TODO id=1 是个接口bug
+                this.$http.get(this.currentListApi, {
+                    params: Object.assign({
+                        pageSize: 10,
+                        pageNum: 1,
+                    }, this.search)
+                }, {
+                    params: this.search
+                }).then(res => {
+                    this.page.total = res.data.data.total
+                    this.search.pageNum = parseInt(res.data.data.pageNum)
+                    this.tableData = res.data.data.list;
+                })
+            },
+
+            onSubmit () {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        this.$http.post('/apis/adminApi/user/addOrUpdateForChild', this.form).then(res => {
+                            this.$message({
+                                message: res.data.message,
+                                type: 'success'
+                            })
+                            this.form = {
+                                userType: 1,
+                            }
+                            this.fetchList()
+                            this.editing = false
+                        })
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            },
+            operation(id, status) {
+                this.$http.post('/apis/adminApi/volunteer/audit', {
+                    id: id,
+                    status: status,
+                }).then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'success'
+                    })
+                    this.fetchList(1)
+                });
+                this.editing = false
+                // this.form = {}
+            },
+
+            showOperationButton(status) {
+                if(this.activeName == 'approval') {
+                    return status == 1 ? true : false;
+                } else {
+                    return false;
+                }
+            },
+        },
+
+        mounted() {
+            this.fetchList(1);
+        }
     }
 </script>
 
