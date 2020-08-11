@@ -84,8 +84,8 @@
                             align="center"
                     >
                         <template slot-scope="scope">
-                            <el-button @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="small">编辑</el-button>
-                            <el-button @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" size="small">删除</el-button>
+                            <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+                            <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

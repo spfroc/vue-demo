@@ -11,16 +11,17 @@
                     </el-table-column>
                     <el-table-column
                             prop="name"
+                            align="center"
                             label="分类">
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间">
+                    <el-table-column align="center" prop="createTime" label="创建时间">
                     </el-table-column>
-                    <el-table-column prop="updateTime" label="修改时间">
+                    <el-table-column align="center" prop="updateTime" label="修改时间">
                     </el-table-column>
-                    <el-table-column width="120" label="操作">
+                    <el-table-column align="center" width="250" label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" circle></el-button>
-                            <el-button @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" circle></el-button>
+                            <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+                            <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>

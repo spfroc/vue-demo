@@ -11,14 +11,17 @@
                     </el-table-column>
                     <el-table-column
                             prop="title"
+                            align="center"
                             label="标题">
                     </el-table-column>
                     <el-table-column
                             label="封面图"
+                            align="center"
                             width="200">
                         <template slot-scope="scope">
                             <el-image
                                 fit="contain"
+                                align="center"
                                 :src="`/images/${scope.row.cover}`"
                             >
                             </el-image>
@@ -26,17 +29,18 @@
                     </el-table-column>
                     <el-table-column
                             prop="content"
+                            align="center"
                             :show-tooltip-when-overflow=true
                             label="文本">
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间">
+                    <el-table-column align="center" prop="createTime" label="创建时间">
                     </el-table-column>
-                    <el-table-column prop="updateTime" label="修改时间">
+                    <el-table-column align="center" prop="updateTime" label="修改时间">
                     </el-table-column>
-                    <el-table-column width="120" label="操作">
+                    <el-table-column align="center" width="250" label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" circle></el-button>
-                            <el-button @click="() => { remove(scope.row.id) }" type="danger" icon="el-icon-delete" circle></el-button>
+                            <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+                            <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
