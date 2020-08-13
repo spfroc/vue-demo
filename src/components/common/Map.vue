@@ -37,36 +37,59 @@
                     this.map.on('mapmove', this.centerChanged)
                     if(this.markers && this.markers.length > 0) {
                         this.markersInit(AMap);
-                    } else {
-                        console.log('xxxx');
+                        let newCenter = this.map.setFitView();
+                        // console.log(newCenter);
                     }
+                    this.$emit('map-mounted', this.map);
+
                 });
 
             },
 
             centerChanged() {
-                console.log(this.map.getCenter());
+                // console.log(this.map.getCenter());
             },
 
             markersInit(AMap) {
+                let path = []
                 this.markers.forEach(marker => {
-                    console.log(marker);
+                    // console.log(marker);
+                    path.push(new AMap.LngLat(marker.lng, marker.lat));
                     new AMap.CircleMarker({
                         map: this.map,
                         center: new AMap.LngLat(marker.lng, marker.lat),
+                        radius: 10,
+                        strokeColor: '#4169E1',
+                        fillColor: '#4169E1',
+                        zIndex: 55,
                     })
                 });
-            }
+                let newCenter = this.map.setFitView();
+                // console.log(newCenter);
+                let polyline = new AMap.Polyline({
+                    path: path,
+                    strokeColor: '#EEC900',
+                    fillColor: '#EEC900',
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    showDir: true,
+                    strokeWeight: 5
+                });
+                // console.log(polyline);
+                this.map.add([polyline]);
+            },
+
         },
 
         mounted() {
-            this.mapInit();
-            console.log(this.width, this.height);
+            // console.log(this.width, this.height);
             if(!this.zoom) {
                 this.zoom = 14
             }
+            this.mapInit();
 
 
+            // this.$emit('map-mounted', this.map);
         }
 
     }

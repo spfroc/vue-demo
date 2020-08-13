@@ -97,13 +97,9 @@
                             <el-input v-model="form.latestPositionReportedAt"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <a-map
-                                :lng="map.lng"
-                                :lat="map.lat"
-                                :zoom="map.zoom"
-                                :width="map.width"
-                                :markers="map.markers"
-                                :height="map.height"></a-map>
+                            <section id="a-map-container" style="width:100%; height: 400px">
+
+                            </section>
                         </el-form-item>
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
@@ -117,14 +113,16 @@
 </template>
 
 <script>
-    import AMap from '../common/Map'
+    import Amap from 'vue-amap';
+    import { lazyAMapApiLoaderInstance } from 'vue-amap';
     export default {
         name: "ElectronicFence",
         components: {
-            AMap
+            Amap, lazyAMapApiLoaderInstance
         },
         data () {
             return {
+                mapInstance: '',
                 map: {
                     lng: '117.202561',
                     lat: '36.63252',
@@ -132,25 +130,7 @@
                     height: '200px',
                     zoom: 16,
                     markers: [
-                        {
-                            lng: 117.3,
-                            lat: 36.0
-                        },
 
-                        {
-                            lng: 117.4,
-                            lat: 36.1
-                        },
-
-                        {
-                            lng: 117.5,
-                            lat: 36.2
-                        },
-
-                        {
-                            lng: 117.5,
-                            lat: 36.3
-                        },
                     ]
                 },
                 tableData: [],
@@ -174,7 +154,6 @@
         },
 
         methods: {
-
             statusFormatter (row) {
                 return row.status && row.status == 1 ? '进入围栏' : '离开围栏';
             },
@@ -188,10 +167,66 @@
                 this.isUpdate = true
                 this.editingRow = row
                 this.form = Object.assign({}, row)
+                this.markers = row.movement;
+                this.mapInit();
+                // this.mapInit();
+                // console.log(this.markers);
+                // console.log(this.map);
             },
 
+            mapInit () {
+                Amap.initAMapApiLoader({
+                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.CircleMarker', 'AMap.Marker'],
+                    v: '1.4.4'
+                });
+
+                lazyAMapApiLoaderInstance.load().then(() => {
+                    this.mapInstance = new AMap.Map('a-map-container', {
+                        center: new AMap.LngLat(this.map.lng, this.map.lat),
+                        zoom: 14,
+                    });
+                    this.mapInstance.on('mapmove', this.centerChanged)
+                    if(this.markers && this.markers.length > 0) {
+                        this.markersInit(AMap);
+                        // console.log(newCenter);
+                    }
+                });
+
+            },
+
+            markersInit(AMap) {
+                let path = []
+                this.markers.forEach(marker => {
+                    // console.log(marker);
+                    path.push(new AMap.LngLat(marker.lng, marker.lat));
+                    new AMap.CircleMarker({
+                        map: this.mapInstance,
+                        center: new AMap.LngLat(marker.lng, marker.lat),
+                        radius: 10,
+                        strokeColor: '#4169E1',
+                        fillColor: '#4169E1',
+                        zIndex: 55,
+                    })
+                });
+                let newCenter = this.mapInstance.setFitView();
+                // console.log(newCenter);
+                let polyline = new AMap.Polyline({
+                    path: path,
+                    strokeColor: '#EEC900',
+                    fillColor: '#EEC900',
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    showDir: true,
+                    strokeWeight: 5
+                });
+                // console.log(polyline);
+                this.mapInstance.add([polyline]);
+            },
             cancel () {
                 this.editing = false
+                console.log(this.mapInstance);
+                this.mapInstance.destroy();
             },
 
             fetchList () {

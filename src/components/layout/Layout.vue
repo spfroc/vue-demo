@@ -203,7 +203,11 @@
           //   title: '驿站监控',
           //   index: '/post-station/monitor'
           // },
-
+          {
+            icon: 'el-icon-tickets',
+            title: '驿站监控',
+            index: '/stage/monitor'
+          },
           {
             icon: 'el-icon-tickets',
             title: '电子围栏',

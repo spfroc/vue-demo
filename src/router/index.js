@@ -29,6 +29,7 @@ import Activity from "../components/volunteer/Activity";
 import Approval from "../components/volunteer/Approval";
 import Brain from "../components/city/Brain";
 import ElectronicFence from "../components/device/ElectronicFence";
+import Monitor from "../components/device/Monitor";
 
 Vue.use(Router)
 
@@ -190,6 +191,12 @@ export default new Router({
         meta: {title: '电子围栏'},
         component: ElectronicFence
       },
+      {
+        path: '/stage/monitor',
+        meta: {title: '驿站监控'},
+        component: Monitor
+      },
+
 
 
 
