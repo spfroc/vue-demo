@@ -239,7 +239,6 @@
                 this.$http.get('/apis/adminApi/user/list', {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1,
                         userType: 2
                     }, this.search)
                 }, {

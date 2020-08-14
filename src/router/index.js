@@ -30,6 +30,7 @@ import Approval from "../components/volunteer/Approval";
 import Brain from "../components/city/Brain";
 import ElectronicFence from "../components/device/ElectronicFence";
 import Monitor from "../components/device/Monitor";
+import Center from "../components/call/Center";
 
 Vue.use(Router)
 
@@ -196,6 +197,13 @@ export default new Router({
         meta: {title: '驿站监控'},
         component: Monitor
       },
+
+      {
+        path: '/call/center',
+        meta: {title: '呼叫中心'},
+        component: Center
+      },
+
 
 
 

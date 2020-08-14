@@ -1,0 +1,788 @@
+<template>
+    <div>
+        <el-row>
+            <el-col>
+                <div class="grid-content bg-purple">
+                    <el-tabs v-model="activeName" @tab-click="tabSwitch">
+                        <el-tab-pane label="服务坐席工作台" name="customerService"></el-tab-pane>
+                        <el-tab-pane label="历史工单列表" name="historyWorkOrder"></el-tab-pane>
+                        <el-tab-pane label="历史接待列表" name="historyReception"></el-tab-pane>
+                    </el-tabs>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row v-if="activeName != 'customerService'">
+            <el-form :model="searchForm" :inline="true">
+                <el-input v-model="searchForm.mobile" style="width: 15%" placeholder="老人手机号"></el-input>
+                <el-input v-model="searchForm.name" style="width: 15%" placeholder="老人姓名"></el-input>
+                <el-date-picker
+                        v-model="searchForm.createTime"
+                        type="daterange"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                </el-date-picker>
+
+                <el-button type="primary" @click="searchList">搜索</el-button>
+            </el-form>
+        </el-row>
+        <el-row v-if="activeName=='customerService'">
+            <el-row>
+                <el-col :span="12">
+                    <el-form>
+                        <el-date-picker
+                                v-model="firstTab.searchDate"
+                                type="date"
+                                placeholder="选择日期">
+                        </el-date-picker>
+                    </el-form>
+                </el-col>
+                <el-col :span="12">
+                    <div>
+                        <el-button>本日</el-button>
+                        <el-button>本周</el-button>
+                        <el-button>本月</el-button>
+                    </div>
+                </el-col>
+
+            </el-row>
+
+            <el-row>
+                <el-card class="box-card" body-style="padding: 20px 20px 20px 0">
+                    <div v-for="o in firstTab.list" :key="o.title" class="text item">
+                        <div class="card-title">{{o.text}}</div>
+                        <div class="card-value"><span class="number-value">{{o.self}}</span><span class="number-unit">本人</span>/<span  class="number-value">{{o.total}}</span><span  class="number-unit">总计</span></div>
+                        <div class="bottom-text" v-if="o.title == 1">接单详情</div>
+                        <div class="bottom-text" v-if="o.title == 3">历史工单列表</div>
+                    </div>
+                </el-card>
+            </el-row>
+            <el-row style="height: 200px">
+                <el-form class="search-form">
+                    <el-input v-model="firstTab.oldManMobile" style="width: 20%" placeholder="老人手机号"></el-input>
+
+                    <el-button @click="reception">接待</el-button>
+                </el-form>
+            </el-row>
+
+            <el-row>
+                <el-table
+                        :data="firstTab.oldManList"
+                        style="width: 100%">
+                    <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
+                    <el-table-column
+                            prop="name"
+                            label="姓名"
+                            align="center"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="nation"
+                            label="民族"
+                            align="center"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="sex"
+                            align="center"
+                            :formatter="sexFormatter"
+                            label="性别">
+                    </el-table-column>
+                    <el-table-column
+                            prop="mobile"
+                            align="center"
+                            label="手机号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="idCardNumber"
+                            align="center"
+                            label="身份证号">
+                    </el-table-column>
+                    <el-table-column
+                            prop="age"
+                            align="center"
+                            label="年龄">
+                    </el-table-column>
+                    <el-table-column
+                            prop=""
+                            label=""
+                            align="center"
+                            width="100"
+                    >
+                        <template slot-scope="scope">
+                            <div style="float: left">
+                                <el-button style="float: left" @click="() => { serviceOrder(scope.row) }" type="primary" size="mini">服务工单</el-button>
+                                <el-button style="margin: 10px 0 0 0" @click="() => { doctorOrder(scope.row) }" type="primary" size="mini">医生工单</el-button>
+                                <el-button style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
+                            </div>
+
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+            <el-row>
+                <section><h3>工单列表</h3></section>
+                <el-table
+                        :data="firstTab.workOrderList"
+                        style="width: 100%">
+                    <el-table-column type="index" width="150"  label="工单号"></el-table-column>
+                    <el-table-column
+                            prop="orderTime"
+                            label="下单时间"
+                            align="center"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="endTime"
+                            label="结单时间"
+                            align="center"
+                            width="180">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
+                            align="center"
+                            :formatter="statusFormatter"
+                            label="工单状态">
+                    </el-table-column>
+
+                    <el-table-column
+                            prop=""
+                            label=""
+                            align="center"
+                            width="100"
+                    >
+                        <template slot-scope="scope">
+                            <div style="float: left">
+                                <el-button style="float: left" @click="() => { orderView(scope.row) }" type="primary" size="mini">查看工单</el-button>
+                                <el-button v-if="scope.row.status != 2" style="margin: 10px 0 0 0" @click="() => { orderOperator(scope.row, 2) }" type="primary" size="mini">结束工单</el-button>
+                            </div>
+
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        hide-on-single-page
+                        background
+                        layout="total, prev, pager, next"
+                        :page-size="this.firstTab.workOrderPage.pageSize"
+                        :total="this.firstTab.workOrderPage.total"
+                        :current-page="this.firstTab.workOrderPage.pageNum"
+                        @current-change="getWorkOrderLIst"
+                >
+                </el-pagination>
+
+
+            </el-row>
+        </el-row>
+        <el-row v-if="activeName=='historyWorkOrder'">
+            <el-table
+                    :data="secondTab.historyWorkOrderList"
+                    :highlight-current-row=true
+                    :row-style="rowStyle"
+                    style="width: 100%">
+                <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="姓名"
+                        align="center"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="nation"
+                        label="民族"
+                        align="center"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="sex"
+                        align="center"
+                        :formatter="sexFormatter"
+                        label="性别">
+                </el-table-column>
+                <el-table-column
+                        prop="mobile"
+                        align="center"
+                        label="手机号">
+                </el-table-column>
+                <el-table-column
+                        prop="idCardNumber"
+                        align="center"
+                        label="身份证号">
+                </el-table-column>
+                <el-table-column
+                        prop="age"
+                        align="center"
+                        label="年龄">
+                </el-table-column>
+
+                <el-table-column
+                        prop="createTime"
+                        align="center"
+                        label="创建时间">
+                </el-table-column>
+                <el-table-column
+                        prop=""
+                        label=""
+                        align="center"
+                        width="100"
+                >
+                    <template slot-scope="scope">
+                        <div style="float: left">
+                            <el-button style="float: left" @click="() => { serviceOrder(scope.row) }" type="primary" size="mini">服务工单</el-button>
+                            <el-button style="margin: 10px 0 0 0" @click="() => { doctorOrder(scope.row) }" type="primary" size="mini">医生工单</el-button>
+                            <el-button style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
+                        </div>
+
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <el-pagination
+                    hide-on-single-page
+                    background
+                    layout="total, prev, pager, next"
+                    :page-size="this.secondTab.historyWorkOrderPage.pageSize"
+                    :total="this.secondTab.historyWorkOrderPage.total"
+                    :current-page="this.secondTab.historyWorkOrderPage.pageNum"
+                    @current-change="getHistoryWorkOrderLIst"
+            >
+            </el-pagination>
+        </el-row>
+        <el-row v-if="activeName=='historyReception'">
+            <el-table
+                    :data="thirdTab.historyReceptionList"
+                    :highlight-current-row=true
+                    :row-style="rowStyle"
+                    style="width: 100%">
+                <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="姓名"
+                        align="center"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="nation"
+                        label="民族"
+                        align="center"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="sex"
+                        align="center"
+                        :formatter="sexFormatter"
+                        label="性别">
+                </el-table-column>
+                <el-table-column
+                        prop="mobile"
+                        align="center"
+                        label="手机号">
+                </el-table-column>
+                <el-table-column
+                        prop="idCardNumber"
+                        align="center"
+                        label="身份证号">
+                </el-table-column>
+                <el-table-column
+                        prop="age"
+                        align="center"
+                        label="年龄">
+                </el-table-column>
+
+                <el-table-column
+                        prop="createTime"
+                        align="center"
+                        label="创建时间">
+                </el-table-column>
+                <el-table-column
+                        prop=""
+                        label=""
+                        align="center"
+                        width="100"
+                >
+                    <template slot-scope="scope">
+                        <div style="float: left">
+                            <el-button style="float: left" @click="() => { orderView(scope.row) }" type="primary" size="mini">查看工单</el-button>
+
+                        </div>
+
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <el-pagination
+                    hide-on-single-page
+                    background
+                    layout="total, prev, pager, next"
+                    :page-size="this.thirdTab.historyReceptionPage.pageSize"
+                    :total="this.thirdTab.historyReceptionPage.total"
+                    :current-page="this.thirdTab.historyReceptionPage.pageNum"
+                    @current-change="getHistoryReceptionLIst"
+            >
+            </el-pagination>
+        </el-row>
+
+        <el-dialog :close-on-click-modal="false" :title="dialogTitle" style="height: auto" :visible.sync="showDialog" :append-to-body="true">
+            <el-form :model="commonOrder" label-width="100px">
+                <el-form-item v-show="commonOrder.id" label="ID" prop="id">
+                    <el-input :disabled="true" v-model="commonOrder.id"></el-input>
+                </el-form-item>
+                <el-form-item label="老人姓名" prop="name">
+                    <el-input :disabled="true" v-model="commonOrder.name"></el-input>
+                </el-form-item>
+
+                <el-form-item label="性别" prop="sex">
+                    <el-input :disabled="true" v-model="genderFormatter"></el-input>
+                </el-form-item>
+
+                <el-form-item label="手机号" prop="mobile">
+                    <el-input :disabled="true" v-model="commonOrder.mobile"></el-input>
+                </el-form-item>
+
+                <el-form-item label="所在村庄" prop="village">
+                    <el-input :disabled="true" v-model="commonOrder.village"></el-input>
+                </el-form-item>
+
+                <el-form-item label="详细家庭住址" prop="homeAddress">
+                    <el-input :disabled="true" v-model="commonOrder.homeAddress"></el-input>
+                </el-form-item>
+
+                <el-form-item v-if="dialogTitle == '服务工单'" prop="worker" label="选择社工">
+                    <el-select v-model="serviceOrderDialog.worker" placeholder="请选择">
+                        <el-option
+                                v-for="item in serviceWorkers"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="选择社工">
+                    <el-select v-model="receptionDialog.worker" placeholder="请选择">
+                        <el-option
+                                v-for="item in serviceWorkers"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+
+                <el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="接待详情">
+                    <!--<el-input v-model="receptionDialog.detail"></el-input>-->
+                    <el-input type="textarea" v-model="receptionDialog.detail"></el-input>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '医生工单'" prop="docktor" label="选择医生">
+                    <el-select v-model="doctorOrderDialog.doctor" placeholder="请选择">
+                        <el-option
+                                v-for="item in doctorOptions"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="" label="历史派单">
+                    <el-table :data="orderDetail.historyOrders">
+                        <el-table-column
+                                prop="name"
+                                label="姓名"
+                                align="center"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="mobile"
+                                label="手机号"
+                                align="center"
+                                width="180">
+                        </el-table-column>
+                        <el-table-column
+                                prop="status"
+                                align="center"
+                                label="状态">
+                        </el-table-column>
+                        <el-table-column
+                                prop="orderTime"
+                                align="center"
+                                label="下单时间">
+                        </el-table-column>
+                    </el-table>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="驿工手机号">
+                    <el-input v-model="orderDetail.mobile"></el-input>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="历史派单">
+                    <el-input type="textarea" v-model="orderDetail.content"></el-input>
+
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary">{{dialogButtonText}}</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "Center",
+
+        computed: {
+            genderFormatter() {
+                return this.commonOrder.sex == 1 ? '男': '女';
+            }
+        },
+        data() {
+            return {
+                dialogButtonText: '确认派单',
+                orderDetail: {
+                    mobile: '2343243243',
+                    name: 'xxx',
+                    content: 'ccccccccccc',
+                    historyOrders: [
+                        {
+                            name: '111',
+                            status: '1',
+                            orderTime: '2020-07-11',
+                            mobile: '123123123123',
+                        },
+
+                        {
+                            name: '111',
+                            status: '1',
+                            orderTime: '2020-07-11',
+                            mobile: '123123123123',
+                        },
+
+                        {
+                            name: '111',
+                            status: '1',
+                            orderTime: '2020-07-11',
+                            mobile: '123123123123',
+                        }
+                    ],
+
+                },
+                doctorOrderDialog: {
+                    doctor: '',
+                },
+                doctorOptions: [],
+                receptionDialog: {
+                    worker: '',
+                    detail: '',
+                },
+                serviceWorkers: [],
+                serviceOrderDialog: {
+                    worker: '',
+                },
+                commonOrder: {
+                    id: '',
+                    name: '',
+                    mobile: '',
+                    village: '',
+                    homeAddress: '',
+                    sex: 1,
+                },
+                activeName: 'customerService',
+                showDialog: false,
+                dialogTitle: '服务工单',
+                firstTab: {
+                    oldManMobile: '',
+                    searchDate: '',
+                    oldManInfo: {},
+                    orderList: [],
+                    oldManList: [],
+                    workOrderList: [],
+                    workOrderPage: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                    list: [
+                        {
+                            title: 1,
+                            text: '接待次数',
+                            total: 20,
+                            self: 15
+                        },
+                        {
+                            title: 2,
+                            text: '派单次数',
+                            total: 20,
+                            self: 15
+                        },
+                        {
+                            title: 3,
+                            text: '派单次数',
+                            total: 20,
+                            self: 15
+                        },
+                    ]
+                },
+
+                searchForm: {
+                    name: '',
+                    mobile: '',
+                    createTime: '',
+                },
+                secondTab: {
+                    historyWorkOrderList: [],
+                    historyWorkOrderPage: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+
+                },
+
+                thirdTab: {
+                    historyReceptionList: [],
+                    historyReceptionPage: {
+                        pageNum: 1,
+                        pageSize: 10,
+                        total: 0
+                    },
+                },
+
+                statusMap: ['', '已派单', '已结单', '服务中', '已超时', '服务完成'],
+
+            }
+        },
+
+        methods: {
+            sexFormatter(row) {
+                return row.sex == 1 ? '男' : '女';
+            },
+            getServiceWorkers() {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/workers').then(res => {
+                    this.serviceWorkers = res.data.data;
+                });
+            },
+
+            getDoctorOptions() {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/doctors').then(res => {
+                    this.doctorOptions = res.data.data;
+                });
+            },
+
+            statusFormatter(row) {
+                return this.statusMap[row.status];
+            },
+
+            orderOperator(row, status) {
+                console.log(row, status);
+            },
+
+            serviceOrder() {
+                this.showDialogController();
+                this.dialogTitle = '服务工单';
+                this.dialogButtonText = '确认派单';
+                this.getServiceWorkers();
+
+            },
+
+            doctorOrder() {
+                this.showDialogController();
+                this.dialogButtonText = '确认派单';
+
+                this.dialogTitle = '医生工单';
+
+            },
+
+            receptionRecord() {
+                this.showDialogController();
+                this.dialogButtonText = '保存';
+
+                this.dialogTitle = '接待记录';
+
+            },
+
+            orderView() {
+                this.showDialogController();
+                this.dialogTitle = '查看工单';
+                this.dialogButtonText = '确认';
+
+
+            },
+
+            showDialogController() {
+                this.showDialog = true;
+            },
+
+            hideDialog() {
+                this.showDialog = false;
+            },
+            rowStyle() {
+                return {
+                    border: 'solid 1px black'
+                }
+            },
+            reception() {
+                console.log(this.firstTab.oldManMobile);
+                if(this.firstTab.oldManMobile) {
+                    this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/getOldManByMobile', {
+                        params: {
+                            mobile: this.firstTab.oldManMobile,
+                        }
+                    }).then(res => {
+                        this.firstTab.oldManList = res.data.data.list;
+                        console.log(res.data.data.list);
+
+                    });
+                }
+            },
+
+            tabSwitch(tab) {
+                console.log(this.activeName);
+                this.searchForm = {
+                    name: '',
+                    mobile: '',
+                    createTime: '',
+                };
+                if(this.activeName == 'customerService') {
+                    this.getWorkOrderLIst(1);
+                } else if(this.activeName == 'historyWorkOrder') {
+                    this.getHistoryWorkOrderLIst(1);
+                } else if(this.activeName == 'historyReception') {
+                    this.getHistoryReceptionLIst(1);
+                }
+            },
+
+            getWorkOrderLIst(currentPage) {
+
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/workOrderList', {
+                    params: {
+                        pageSize: this.firstTab.workOrderPage.pageSize,
+                        pageNum: currentPage || 1,
+                    }
+                }).then(res => {
+                    this.firstTab.workOrderList = res.data.data.list;
+                    console.log(res.data.data);
+                    this.firstTab.workOrderPage.total = res.data.data.total;
+                    this.firstTab.workOrderPage.pageSize = res.data.data.pageSize;
+                    // this.firstTab.workOrderPage.pageNum = res.data.data.pageNum;
+                });
+            },
+
+            getHistoryWorkOrderLIst(currentPage) {
+                // console.log(currentPage);
+                // this.secondTab.historyWorkOrderPage.pageNum = currentPage | 1;
+                this.searchForm = this.$common.searchParams(this.searchForm);
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/historyWorkOrderList', {
+                    params: Object.assign({
+                        pageSize: this.secondTab.historyWorkOrderPage.pageSize,
+                        pageNum: currentPage || 1,
+                    }, this.searchForm),
+                }).then(res => {
+                    this.secondTab.historyWorkOrderList = res.data.data.list;
+                    this.secondTab.historyWorkOrderPage.total = res.data.data.total;
+                    this.secondTab.historyWorkOrderPage.pageSize = res.data.data.pageSize;
+                    // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
+                });
+            },
+
+
+            getHistoryReceptionLIst(currentPage) {
+                this.searchForm = this.$common.searchParams(this.searchForm);
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/historyReceptionList', {
+                    params: Object.assign({
+                        pageSize: this.thirdTab.historyReceptionPage.pageSize,
+                        pageNum: currentPage || 1,
+                    }, this.searchForm),
+                }).then(res => {
+                    this.thirdTab.historyReceptionList = res.data.data.list;
+                    this.thirdTab.historyReceptionPage.total = res.data.data.total;
+                    this.thirdTab.historyReceptionPage.pageSize = res.data.data.pageSize;
+                    // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
+                });
+            },
+
+            searchList() {
+                if(this.activeName == 'historyWorkOrder') {
+                    this.getHistoryWorkOrderLIst(1);
+                } else if(this.activeName == 'historyReception') {
+                    this.getHistoryReceptionLIst(1);
+                }
+            }
+        },
+
+        mounted() {
+            this.getWorkOrderLIst(1);
+            this.getServiceWorkers();
+            this.getDoctorOptions();
+
+        }
+    }
+</script>
+
+<style scoped>
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        margin: 0 20px 0 0;
+        float: left;
+        border: solid lightgray 1px;
+        height: 150px;
+        width: 360px;
+    }
+
+    .card-value {
+        margin-top: 15px;
+        font-size: 30px;
+    }
+
+    .card-title {
+        font-size: 8px;
+        color: gray;
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .box-card {
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+        padding: 20px 20px 20px 0;
+    }
+
+    .search-form {
+        text-align: center; /*让div内部文字居中*/
+        background-color: #fff;
+        border-radius: 20px;
+        width: 80%;
+        /*height: 350px;*/
+        margin: 50px auto;
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    .number-unit {
+        font-size: 8px;
+    }
+
+    .number-value {
+        font-size: 50px;
+        font-weight: bolder;
+    }
+
+    .bottom-text {
+        font-size: 8px;
+        text-align: left;
+        color: gray;
+        position: relative;
+        /*margin-left: 10px;*/
+        top: 20px;
+        left: 10px;
+        /*margin-bottom: 10px;*/
+    }
+</style>

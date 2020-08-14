@@ -192,11 +192,11 @@
               },
             ]
           },
-          // {
-          //   icon: 'el-icon-service',
-          //   title: '呼叫中心',
-          //   index: '/call/center',
-          // },
+          {
+            icon: 'el-icon-service',
+            title: '呼叫中心',
+            index: '/call/center',
+          },
 
           // {
           //   icon: 'el-icon-view',
