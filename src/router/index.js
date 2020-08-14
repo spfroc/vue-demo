@@ -31,6 +31,7 @@ import Brain from "../components/city/Brain";
 import ElectronicFence from "../components/device/ElectronicFence";
 import Monitor from "../components/device/Monitor";
 import Center from "../components/call/Center";
+import IndexBanner from "../components/app/IndexBanner";
 
 Vue.use(Router)
 
@@ -50,6 +51,12 @@ export default new Router({
         path: '/app/service-banner',
         meta: {title: '服务轮播图'},
         component: ServiceBanner,
+      },
+
+      {
+        path: '/app/index-banner',
+        meta: {title: '首页轮播图'},
+        component: IndexBanner,
       },
       {
         path: '/app/community-banner',

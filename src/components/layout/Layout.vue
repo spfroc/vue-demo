@@ -53,10 +53,10 @@
               title: 'APP管理',
               icon: 'el-icon-mobile',
               subs: [
-                // {
-                //   index: '/app/index-banner',
-                //   title: '首页轮播图管理'
-                // },
+                {
+                  index: '/app/index-banner',
+                  title: '首页轮播图管理'
+                },
                 {
                   index: '/app/service-banner',
                   title: '服务轮播图管理'
