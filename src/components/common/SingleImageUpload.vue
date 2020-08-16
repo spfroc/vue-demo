@@ -1,7 +1,7 @@
 <template>
   <el-upload
     class="single-image-uploader"
-    action="/apis/adminApi/fileUpload"
+    action="/apis/fileUpload"
     :show-file-list="false"
     :headers="headers"
     accept="image/*"

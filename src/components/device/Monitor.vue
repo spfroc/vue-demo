@@ -16,7 +16,19 @@
         </el-col>
         <el-col :span="1">&nbsp;</el-col>
         <el-col :span="18" class="container">
-            <video-player :options="options"></video-player>
+            <!--<video-player :options="options"></video-player>-->
+            <!--<video src="http://192.168.1.6:8080/video" controls="controls">-->
+                <!--您的浏览器不支持 video 标签。-->
+            <!--</video>-->
+
+            <!--<video width="320" height="240" controls>-->
+                <!--<source src="http://192.168.1.6:8080/video.mp4" type="video/mp4">-->
+                <!--<source src="http://192.168.1.6:8080/video" type="video/ogg">-->
+                <!--您的浏览器不支持Video标签。-->
+            <!--</video>-->
+
+            <img src="http://192.168.1.6:8080/video" alt="" width="200px">
+
         </el-col>
     </el-row>
 </template>

@@ -57,20 +57,27 @@
             //开发中临时跳转
 
             // console.log(this.$router);
-            this.$http.post('/apis/adminApi/manager/login', {
-              userName: this.param.admin_name,
-              password: this.param.admin_pwd
+            this.$http.post('/apis/manager/login', {
+              // data: {
+                userName: this.param.admin_name,
+                password: this.param.admin_pwd
+              // },
+
             }).then(res => {
-              console.log(res.data);
+              console.log(res.data.data.token);
               // this.$router.push('/app/service-banner');
               this.$message.success('登录成功');
               localStorage.setItem('auth-user-info', JSON.stringify(res.data));
-              localStorage.setItem('auth-token', res.data.token);
-              localStorage.setItem('auth-username', 'dev-user');
+
+              localStorage.setItem('auth-token', res.data.data.token);
+              console.log('saved', localStorage.getItem('auth-token'));
+              localStorage.setItem('auth-username', res.data.data.userName);
               // localStorage.setItem('auth-username', res.data.userName);
               // console.log(res);return
               this.$router.push('/');
 
+            }).catch(reason => {
+              console.log(reason);
             });
 
             //return;

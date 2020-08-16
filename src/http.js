@@ -4,13 +4,25 @@ import {Message} from 'element-ui'
 
 // axios 配置
 axios.defaults.timeout = 30000;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
+axios.defaults.transformRequest = [function (data) {
+    let ret = ''
+    for (let it in data) {
+        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+    }
+    return ret
+}]
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
         if (localStorage.getItem('auth-token')) { //判断token是否存在
             config.headers.token = localStorage.getItem('auth-token');  //将token设置成请求头
+            // console.log(localStorage.getItem('auth-token'));;
+            // config.params.token = localStorage.getItem('auth-token');  //将token设置成请求头
         }
+
         return config;
     },
     err => {
@@ -23,7 +35,6 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response => {
         if (response.status === 200) {
-            console.log(response.data);
             if (response.data.code == 0) {
                 return response
             } else if (response.data.code === 419 || response.data.code === 403 || response.data.code === 5002 || response.data.code === 5001) {
@@ -38,10 +49,11 @@ axios.interceptors.response.use(
                 localStorage.removeItem('auth-token')
                 localStorage.removeItem('auth-user-info')
                 localStorage.removeItem('auth-username')
-                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.message}`)
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg}`)
             } else {
-                Message.error(response.data.message)
-                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.message}`)
+                Message.error(response.data.msg)
+                console.log(response.data);
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg}`)
             }
         } else {
             Message.error(`请求失败，服务端状态码：${response.status}`)

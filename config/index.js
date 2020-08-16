@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apis': {    //将www.example.com映射为/apis
-        target: 'http://rap2.taobao.org:38080/app/mock/261698',  // 接口域名
+        target: 'http://47.104.217.169:8083/adminApi',  // 接口域名
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
         pathRewrite: {
@@ -20,7 +20,7 @@ module.exports = {
         }
       },
       '/images': {
-        target: 'http://rap2.taobao.org:38080/app/mock/261698',  // 接口域名
+        target: 'http://47.104.217.169:8083/adminApi',  // 接口域名
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true,  //是否跨域
         pathRewrite: {

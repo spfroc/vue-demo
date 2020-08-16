@@ -77,7 +77,7 @@
                             <el-input v-model="form.link"></el-input>
                         </el-form-item>
                         <el-form-item label="文本" prop="text">
-                            <el-input v-model="form.text"></el-input>
+                            <editor ref="myTextEditor" v-model="form.text" :options="editorOption"></editor>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -93,16 +93,20 @@
 <script>
     import SingleImageUpload from "../common/SingleImageUpload"
     // import Vue from 'vue'
+    import Editor from "../common/Editor"
 
     // Vue.component('single-image-upload', SingleImageUpload)
 
     export default {
         name: "ServiceBanner",
         components: {
-            SingleImageUpload
+            SingleImageUpload, Editor
         },
         data() {
             return {
+                editorOption: {
+                    placeholder: ''
+                },
                 tableData: [],
                 page: {
                     pageSize: 10
@@ -122,7 +126,20 @@
                 isUpdate: false,
                 search: {},
                 rules: {
-
+                    text: [
+                        { required: true, message: '请输入轮播图内容描述', trigger: 'blur' },
+                        { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
+                    ],
+                    link: [
+                        { required: true, message: '请输入轮播图链接地址', trigger: 'blur' },
+                        { type: 'url', message: '请输入有效的链接地址', trigger: 'blur' }
+                    ],
+                    pic: [
+                        { required: true, message: '请上传轮播图片' }
+                    ],
+                    name: [
+                        { required: true, message: '请输入轮播图名称' }
+                    ]
                 }
             }
 
@@ -145,7 +162,7 @@
                 this.$confirm('确定删除此轮播图吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/banner/delete', {
+                    this.$http.post('/apis/banner/delete', {
                         id: id,
                     }).then(res => {
                         this.$message({
@@ -170,7 +187,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/banner/list', {
+                this.$http.get('/apis/banner/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -191,7 +208,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/banner/AddOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/banner/AddOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

@@ -82,8 +82,12 @@
                 this.$confirm('确定删除此分类吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/storeCategory/delete', {
+                    this.$http.post('/apis/storeCategory/delete', {
                         id: id
+                    }, {
+                        params: {
+                            token: localStorage.getItem('auth-token')
+                        }
                     }).then(res => {
                         this.$message({
                             message: res.data.message,
@@ -105,7 +109,11 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/storeCategory/list',).then(res => {
+                this.$http.get('/apis/storeCategory/list', {
+                    params: {
+                        token: localStorage.getItem('auth-token')
+                    }
+                }).then(res => {
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;                         })
@@ -115,7 +123,11 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/storeCategory/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/storeCategory/addOrUpdate', this.form, {
+                            params: {
+                                token: localStorage.getItem('auth-token')
+                            }
+                        }).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

@@ -12,8 +12,10 @@
 </template>
 
 <script>
-    import videojs from 'video.js';
-
+    import videojs from 'video.js'
+    import 'video.js/dist/video-js.css'
+    // import SWF_URL from 'videojs-swf/dist/video-js.swf'
+    // videojs.options.flash.swf = SWF_URL
     export default {
         name: "VideoPlayer",
         props: {
