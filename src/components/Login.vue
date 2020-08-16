@@ -47,45 +47,21 @@
     },
     methods: {
       submitForm() {
-        // this.$http.get('/api/test').then(res => {
-        //   console.log(res);
-        // });
-        // // console.log(this.param);
-        // return;
         this.$refs.login.validate(valid => {
+          console.log(this.param);
           if (valid) {
-            //开发中临时跳转
-
-            // console.log(this.$router);
             this.$http.post('/apis/manager/login', {
-              // data: {
                 userName: this.param.admin_name,
                 password: this.param.admin_pwd
-              // },
-
             }).then(res => {
-              console.log(res.data.data.token);
-              // this.$router.push('/app/service-banner');
               this.$message.success('登录成功');
               localStorage.setItem('auth-user-info', JSON.stringify(res.data));
-
               localStorage.setItem('auth-token', res.data.data.token);
-              console.log('saved', localStorage.getItem('auth-token'));
               localStorage.setItem('auth-username', res.data.data.userName);
-              // localStorage.setItem('auth-username', res.data.userName);
-              // console.log(res);return
               this.$router.push('/');
-
             }).catch(reason => {
               console.log(reason);
             });
-
-            //return;
-            // this.$http.post('/apis/adminLogin', this.param).then(res => {
-
-            //   this.$router.push('/');
-            // })
-
           } else {
             this.$message.error('请输入账号和密码');
             console.log('error submit!!');
