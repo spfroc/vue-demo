@@ -21,7 +21,7 @@
                         <template slot-scope="scope">
                             <el-image
                                     fit="contain"
-                                    :src="`/images/${scope.row.pic}`"
+                                    :src="`${scope.row.pic}`"
                             >
                             </el-image>
                         </template>
@@ -71,7 +71,11 @@
                             <el-input v-model="form.type"></el-input>
                         </el-form-item>
                         <el-form-item label="图片" prop="pic">
-                            <single-image-upload v-model="form.pic" width="400" height="200"></single-image-upload>
+                            <single-image-upload
+                                    v-model="form.pic"
+                                    width="400"
+                                    @change="picUploaded"
+                                    height="200"></single-image-upload>
                         </el-form-item>
                         <el-form-item label="链接" prop="link">
                             <el-input v-model="form.link"></el-input>
@@ -143,6 +147,10 @@
 
         },
         methods: {
+            picUploaded(res, file) {
+                console.log(res, file);
+                this.form.pic = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false

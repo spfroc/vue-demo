@@ -129,7 +129,7 @@
                 this.$confirm('确定删除此模板吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/careInfo/delete', {
+                    this.$http.post('/apis/careInfo/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -156,7 +156,7 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/careInfo/list', {
+                this.$http.get('/apis/careInfo/list', {
                     params: {
                         type: 1
                     }
@@ -170,7 +170,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/careInfo/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/careInfo/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

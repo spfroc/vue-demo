@@ -18,10 +18,25 @@ axios.defaults.transformRequest = [function (data) {
 axios.interceptors.request.use(
     config => {
         if (localStorage.getItem('auth-token')) { //判断token是否存在
+
             config.headers.token = localStorage.getItem('auth-token');  //将token设置成请求头
-            // console.log(localStorage.getItem('auth-token'));;
-            // config.params.token = localStorage.getItem('auth-token');  //将token设置成请求头
+            //设置全局token为请求参数
+            if(config.method=='post'){
+                config.data = {
+                    token: localStorage.getItem('auth-token'),
+                    ...config.data,
+                }
+            }else if(config.method=='get'){
+                config.params = {
+                    ...config.params,
+                    token: localStorage.getItem('auth-token'),
+
+                }
+            }
         }
+
+
+
 
         return config;
     },

@@ -22,7 +22,7 @@
                             <el-image
                                     fit="contain"
                                     align="center"
-                                    :src="`/images/${scope.row.cover}`"
+                                    :src="`${scope.row.cover}`"
                             >
                             </el-image>
                         </template>
@@ -84,7 +84,11 @@
 
                         </el-form-item>
                         <el-form-item label="封面" prop="cover">
-                            <single-image-upload v-model="form.cover" width="400" height="200"></single-image-upload>
+                            <single-image-upload
+                                    v-model="form.cover"
+                                    width="400"
+                                    @change="coverUploaded"
+                                    height="200"></single-image-upload>
                         </el-form-item>
                         <el-form-item label="内容" prop="content">
                             <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
@@ -133,11 +137,18 @@
                 search: {},
                 rules: {
                     title: { required: true, message: '请输入社区信息标题', trigger: 'blur' },
+                    cover: { required: true, message: '请上传封面图片', trigger: 'blur' },
+                    categoryId: { required: true, message: '请选择社区信息分类', trigger: 'blur' },
                 }
             }
 
         },
         methods: {
+            coverUploaded(res, file) {
+                // this.form.cover =
+                this.form.cover = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
+
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false
@@ -157,7 +168,7 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg  || '操作成功',
                             type: 'success'
                         })
                         this.fetchList(1)
@@ -208,8 +219,6 @@
             },
 
             onSubmit () {
-                console.log(this.form);
-                return;
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$http.post('/apis/communityInfo/addOrUpdate', this.form, {
@@ -218,7 +227,7 @@
                             }
                         }).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg  || '操作成功',
                                 type: 'success'
                             })
                             this.form = {}

@@ -166,7 +166,7 @@
                 this.$confirm('确定删除此胸牌吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/badge/delete', {
+                    this.$http.post('/apis/badge/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -187,7 +187,7 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/adminApi/badge/list', {
+                this.$http.get('/apis/badge/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1
@@ -202,7 +202,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/badge/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/badge/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

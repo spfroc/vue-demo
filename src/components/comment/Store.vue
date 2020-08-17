@@ -184,7 +184,7 @@
                 this.$confirm('确定删除此评论吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/storeComment/delete', {
+                    this.$http.post('/apis/storeComment/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -208,7 +208,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/storeComment/list', {
+                this.$http.get('/apis/storeComment/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -224,7 +224,7 @@
             },
 
             operation(id, status) {
-                this.$http.post('/apis/adminApi/storeComment/audit', {
+                this.$http.post('/apis/storeComment/audit', {
                     id: id,
                     status: status,
                 }).then(res => {

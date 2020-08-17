@@ -57,32 +57,41 @@
                 inactive-text="">
               </el-switch>
             </el-form-item>
-            <el-form-item v-if="!isUpdate || form.isUpdateAdminPwd" label="密码" prop="admin_pwd">
-              <el-input type="password" :show-password="true" placeholder="请输入密码" v-model="form.adminPwd"></el-input>
+            <el-form-item v-if="!isUpdate || form.isUpdateAdminPwd" label="密码" prop="password">
+              <el-input type="password" :show-password="true" placeholder="请输入密码" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item label="角色" prop="admin_permissions">
-              <el-select v-model="form.roleName" :clearable="true" placeholder="请选择">
+            <el-form-item label="角色" prop="roleId">
+              <el-select v-model="form.roleId" :clearable="true" placeholder="请选择">
                 <el-option
                   label="超级管理员"
-                  :value=0>
-                </el-option>
-                <el-option
-                  label="子女"
                   :value=1>
                 </el-option>
                 <el-option
-                  label="社工"
+                  label="子女"
                   :value=2>
                 </el-option>
                 <el-option
-                  label="医生"
+                  label="社工"
                   :value=3>
                 </el-option>
                 <el-option
-                  label="村干部"
+                  label="医生"
                   :value=4>
                 </el-option>
+                <el-option
+                  label="村干部"
+                  :value=5>
+                </el-option>
               </el-select>
+
+              <!--<el-select v-model="form.roleId" placeholder="请选择">-->
+                <!--<el-option-->
+                <!--v-for="item in this.roleOptions"-->
+                <!--:key="item.id"-->
+                <!--:label="item.name"-->
+                <!--:value="item.id">-->
+                <!--</el-option>-->
+              <!--</el-select>-->
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -101,6 +110,7 @@
     data () {
       return {
         tableData: [],
+        roleOptions: [],
         page: {
             pageSize: 10
         },
@@ -108,9 +118,8 @@
         form: {
           id: '',
           userName: '',
-          roleName: 0,
-            roleId: 0,
-          adminPwd: '',
+            roleId: 1,
+          password: '',
           isUpdateAdminPwd: null
         },
         search: {},
@@ -129,7 +138,7 @@
       fetchList (currentPage) {
         this.search.pageNum = currentPage || this.search.pageNum
         // TODO id=1 是个接口bug
-        this.$http.get('/apis/adminApi/manager/list', {
+        this.$http.get('/apis/manager/list', {
           params: Object.assign({
             id: this.getAuthUserId(),
             pageSize: 10,
@@ -149,7 +158,10 @@
       add () {
         this.editing = true
         this.isUpdate = false
-        this.form = {}
+        this.form = {
+          type: 1,
+          roleId: 1
+        }
       },
       edit (row) {
         this.editing = true
@@ -161,12 +173,11 @@
         this.$confirm('确定删除此用户吗？', '提示', {
           type: 'warning'
         }).then(() => {
-          this.$http.post('/apis/admin/adminDel', {
-            aid: id,
-            id: this.getAuthUserId()
+          this.$http.post('/apis/manager/delete', {
+            id: id,
           }).then(res => {
             this.$message({
-              message: res.data.message,
+              message: res.data.msg || '操作成功',
               type: 'success'
             })
             this.fetchList(1)
@@ -180,16 +191,9 @@
       onSubmit () {
         this.$refs['form'].validate((valid) => {
           if (valid) {
-            // if (!this.isUpdate) {
-            //   // id 添加的时候代表操作人，修改的时候代表被修改人
-            //   this.form.id = this.getAuthUserId()
-            // } else if (this.editingRow.userName === this.form.userName) {
-            //   delete this.form.userName
-            // }
-            this.form.roleId = this.form.roleName
-            this.$http.post('/apis/adminApi/manager/addOrUpdate', this.form).then(res => {
+            this.$http.post('/apis/manager/addOrUpdate', this.form).then(res => {
               this.$message({
-                message: res.data.message,
+                message: res.data.msg || '操作成功',
                 type: 'success'
               })
               this.form = {}
@@ -201,6 +205,12 @@
             return false
           }
         })
+      },
+
+      getRoleList() {
+        this.$http.get('/apis/manager/roleList').then(res => {
+          console.log(res);
+        });
       },
       cancel () {
         this.editing = false
@@ -222,13 +232,14 @@
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
           ],
 
-          adminPwd: adminPwd
+          password: adminPwd
         }
       }
     },
     mounted () {
         // console.log(12321321);return;
-      this.fetchList()
+      this.fetchList();
+      this.getRoleList();
     },
     watch: {
       editing () {
