@@ -22,7 +22,7 @@
                             <el-image
                                     fit="contain"
                                     align="center"
-                                    :src="`${scope.row.cover}`"
+                                    :src="`/images${scope.row.cover}`"
                             >
                             </el-image>
                         </template>
@@ -145,9 +145,7 @@
         },
         methods: {
             coverUploaded(res, file) {
-                // this.form.cover =
-                this.form.cover = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
-
+                this.form.cover = res.pic
             },
             add () {
                 this.editing = true

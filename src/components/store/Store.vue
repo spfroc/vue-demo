@@ -92,19 +92,19 @@
                         <el-form-item label="商家名称" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="分类" prop="categoryId">
-                            <el-input v-model="form.categoryId"></el-input>
-                        </el-form-item>
                         <!--<el-form-item label="分类" prop="categoryId">-->
-                            <!--<el-select v-model="form.categoryId" placeholder="请选择">-->
-                                <!--<el-option-->
-                                        <!--v-for="item in this.categoryOptions"-->
-                                        <!--:key="item.id"-->
-                                        <!--:label="item.name"-->
-                                        <!--:value="item.id">-->
-                                <!--</el-option>-->
-                            <!--</el-select>-->
+                            <!--<el-input v-model="form.categoryId"></el-input>-->
                         <!--</el-form-item>-->
+                        <el-form-item label="分类" prop="categoryId">
+                            <el-select v-model="form.categoryId" placeholder="请选择">
+                                <el-option
+                                        v-for="item in this.categoryOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
                         <el-form-item label="商家电话" prop="mobile">
                             <el-input v-model="form.mobile"></el-input>
                         </el-form-item>
@@ -210,11 +210,12 @@
         },
         methods: {
             coverUploaded(res, file) {
-                this.form.cover = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
+                this.form.cover = res.pic;
             },
 
             avatarUploaded(res, file) {
-                this.form.avatar = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
+                this.form.avatar = res.pic
+
             },
             add () {
                 this.editing = true
@@ -300,11 +301,11 @@
                     this.introductionFileList.forEach(file => {
                         console.log(file.url);
                         if(this.isUpdate) {
-                            // this.form.introduction += file.url.toString()+',';
-                            this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
+                            this.form.introduction += file.url.toString()+',';
+                            // this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
                         } else {
-                            // this.form.introduction += file.response.data.toString()+',';
-                            this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
+                            this.form.introduction += file.response.data.toString()+',';
+                            // this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
                         }
                     })
                 }

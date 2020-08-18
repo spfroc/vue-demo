@@ -1,16 +1,17 @@
 <template>
   <el-upload
     class="single-image-uploader"
-    action="/apis/fileUpload"
+    action="/apis/upload/file"
     :show-file-list="false"
     :headers="headers"
+    :data="data"
     accept="image/*"
     :on-success="handleAvatarSuccess"
     :on-error="handleAvatarError"
     :before-upload="beforeAvatarUpload">
     <section v-bind:style="size">
       <!--<el-image fit="contain" v-if="imageUrl" :src="imageData || `/images/${imageUrl}`" class="avatar"></el-image>-->
-      <el-image fit="contain" v-if="imageUrl" :src="imageData || `${imageUrl}`" class="avatar"></el-image>
+      <el-image fit="contain" v-if="imageUrl" :src="imageData || `/images/${imageUrl}`" class="avatar"></el-image>
       <i v-else class="el-icon-plus single-image-uploader-icon"></i>
     </section>
     <div class="upload-tips" slot="tip">{{tips || '只能上传jpg/jpeg/png/gif文件，且不超过1M。'}}</div>
@@ -28,6 +29,9 @@ export default {
   data () {
     return {
       headers: {
+        token: localStorage.getItem('auth-token')
+      },
+      data: {
         token: localStorage.getItem('auth-token')
       },
       imageData: ''
@@ -49,7 +53,8 @@ export default {
   },
   methods: {
     handleAvatarSuccess (res, file) {
-      this.imageUrl = res.data
+      // this.imageUrl = res.data
+      console.log(res);
       this.$emit('change', res.data, file)
     },
     handleAvatarError (res, file) {

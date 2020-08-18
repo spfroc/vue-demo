@@ -1,10 +1,12 @@
 <template>
     <el-upload
             class="single-image-uploader"
-            action="/apis/adminApi/fileUpload"
+            action="/apis/upload/file"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
+            :data="data"
+            :headers="headers"
             :on-success="handleSuccess"
             list-type="picture-card">
         <el-button size="small" type="primary">点击上传</el-button>
@@ -19,7 +21,14 @@
 
         data() {
             // {name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-            return {};
+            return {
+                data: {
+                    token: localStorage.getItem('auth-token')
+                },
+                headers: {
+                    token: localStorage.getItem('auth-token')
+                },
+            };
         },
         methods: {
             handleRemove(file, fileList) {

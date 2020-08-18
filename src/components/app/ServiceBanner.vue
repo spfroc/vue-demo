@@ -21,7 +21,7 @@
                         <template slot-scope="scope">
                             <el-image
                                     fit="contain"
-                                    :src="`/images/${scope.row.pic}`"
+                                    :src="`/images${scope.row.pic}`"
                             >
                             </el-image>
                         </template>
@@ -151,8 +151,7 @@
         },
         methods: {
             picUploaded(res, file) {
-                console.log(res, file);
-                this.form.pic = 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1';
+                this.form.pic = res.pic
             },
 
             add () {
