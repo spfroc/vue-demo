@@ -62,13 +62,13 @@
             </el-col>
         </el-row>
         <el-row>
-            <el-col :span="8">
+            <el-col :span="7">
                 <section id="monthly-total-reception" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本月接待总计</section>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="7">
                 <section id="weekly-service-summary" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本周服务汇总</section>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="9">
                 <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
                 <section style="width: 100%;height:400px;padding:20px 0px 20px 0px">
                     <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->

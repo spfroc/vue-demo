@@ -61,7 +61,7 @@
         margin-top: 20px;
         float: left;
         width: 20px;
-        margin-left: 25px;
+        margin-left: 30px;
         height: 80%;
         border-radius: 10px;
     }
@@ -69,7 +69,7 @@
     .progress-circle {
         margin-top: 10px;
         float: left;
-        margin-left: 20px;
+        margin-left: 25px;
         width: 30px;
         height: 30px;
         border-radius: 20px;
@@ -89,7 +89,7 @@
         text-align: center; /*让div内部文字居中*/
         background-color: #fff;
         border-radius: 20px;
-        width: 70px;
+        width: 80px;
         height: 100%;
     }
     .current-progress {
