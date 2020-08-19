@@ -136,7 +136,7 @@
 
     import Echart from 'echarts'
     import AMap from '../common/Map'
-    import CustomProgress from '../common/progress'
+    import CustomProgress from '../common/CustomProgress'
     export default {
         name: "Chart",
         components: {

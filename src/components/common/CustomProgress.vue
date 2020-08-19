@@ -18,7 +18,7 @@
 
 <script>
     export default {
-        name: "Progress",
+        name: "CustomProgress",
         data() {
             return {
                 totalHeight: 240,
