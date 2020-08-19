@@ -299,17 +299,15 @@
                 if(this.introductionFileList && this.introductionFileList.length) {
                     this.form.introduction = '';
                     this.introductionFileList.forEach(file => {
-                        console.log(file.url);
+                        // console.log(file.url);
                         if(this.isUpdate) {
                             this.form.introduction += file.url.toString()+',';
-                            // this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
                         } else {
                             this.form.introduction += file.response.data.toString()+',';
-                            // this.form.introduction += 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1'+',';
                         }
                     })
                 }
-                console.log(this.$refs['form']);
+                // console.log(this.$refs['form']);
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$http.post('/apis/store/addOrUpdate', this.form).then(res => {

@@ -41,11 +41,10 @@
 
         <el-row>
             <el-col :span="12">
-                <section>驿工平均接单时间</section>
+                <section id="worker-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">驿工平均接单时间</section>
             </el-col>
             <el-col :span="12">
-                <section>驿工平均接单时间</section>
-
+                <section id="doctor-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生平均接单时间</section>
             </el-col>
         </el-row>
 
@@ -70,7 +69,64 @@
                 <section id="weekly-service-summary" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本周服务汇总</section>
             </el-col>
             <el-col :span="8">
-                <section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>
+                <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
+                <section style="width: 100%;height:400px;padding:20px 0px 20px 0px">
+                    <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->
+                    <!--<progress></progress>-->
+                    <section style="text-align: center">数据统计</section>
+                    <custom-progress
+                            progress=25
+                            value="25k"
+                            background-color="#1E90FF"
+                            text="驿工"
+                            dot-color="#1E90FF"
+                    ></custom-progress>
+
+                    <custom-progress
+                            progress=75
+                            value="750"
+                            background-color="#708090"
+                            text="总接待电话数"
+                            dot-color="#708090"
+                    ></custom-progress>
+
+                    <custom-progress
+                            progress=80
+                            value="240"
+                            background-color="#32CD32"
+                            text="老人"
+                            dot-color="#32CD32"
+                    ></custom-progress>
+
+                    <custom-progress
+                            progress=33
+                            value="348"
+                            background-color="#40E0D0"
+                            text="驿站数"
+                            dot-color="#40E0D0"
+                    ></custom-progress>
+
+                    <custom-progress
+                            progress=100
+                            background-color="#FF4500"
+                            text="医生"
+                            value="1240"
+                            dot-color="#FF4500"
+                    ></custom-progress>
+                    <custom-progress
+                            progress=80
+                            value="3368"
+                            background-color="#4169E1"
+                            text="子女用户数"
+                            dot-color="#4169E1"
+                    ></custom-progress>
+                    <custom-progress
+                            progress=40
+                            background-color="#838B8B"
+                            text="总工单数"
+                            dot-color="#838B8B"
+                    ></custom-progress>
+                </section>
             </el-col>
         </el-row>
     </div>
@@ -80,10 +136,11 @@
 
     import Echart from 'echarts'
     import AMap from '../common/Map'
+    import CustomProgress from '../common/progress'
     export default {
         name: "Chart",
         components: {
-            Echart, AMap
+            Echart, AMap, CustomProgress
         },
 
         data() {
@@ -499,6 +556,109 @@
                 this.orderRate.setOption(option);
             },
 
+            doctorAverage() {
+                let doctorAverage = Echart.init(document.getElementById('doctor-average'));
+                doctorAverage.hideLoading();
+
+                let option = {
+                    title: {
+                        text: '医生平均接单时间',
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: [820, 932, 901, 934, 1290, 1330, 1320],
+                            type: 'line',
+                            smooth: true,
+                            markPoint: {
+                                data: [
+                                    {
+                                        name: '最大值',
+                                        type: 'max'
+                                    },
+
+                                    {
+                                        name: '最小值',
+                                        type: 'min'
+                                    },
+                                ]
+                            },
+                        },
+
+                        {
+                            data: [950, 950, 950, 950, 950, 950, 950],
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            lineStyle: {
+                                type: 'dashed',
+                                color: 'red'
+                            },
+                        },
+                    ]
+                };
+
+                doctorAverage.setOption(option);
+
+            },
+
+            workerAverage() {
+                let workerAverage = Echart.init(document.getElementById('worker-average'));
+                workerAverage.hideLoading();
+
+                let option = {
+                    title: {
+                        text: '驿工平均接单时间',
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: [820, 932, 901, 934, 1290, 1330, 1320],
+                            type: 'line',
+                            smooth: true,
+                            markPoint: {
+                                data: [
+                                    {
+                                        name: '最大值',
+                                        type: 'max'
+                                    },
+
+                                    {
+                                        name: '最小值',
+                                        type: 'min'
+                                    },
+                                ]
+                            },
+                        },
+
+                        {
+                            data: [950, 950, 950, 950, 950, 950, 950],
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            lineStyle: {
+                                type: 'dashed',
+                                color: 'red'
+                            },
+                        },
+                    ]
+                };
+
+                workerAverage.setOption(option);
+            },
+
             switchSos (type) {
                 console.log(type);
                 if(type == 'day') {
@@ -535,7 +695,9 @@
             this.orderRateInit();
             this.monthlyTotalReceptionInit();
             this.weeklyServiceSummaryInit();
-            this.dataStatisticsInit();
+            // this.dataStatisticsInit();
+            this.doctorAverage();
+            this.workerAverage();
 
         }
     }
@@ -578,4 +740,7 @@
         /*margin-bottom: 10px;*/
         padding-bottom: 20px;
     }
+
+
+
 </style>

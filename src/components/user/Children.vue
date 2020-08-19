@@ -280,8 +280,8 @@
                     },
                 ],
                 activeName: 'children',
-                childrenListApi: '/apis/adminApi/user/list?userType=1',
-                approvalListApi: '/apis/adminApi/childApply/list',
+                childrenListApi: '/apis/user/list?userType=1',
+                approvalListApi: '/apis/childApply/list',
                 editorOption: {
                     placeholder: ''
                 },
@@ -353,7 +353,7 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.$http.get('/apis/adminApi/user/detailForChild', {
+                this.$http.get('/apis/user/detailForChild', {
                     params: {
                         id: row.id
                     }
@@ -378,7 +378,7 @@
                 this.$confirm('确定删除此子女信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/user/delete', {
+                    this.$http.post('/apis/user/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -406,6 +406,7 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+                this.search = this.$common.searchParams(this.search);
                 // TODO id=1 是个接口bug
                 this.$http.get(this.currentListApi, {
                     params: Object.assign({
@@ -423,7 +424,7 @@
             },
 
             operation(id, status) {
-                this.$http.post('/apis/adminApi/childApply/audit', {
+                this.$http.post('/apis/childApply/audit', {
                     id: id,
                     status: status,
                 }).then(res => {
@@ -439,7 +440,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/user/addOrUpdateForChild', this.form).then(res => {
+                        this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
