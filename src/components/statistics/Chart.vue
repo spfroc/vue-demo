@@ -799,6 +799,7 @@
 
     .text {
         font-size: 14px;
+        border: none;
     }
     
     .chart-title {
