@@ -250,43 +250,40 @@
                     // padding:30,
                     show : true,
                         orient: 'horizontal',
-                        itemSize: 20,
+                        itemSize: 40,
                         itemGap: 20,
+                        width: 300,
                         feature: {
                             myDay: {
                                 show: true,
                                 title: '本日',
-                                icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAABXCAMAAABlYbrOAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
                                     "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
-                                    "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
-                                    "ZgDb27aQZjpmtv/btpDb2/8AAGaQkDo6kJAAADqQ2/+2//+QOgD/29u2kGa2tts6Ojo6ZpBmtts6" +
-                                    "ZrbbtmaQttu2ZjoAOmZmOgA6OpCQtra2tpDbtrbhtsv4AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
-                                    "wwAADsMBx2+oZAAAAAd0SU1FB+QIExc4AD0rSYoAAAOuSURBVHja7Zt9X9sgEMeTKrHbUo3W2U3t" +
-                                    "rE636ba6h/f/3pZwQA4CCUsNcH56f/lpk/D7Fu6BC2bZ67M8eaOuf4AitrDdIWKr2h0itqSdGXrp" +
-                                    "kjKnUioAbrGUAOx6qRF0FdMj6GgmSGCIJkmgyx6LMDuo7TAdhBHPYEVtR9EQkO7R6ygJhFyHmQph" +
-                                    "/maEvX3nxxAGoSxG2GKPsEd4pQgekqQdn5BBqJrceEoaYX5Wf76cHKE6d9r7RtmF+3ulITLCaowr" +
-                                    "gilxe4Q9wksjDKQIuOiFET4cOOyjHPbCdYUKl5ERXMaHQcP2WaIIrB33kiYC90TfacDujBPHFXdn" +
-                                    "/Ml1Fg5B8/KhDB05IrlFrT81ym7q4Ta39BD4GEdQIzG7jNQRmmW0vgMEPl6/RyeIUEIcEpUq4zy0" +
-                                    "EOQIAqH6PLSUJMK9kfseGoSF8eGXAAhccuPBcr9QDkWlUpQbXhvQWvrkCGqno/5YFf1RKTUEroOv" +
-                                    "fYXA13SPOySGAGn5UpsO+MvtDgrhq4d9mxoBqjtQ2yJw93C7Q9lPaB9kKgTQKp6Otv9oblJH4KWR" +
-                                    "9FzcwWD4i5QRmFbVaU2YVQ9DQggQUZQWDQGcZH3ovC8JhNLYHeitMPjWGlo1BLzTMExeMhkCjI3W" +
-                                    "itHNY04GLX1HRBBDo6hjNiRhG2RZSywNBDEyjv0mAkRci0+ngSAG1nyy0xYWXY0OQxdhafZfr86m" +
-                                    "RigtBJbO9kx0Zh71u1d4Bdo3CfOpEQSB8VRLc16ukiftygQQvhc2Auv7BcmwQE6tNhjxEETXqxMu" +
-                                    "ra9IJMPmRzoI1U8HgeMtj4o4ajFxRer28AgiUvJwb9T7kOrMYr9l2N4ieUpRcITZc0vgsevi48q4" +
-                                    "tBEerJdIoRHkHGzvlJZhhOz4GRNAQFILbm5rW0AzY5pZAE8AAm+ErFqhKAo/gypMImRn1j7NONHC" +
-                                    "f+ut/fgKa9Mb19xm7BgFBvvleFjve+dz/bJWUMxi+/8QlEHh1F5GEIE7EKr8XI1UkzodBK3n4Ymg" +
-                                    "J5LoCBDF0FUeCL4nZ8IgwCTg4mQYYXZSDFIGRGCFl8NUD3VE/s2T3B/xQtvjiE0QBAg//S9QECoy" +
-                                    "j3vCIJgR1WmdxO9zzinMQmqmwedIm5ktlj7H4HSEyU4Llx6nAzJ8HoKnkUePW7DwSREy9uT1sL+o" +
-                                    "bL32Gx/pHosQ+eR8B4H2/y/QZNBF5wQZTM30GLqKqTFY9OY5JQi72JwOhFtqTs166UjYwAylbx7L" +
-                                    "LHHDov8ByWiBDKpBO64AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDgtMTlUMTU6NTY6MDArMDg6" +
-                                    "MDBmPRhlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA4LTE5VDE1OjU2OjAwKzA4OjAwF2Cg2QAA" +
-                                    "ACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6" +
-                                    "RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA4N7tq1bAA" +
-                                    "AAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTk0Os+EPQAAABl0RVh0VGh1bWI6Ok1pbWV0eXBl" +
-                                    "AGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNTk3ODIzNzYwNlmp4wAAABJ0RVh0" +
-                                    "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
-                                    "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
-                                    "YII=",
+                                    "2//bkDoAAAA6kNv/tmZmtv8AADo6ZmZmZmZmZjo6AAAAAGa2/////7ZmAAD//9vb29u2kDo6kLbb" +
+                                    "//+2ZgAAZrbb27aQZjq229sAOpD/25CQkDo6kJCQ2/+QOgAAOjo6Ojo6OgBmtts6ZrbbtmaQttu2" +
+                                    "Zjo6ZpAAOmZmOgBmkLY6OpCQtra2tpBmZpCQZmZzfPo2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
+                                    "xAAADsQBlSsOGwAAAAd0SU1FB+QIFAA5BkntULIAAALtSURBVHja7ZrZVtswEEBtghzjtgRwSlwK" +
+                                    "6Q6FQtf//7fGkqwt2lJzOjM+nqcsTnRv7BlLoxTFtKJEH7Tpow7QWGMVoJnGKkADjTSImCGLACkV" +
+                                    "/BAsJXwfLzV+l5gev8M8jv9osYtjIINn4C9YtYvlfxcwsKch8O9fBCWguMdmMKxAOfoEHCRQVwfE" +
+                                    "SZbBLDAL0BNoXrxMxKtT1AKrs9Rh5xfPLtCug/G6H+wy/P4GhUB3yMVrx5tZYBaYgsDVIhBvB87L" +
+                                    "0BHXKATiQ/Vxs8k4HJ8A05dKcjyMAttTLZBzCtAJWLmdcTfGJtDzrN71g73fDdl8oCbAx1mKuRBz" +
+                                    "CiYJgY7TCAE+ZnJIXAK1GEXORlkOGioBPsqu9EiB9mPGRYRJgAP3eTusB+qMSoRJQK1j1IOuSlYi" +
+                                    "RAIaRQnwu1qcTqyJP31OxJe8W/sYga1eteolJatSaYBmUS/OsWDVAjwtommARUCQysmPsajfproJ" +
+                                    "WAT4FGjIV7Mrwcw38AqIOfTSfDY86eIGOKqQ+BlVsloCYujVceyj0AKCX8/+7caWeDfEiEFAJKpx" +
+                                    "lTidORYzQCAg12DGl7utRbHI8V9F8AKS36z1roCosf5MBheQ/Nbddq+5KzsVPgNogdrD7+lOH8le" +
+                                    "yy02AcnvtB887fWhWXHnNipgBb5WPn7v/sBgcOOkMqiA7GHtDe/d4BgMmnssAu1DgD+wQ6NaXnc4" +
+                                    "NjhkbeTlvbZXH+LGZr30bWMYPBrVCE7gSfNnTCl5mgy1qDFA4ATkj3mmKNICxfmTyw8o8KD5swWK" +
+                                    "tnMxAJOY6fq5tTd1+e/8aL30faM+Zd/MIMso+xFon0f3idf2U+ipxOECTkxDoPm5SMQv3H81yI1Z" +
+                                    "YBaYqsDqep2IK9xViHwZnQUABfg06ndyS7/90x+X3HY2BUYYAP173QAfewqgQnFPQ4CegYFN0sCE" +
+                                    "Lgka2Mz0DFxiagZ7vGVJScEHW9JRCKGW1CJiRiKi5wZ/JC8v5GFC/wUisGlCS1mpjwAAACV0RVh0" +
+                                    "ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNjo1NzowNiswODowMFflKq8AAAAldEVYdGRhdGU6bW9k" +
+                                    "aWZ5ADIwMjAtMDgtMTlUMTY6NTc6MDYrMDg6MDAmuJITAAAAIHRFWHRzb2Z0d2FyZQBodHRwczov" +
+                                    "L2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8A" +
+                                    "AAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADg3u2rVsAAAABd0RVh0VGh1bWI6OkltYWdlOjpX" +
+                                    "aWR0aAAxOTLTrCEIAAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0" +
+                                    "VGh1bWI6Ok1UaW1lADE1OTc4Mjc0MjY2cuDcAAAAEnRFWHRUaHVtYjo6U2l6ZQAxNzU5QkJbBd7g" +
+                                    "AAAARXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBwL3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5" +
+                                    "NjU0ODQ2MDEyNTQwODdfNl9bMF2hHQjUAAAAAElFTkSuQmCC",
                                 onclick: () => {
                                     this.switchSos('day');
                                 },
@@ -294,6 +291,7 @@
                             myWeek: {
                                 show: true,
                                 title: '本周',
+                                // icon: "image://http://localhost:9090/images/app/2020/08/19/f386368441174732a7c88f6489c00e13.svg",
                                 icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
                                     "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
                                     "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
@@ -325,10 +323,8 @@
                                     "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
                                     "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
                                     "YII=",
-                                // onclick: this.switchSos('week')
                                 onclick: () => {
                                     this.switchSos('week');
-
                                 }
 
                             },
