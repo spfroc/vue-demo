@@ -256,7 +256,37 @@
                             myDay: {
                                 show: true,
                                 title: '本日',
-                                icon: "image://https://image.flaticon.com/icons/svg/102/102571.svg",
+                                icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                    "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
+                                    "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
+                                    "ZgDb27aQZjpmtv/btpDb2/8AAGaQkDo6kJAAADqQ2/+2//+QOgD/29u2kGa2tts6Ojo6ZpBmtts6" +
+                                    "ZrbbtmaQttu2ZjoAOmZmOgA6OpCQtra2tpDbtrbhtsv4AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
+                                    "wwAADsMBx2+oZAAAAAd0SU1FB+QIExc4AD0rSYoAAAOuSURBVHja7Zt9X9sgEMeTKrHbUo3W2U3t" +
+                                    "rE636ba6h/f/3pZwQA4CCUsNcH56f/lpk/D7Fu6BC2bZ67M8eaOuf4AitrDdIWKr2h0itqSdGXrp" +
+                                    "kjKnUioAbrGUAOx6qRF0FdMj6GgmSGCIJkmgyx6LMDuo7TAdhBHPYEVtR9EQkO7R6ygJhFyHmQph" +
+                                    "/maEvX3nxxAGoSxG2GKPsEd4pQgekqQdn5BBqJrceEoaYX5Wf76cHKE6d9r7RtmF+3ulITLCaowr" +
+                                    "gilxe4Q9wksjDKQIuOiFET4cOOyjHPbCdYUKl5ERXMaHQcP2WaIIrB33kiYC90TfacDujBPHFXdn" +
+                                    "/Ml1Fg5B8/KhDB05IrlFrT81ym7q4Ta39BD4GEdQIzG7jNQRmmW0vgMEPl6/RyeIUEIcEpUq4zy0" +
+                                    "EOQIAqH6PLSUJMK9kfseGoSF8eGXAAhccuPBcr9QDkWlUpQbXhvQWvrkCGqno/5YFf1RKTUEroOv" +
+                                    "fYXA13SPOySGAGn5UpsO+MvtDgrhq4d9mxoBqjtQ2yJw93C7Q9lPaB9kKgTQKp6Otv9oblJH4KWR" +
+                                    "9FzcwWD4i5QRmFbVaU2YVQ9DQggQUZQWDQGcZH3ovC8JhNLYHeitMPjWGlo1BLzTMExeMhkCjI3W" +
+                                    "itHNY04GLX1HRBBDo6hjNiRhG2RZSywNBDEyjv0mAkRci0+ngSAG1nyy0xYWXY0OQxdhafZfr86m" +
+                                    "RigtBJbO9kx0Zh71u1d4Bdo3CfOpEQSB8VRLc16ukiftygQQvhc2Auv7BcmwQE6tNhjxEETXqxMu" +
+                                    "ra9IJMPmRzoI1U8HgeMtj4o4ajFxRer28AgiUvJwb9T7kOrMYr9l2N4ieUpRcITZc0vgsevi48q4" +
+                                    "tBEerJdIoRHkHGzvlJZhhOz4GRNAQFILbm5rW0AzY5pZAE8AAm+ErFqhKAo/gypMImRn1j7NONHC" +
+                                    "f+ut/fgKa9Mb19xm7BgFBvvleFjve+dz/bJWUMxi+/8QlEHh1F5GEIE7EKr8XI1UkzodBK3n4Ymg" +
+                                    "J5LoCBDF0FUeCL4nZ8IgwCTg4mQYYXZSDFIGRGCFl8NUD3VE/s2T3B/xQtvjiE0QBAg//S9QECoy" +
+                                    "j3vCIJgR1WmdxO9zzinMQmqmwedIm5ktlj7H4HSEyU4Llx6nAzJ8HoKnkUePW7DwSREy9uT1sL+o" +
+                                    "bL32Gx/pHosQ+eR8B4H2/y/QZNBF5wQZTM30GLqKqTFY9OY5JQi72JwOhFtqTs166UjYwAylbx7L" +
+                                    "LHHDov8ByWiBDKpBO64AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDgtMTlUMTU6NTY6MDArMDg6" +
+                                    "MDBmPRhlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA4LTE5VDE1OjU2OjAwKzA4OjAwF2Cg2QAA" +
+                                    "ACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6" +
+                                    "RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA4N7tq1bAA" +
+                                    "AAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTk0Os+EPQAAABl0RVh0VGh1bWI6Ok1pbWV0eXBl" +
+                                    "AGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNTk3ODIzNzYwNlmp4wAAABJ0RVh0" +
+                                    "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
+                                    "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
+                                    "YII=",
                                 onclick: () => {
                                     this.switchSos('day');
                                 },
@@ -264,7 +294,37 @@
                             myWeek: {
                                 show: true,
                                 title: '本周',
-                                icon: "image://https://image.flaticon.com/icons/svg/102/102571.svg",
+                                icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                    "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
+                                    "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
+                                    "ZgDb27aQZjpmtv/btpDb2/8AAGaQkDo6kJAAADqQ2/+2//+QOgD/29u2kGa2tts6Ojo6ZpBmtts6" +
+                                    "ZrbbtmaQttu2ZjoAOmZmOgA6OpCQtra2tpDbtrbhtsv4AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
+                                    "wwAADsMBx2+oZAAAAAd0SU1FB+QIExc4AD0rSYoAAAOuSURBVHja7Zt9X9sgEMeTKrHbUo3W2U3t" +
+                                    "rE636ba6h/f/3pZwQA4CCUsNcH56f/lpk/D7Fu6BC2bZ67M8eaOuf4AitrDdIWKr2h0itqSdGXrp" +
+                                    "kjKnUioAbrGUAOx6qRF0FdMj6GgmSGCIJkmgyx6LMDuo7TAdhBHPYEVtR9EQkO7R6ygJhFyHmQph" +
+                                    "/maEvX3nxxAGoSxG2GKPsEd4pQgekqQdn5BBqJrceEoaYX5Wf76cHKE6d9r7RtmF+3ulITLCaowr" +
+                                    "gilxe4Q9wksjDKQIuOiFET4cOOyjHPbCdYUKl5ERXMaHQcP2WaIIrB33kiYC90TfacDujBPHFXdn" +
+                                    "/Ml1Fg5B8/KhDB05IrlFrT81ym7q4Ta39BD4GEdQIzG7jNQRmmW0vgMEPl6/RyeIUEIcEpUq4zy0" +
+                                    "EOQIAqH6PLSUJMK9kfseGoSF8eGXAAhccuPBcr9QDkWlUpQbXhvQWvrkCGqno/5YFf1RKTUEroOv" +
+                                    "fYXA13SPOySGAGn5UpsO+MvtDgrhq4d9mxoBqjtQ2yJw93C7Q9lPaB9kKgTQKp6Otv9oblJH4KWR" +
+                                    "9FzcwWD4i5QRmFbVaU2YVQ9DQggQUZQWDQGcZH3ovC8JhNLYHeitMPjWGlo1BLzTMExeMhkCjI3W" +
+                                    "itHNY04GLX1HRBBDo6hjNiRhG2RZSywNBDEyjv0mAkRci0+ngSAG1nyy0xYWXY0OQxdhafZfr86m" +
+                                    "RigtBJbO9kx0Zh71u1d4Bdo3CfOpEQSB8VRLc16ukiftygQQvhc2Auv7BcmwQE6tNhjxEETXqxMu" +
+                                    "ra9IJMPmRzoI1U8HgeMtj4o4ajFxRer28AgiUvJwb9T7kOrMYr9l2N4ieUpRcITZc0vgsevi48q4" +
+                                    "tBEerJdIoRHkHGzvlJZhhOz4GRNAQFILbm5rW0AzY5pZAE8AAm+ErFqhKAo/gypMImRn1j7NONHC" +
+                                    "f+ut/fgKa9Mb19xm7BgFBvvleFjve+dz/bJWUMxi+/8QlEHh1F5GEIE7EKr8XI1UkzodBK3n4Ymg" +
+                                    "J5LoCBDF0FUeCL4nZ8IgwCTg4mQYYXZSDFIGRGCFl8NUD3VE/s2T3B/xQtvjiE0QBAg//S9QECoy" +
+                                    "j3vCIJgR1WmdxO9zzinMQmqmwedIm5ktlj7H4HSEyU4Llx6nAzJ8HoKnkUePW7DwSREy9uT1sL+o" +
+                                    "bL32Gx/pHosQ+eR8B4H2/y/QZNBF5wQZTM30GLqKqTFY9OY5JQi72JwOhFtqTs166UjYwAylbx7L" +
+                                    "LHHDov8ByWiBDKpBO64AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDgtMTlUMTU6NTY6MDArMDg6" +
+                                    "MDBmPRhlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA4LTE5VDE1OjU2OjAwKzA4OjAwF2Cg2QAA" +
+                                    "ACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6" +
+                                    "RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA4N7tq1bAA" +
+                                    "AAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTk0Os+EPQAAABl0RVh0VGh1bWI6Ok1pbWV0eXBl" +
+                                    "AGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNTk3ODIzNzYwNlmp4wAAABJ0RVh0" +
+                                    "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
+                                    "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
+                                    "YII=",
                                 // onclick: this.switchSos('week')
                                 onclick: () => {
                                     this.switchSos('week');
@@ -276,7 +336,36 @@
                             myMonth: {
                                 show: true,
                                 title: '本月',
-                                icon: "image://https://image.flaticon.com/icons/svg/102/102571.svg",
+                                icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMEAAABbCAMAAAD9YRGLAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                    "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAk1BMVEX///9/f3//27a2tra2" +
+                                    "2//bkDoAAAA6kNuQZmZmZmZmkNv/25A6AAAAZrYAAGa229vb29u2kDq2/////9s6kLbb//+2ZgDb" +
+                                    "27aQZjr//7ZmAAAAOpBmtv//tmaQkDo6kJAAADqQ2/86ZmZmOgCQOgA6ZpBmtts6ZrbbtmaQttu2" +
+                                    "Zjo6OjoAOmZmkLY6OpA6OgDb2/+KKFEkAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOwwAADsMBx2+o" +
+                                    "ZAAAAAd0SU1FB+QIExc4AUoseRwAAAODSURBVHja7ZrZdpswEIbBjnDa7HFMkya0tG6Wtk7b93+6" +
+                                    "Yo0ASWiZY47QyIe5SoyN/g9pFo3IsmOznLwlLt8NEVvXaIbYokYzxFY0FsHFRstsSlPRbxWbkn6j" +
+                                    "3tQABorTA9A1Jwigik4SQJF9JASx9RyKoLEcZItlYyexCPJs/BSworFVBIJsJjiMYHH6AWkfiRKc" +
+                                    "nRdIu5gJZoLjJri8unbaDX2CW8QtZwLN1p4pv7Nf39AgKLH+5/PImWAmSJjg09Ji963QO9s3rmgQ" +
+                                    "2Ozhc0vwuEH9gBwB61fLU5IEcpWDmwRqBIqDo/Iyscqu2j/PL/vhvjb+UH9LjoC78QrqIoYakxpB" +
+                                    "yZc0EHAahDOTIqggAonalCE8tCWov7s3+dtpCPhTbwKQIFj/QI1KKBZxxXvnbfcHFSoeESLoNjbd" +
+                                    "H2WBiEd0CPgT50o6ApQ4MgQQUp664VbYgakQQEF30Q/HCbhreFyBE/gKkPAEIFXokHb60swQJ+Dl" +
+                                    "UOu0cq+CFT5vrjBFYHACphRySrel9CFUGHGhCSo16SsE4CCXJ+4fRyYAgH4hqB0vuGoPNihxYQnA" +
+                                    "W6WFovXsmBuBX35euu0+JIGoLaV4o3cdy8K1kEpsaRqKQADIMV8ngFBrcWdxMR6BAFBuPuj8iv6F" +
+                                    "ESE2QWUAMPSuF6IF8zK8Q9+diUIgALR8ZOi+txux10HmQh2ABDsBeStMAMbzgxbhUfdnVEoOFU1F" +
+                                    "c2sQJ40nIC1C/fMQbUEI1r8sAJYznG5Hr6wkTPUaiKCNIfswX/1WDDKc8tHzRkLYSTEJHNnb0ghA" +
+                                    "sNj2AKJwcBlf6G1EqiXB/c5uagIxA7vbToafIHvY6gCQkf0N1gAE4AUAgCbI1qW2ZGAR+furQTyZ" +
+                                    "9c/uzNCe2ikfvW+6X71oN0G1V8NEU/bHMvnO8+Rr+R9lczo9gXs4VOcdlh/iq1QJYAoQvVWyBAxZ" +
+                                    "sGHz3uQEEIgwxySQDOkRlNgpEKnQfxgxMYF7/8yaWkSE4r9FgfSXaQkM21PZhlkSMasKwQgEFIHY" +
+                                    "m1lzweBwCjsF/WvLgQnezt1urO8+d4jXoHvdUxDAQ7Z/S+0A1O+Y03WN4HAEpCc3laqrnpBfPfmH" +
+                                    "GleWPQ4B++77+hSRjfGmiM7HOnME0zSnhzBQnBrCUG+ep8RgFJunw2CVmqdmLrYkzD099M2/xIgb" +
+                                    "zk+oWuxIMtsx2n/EN2tXjljI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNTo1Njow" +
+                                    "MSswODowMMBKE9EAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDgtMTlUMTU6NTY6MDErMDg6MDCx" +
+                                    "F6ttAAAAIHRFWHRzb2Z0d2FyZQBodHRwczovL2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRo" +
+                                    "dW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADkx" +
+                                    "SxJBxAAAABd0RVh0VGh1bWI6OkltYWdlOjpXaWR0aAAxOTOkqxGeAAAAGXRFWHRUaHVtYjo6TWlt" +
+                                    "ZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADE1OTc4MjM3NjFBXpl1AAAA" +
+                                    "EnRFWHRUaHVtYjo6U2l6ZQAxNjk1QkIlqbGMAAAARnRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBw" +
+                                    "L3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5NTQxMTQxMzgwNzI4NDJfOTRfWzBdATOGWQAAAABJ" +
+                                    "RU5ErkJggg==",
                                 // onclick: this.switchSos('month')
                                 onclick: () => {
                                     this.switchSos('month');
