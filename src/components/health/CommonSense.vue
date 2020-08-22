@@ -22,7 +22,7 @@
                             <el-image
                                 fit="contain"
                                 align="center"
-                                :src="`/images/${scope.row.cover}`"
+                                :src="`/images${scope.row.cover}`"
                             >
                             </el-image>
                         </template>
@@ -64,7 +64,11 @@
                             <el-input v-model="form.title"></el-input>
                         </el-form-item>
                         <el-form-item label="封面" prop="cover">
-                            <single-image-upload v-model="form.cover" width="400" height="200"></single-image-upload>
+                            <single-image-upload
+                                    v-model="form.cover"
+                                    @change="picUploaded"
+                                    width="400"
+                                    height="200"></single-image-upload>
                         </el-form-item>
                         <el-form-item label="内容" prop="content">
                             <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
@@ -117,6 +121,9 @@
 
         },
         methods: {
+            picUploaded(res, file) {
+                this.form.cover = res.pic
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false

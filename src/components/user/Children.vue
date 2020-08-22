@@ -168,45 +168,46 @@
 
                         <el-form-item label="绑定老人">
                             <section
-                                v-if="form.bindOldManList && form.bindOldManList.length > 0">
+                                v-if="form.bindOldManList && form.bindOldManList.length && form.bindOldManList[0].oldManId > 0">
                                 <el-tag v-for="oldMan in form.bindOldManList"
                                         :closable=true
                                         @close="removeOldMan(oldMan)"
-                                        v-bind:key="oldMan.id">{{oldMan.name}}</el-tag>
+                                        v-bind:key="oldMan.oldManId">{{oldMan.oldManId}}
+                                </el-tag>
                             </section>
                             <el-button @click="bindButton" size="small" type="primary">添加绑定</el-button>
                         </el-form-item>
 
                         <section
-                            v-if="bindCount > 0 && activeName == 'children'"
-                            v-for="item in bindCount"
-                            :key="item"
-                            :label="item"
-                            :value="item"
+                            v-if="form.bindOldManList.length > 0 && activeName == 'children'"
+                            v-for="(oldMan, index) in form.bindOldManList"
+                            :key="index"
+                            :label="index"
+                            :value="oldMan.oldManId"
                         >
                             <el-form-item label="选择老人" label-width="100px">
-                                <el-select v-model="form.sex" placeholder="请选择">
+                                <el-select v-model="form.bindOldManList[index].villageId" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                                     <el-option
-                                            v-for="item in genderOptions"
+                                            v-for="item in villageOptions"
                                             :key="item.value"
-                                            :disabled=!canInputEdit
                                             :label="item.label"
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
-                                <el-select v-model="form.sex" placeholder="请选择">
+                                <el-select v-model="form.bindOldManList[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
                                     <el-option
-                                            v-for="item in genderOptions"
-                                            :key="item.value"
-                                            :disabled=!canInputEdit
-                                            :label="item.label"
-                                            :value="item.value">
+                                            v-for="item in oldManOptions"
+                                            :key="item.id"
+                                            :label="item.name"
+                                            :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
 
                             <el-form-item label="亲属关系" label-width="100px">
-                                <el-input :style="{width:'20%'}" v-model="bindOldMan.relation"></el-input>
+                                <el-input :style="{width:'20%'}" v-model="form.bindOldManList[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
+                                <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
+
                             </el-form-item>
                         </section>
                         <el-form-item>
@@ -279,6 +280,27 @@
                         value: 2,
                     },
                 ],
+                villageOptions: [
+                    {
+                        label: '1村',
+                        value: 1,
+                    },
+                    {
+                        label: '2村',
+                        value: 2,
+                    },
+                ],
+
+                oldManOptions: [
+                    {
+                        name: 'xxx',
+                        id: 1,
+                    },
+                    {
+                        name: 'yyy',
+                        id: 2,
+                    },
+                ],
                 activeName: 'children',
                 childrenListApi: '/apis/user/list?userType=1',
                 approvalListApi: '/apis/childApply/list',
@@ -299,16 +321,8 @@
                     sex: '',
                     userType: 1,
                     mobile: '',
-                    // status: '',
-                    createTime: '',
                     idCardNumber:'',
-                    updateTime: '',
-                    oldManName: '',
-                    oldManIdCardNumber: '',
-                    relation:'',
                     bindOldManList: [],
-                    // approvedAt: '',
-                    // rejectedAt: '',
                 },
                 editing: false,
                 isUpdate: false,
@@ -329,7 +343,11 @@
                 this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
             },
             bindButton () {
-                this.bindCount ++;
+                this.form.bindOldManList.push({
+                    villageId:'',
+                    oldManId:'',
+                    relation: '',
+                });
             },
 
             genderFormatter (row, col, data) {
@@ -346,7 +364,14 @@
                 this.bindCount = 0;
                 this.isUpdate = false
                 this.form = {
+                    id: '',
+                    name: '',
+                    homeAddress: '',
+                    sex: '',
                     userType: 1,
+                    mobile: '',
+                    idCardNumber:'',
+                    bindOldManList: [],
                 }
             },
             edit (row) {
@@ -382,7 +407,7 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList(1)
@@ -429,7 +454,7 @@
                     status: status,
                 }).then(res => {
                     this.$message({
-                        message: res.data.message,
+                        message: res.data.msg || '操作成功',
                         type: 'success'
                     })
                     this.fetchList(1)
@@ -439,10 +464,15 @@
             },
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+
+                    this.form.bindOldManListStr = JSON.stringify(this.form.bindOldManList);
+                    this.form.bindOldManList = this.form.bindOldManListStr;
+
                     if (valid) {
                         this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {
+                        // this.$http.post('http://127.0.0.1:8000/api/test', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {

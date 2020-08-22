@@ -370,7 +370,7 @@
                 this.editing = false
             },
             getVillageOptions () {
-                this.$http.get('/apis/adminApi/village/list', {
+                this.$http.get('/apis/village/list', {
                     params: {
                         pageSize: 100,
                     }
@@ -382,7 +382,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/oldMan/list', {
+                this.$http.get('/apis/oldMan/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -399,7 +399,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/oldMan/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/oldMan/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

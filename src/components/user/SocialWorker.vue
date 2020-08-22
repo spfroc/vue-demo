@@ -193,7 +193,7 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.$http.get('/apis/adminApi/user/detailForChild', {
+                this.$http.get('/apis/user/detailForChild', {
                     params: {
                         id: row.id
                     }
@@ -210,7 +210,7 @@
                 this.$confirm('确定删除此社工信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/user/delete', {
+                    this.$http.post('/apis/user/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -237,7 +237,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || 1
                 this.search = this.$common.searchParams(this.search);
-                this.$http.get('/apis/adminApi/user/list', {
+                this.$http.get('/apis/user/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: this.search.pageNum,
@@ -255,7 +255,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/user/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/user/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

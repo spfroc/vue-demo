@@ -295,7 +295,6 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.form.roleId = this.form.roleName
                         this.$http.post('/apis/village/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,

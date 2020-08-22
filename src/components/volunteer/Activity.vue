@@ -32,7 +32,7 @@
                         <template slot-scope="scope">
                             <el-image
                                     fit="contain"
-                                    :src="`/images/${scope.row.cover}`"
+                                    :src="`/images${scope.row.cover}`"
                             >
                             </el-image>
                         </template>
@@ -88,7 +88,11 @@
                             <el-input v-model="form.title"></el-input>
                         </el-form-item>
                         <el-form-item label="宣传图" prop="cover">
-                            <single-image-upload v-model="form.cover" width="400" height="200"></single-image-upload>
+                            <single-image-upload
+                                    v-model="form.cover"
+                                    @change="picUploaded"
+                                    width="400"
+                                    height="200"></single-image-upload>
                         </el-form-item>
                         <el-form-item label="活动内容" prop="content">
                             <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
@@ -142,6 +146,10 @@
         },
 
         methods: {
+
+            picUploaded(res, file) {
+                this.form.cover = res.pic
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false
@@ -161,7 +169,7 @@
                 this.$confirm('确定删除此活动信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/volunteerActivity/delete', {
+                    this.$http.post('/apis/volunteerActivity/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -186,7 +194,7 @@
                 this.search.pageNum = currentPage || 1
                 this.search = this.$common.searchParams(this.search);
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/adminApi/volunteerActivity/list', {
+                this.$http.get('/apis/volunteerActivity/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -203,7 +211,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/adminApi/volunteerActivity/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/volunteerActivity/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

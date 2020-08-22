@@ -16,7 +16,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                 </el-form-item>
             </el-form>
         </section>
@@ -73,7 +73,7 @@
                         :page-size="this.page.pageSize"
                         :total="this.page.total"
                         :current-page="this.search.pageNum"
-                        @current-change="fetchList"
+                        @current-change="fetchList(1)"
                 >
                 </el-pagination>
 
