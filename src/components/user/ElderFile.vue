@@ -277,7 +277,7 @@
                 this.$confirm('确定删除此老人档案吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/oldManArchives/delete', {
+                    this.$http.post('/apis/oldManArchives/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -303,7 +303,7 @@
                     this.search.timeEnd = this.search.createTime[1];
                 }
                 delete this.search.createTime;
-                this.$http.get('/apis/adminApi/oldManArchives/list', {
+                this.$http.get('/apis/oldManArchives/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1
@@ -325,7 +325,7 @@
 
                             this.form.imgs = images;
                         }
-                        this.$http.post('/apis/adminApi/oldManArchives/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/oldManArchives/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

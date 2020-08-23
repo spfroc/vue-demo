@@ -127,9 +127,9 @@
 
                             </el-col>
                             <el-col :span="8">
-                                <el-form-item label="一寸照片" prop="avatar">
+                                <el-form-item label="一寸照片" prop="headImg">
                                     <single-image-upload
-                                            v-model="form.avatar"
+                                            v-model="form.headImg"
                                             width="150"
                                             @change="picUploaded"
                                             height="200"></single-image-upload>
@@ -278,7 +278,7 @@
         },
         methods: {
             picUploaded(res, file) {
-                this.form.avatar = res.pic
+                this.form.headImg = res.pic
             },
             searchChildren (queryString, cb) {
                 let childrenOptions = this.childrenOptions;
