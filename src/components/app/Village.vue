@@ -211,6 +211,8 @@
 
             radiusChanged() {
                 this.circle.setRadius(parseInt(this.form.railRadius))
+                this.form.lat = this.map.getCenter().lat
+                this.form.lng = this.map.getCenter().lng
             },
 
             addCircle() {
