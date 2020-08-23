@@ -133,10 +133,12 @@
                                 <el-form-item label="民族" prop="nation">
                                     <el-input v-model="form.nation" ></el-input>
                                 </el-form-item>
-                                <el-form-item label="出生年月" prop="birthdate">
+                                <el-form-item label="出生年月" prop="birthday">
                                     <el-date-picker
-                                            v-model="form.birthdate"
+                                            v-model="form.birthday"
                                             type="date"
+                                            format="yyyy-MM-dd"
+                                            value-format="yyyy-MM-dd"
                                             placeholder="出生年月">
                                     </el-date-picker>
                                 </el-form-item>
@@ -221,16 +223,15 @@
                     name: '',
                     sex: '',
                     nation: '',
-                    birthdate: '',
+                    birthday: '',
                     mobile: '',
                     idCardNumber: '',
                     nativePlace: '',
                     politicalStatus: '',
                     career: '',
-                    description: '',
+                    description: '~',
                     photo: '',
                     activityTitle: '',
-                    status: '',
                     homeAddress: 'w'
                 },
                 editing: false,
@@ -276,9 +277,9 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {
-                    userType: 1,
-                }
+                // this.form = {
+                //     userType: 1,
+                // }
             },
             edit (row) {
                 this.editing = true
@@ -336,16 +337,16 @@
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+                    if(this.form.id == '') {
+                        delete this.form.id;
+                    }
                     if (valid) {
-                        this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {
+                        this.$http.post('/apis/volunteer/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
-                            this.form = {
-                                userType: 1,
-                            }
-                            this.fetchList()
+                            this.fetchList(1)
                             this.editing = false
                         })
                     } else {

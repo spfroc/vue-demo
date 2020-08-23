@@ -11,7 +11,7 @@
     :before-upload="beforeAvatarUpload">
     <section v-bind:style="size">
       <!--<el-image fit="contain" v-if="imageUrl" :src="imageData || `/images/${imageUrl}`" class="avatar"></el-image>-->
-      <el-image fit="contain" v-if="imageUrl" :src="imageData || `/images/${imageUrl}`" class="avatar"></el-image>
+      <el-image fit="contain" v-if="imageUrl" :src="imageData || `/images${imageUrl}`" class="avatar"></el-image>
       <i v-else class="el-icon-plus single-image-uploader-icon"></i>
     </section>
     <div class="upload-tips" slot="tip">{{tips || '只能上传jpg/jpeg/png/gif文件，且不超过1M。'}}</div>

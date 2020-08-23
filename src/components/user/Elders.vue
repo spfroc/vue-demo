@@ -128,7 +128,11 @@
                             </el-col>
                             <el-col :span="8">
                                 <el-form-item label="一寸照片" prop="avatar">
-                                    <single-image-upload v-model="form.avatar" width="150" height="400"></single-image-upload>
+                                    <single-image-upload
+                                            v-model="form.avatar"
+                                            width="150"
+                                            @change="picUploaded"
+                                            height="200"></single-image-upload>
                                 </el-form-item>
                             </el-col>
                         </el-row>
@@ -230,11 +234,11 @@
                 genderOptions: [
                     {
                         label: '男',
-                        value: 1,
+                        value: "1",
                     },
                     {
                         label: '女',
-                        value: 2,
+                        value: "2",
                     },
                 ],
                 childMobile: '',
@@ -273,7 +277,9 @@
 
         },
         methods: {
-
+            picUploaded(res, file) {
+                this.form.avatar = res.pic
+            },
             searchChildren (queryString, cb) {
                 let childrenOptions = this.childrenOptions;
                 let results = queryString ? childrenOptions.filter(this.createStateFilter(queryString)) : childrenOptions;
@@ -329,7 +335,7 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.$http.get('/apis/adminApi/oldMan/detail', {
+                this.$http.get('/apis/oldMan/detail', {
                     params: {
                         id: row.id,
                     }
@@ -350,11 +356,11 @@
                 this.$confirm('确定删除此老人信息吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/adminApi/oldMan/delete', {
+                    this.$http.post('/apis/oldMan/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList(1)
@@ -401,7 +407,7 @@
                     if (valid) {
                         this.$http.post('/apis/oldMan/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {}
@@ -416,7 +422,7 @@
             },
 
             getChildrenOptions() {
-                this.$http.get('/apis/adminApi/user/list', {
+                this.$http.get('/apis/user/list', {
                     params: {
                         userType: 1,
                         pageSize: 5000,
