@@ -297,8 +297,7 @@
             },
 
             removeFileList(file) {
-                console.log(file);
-                this.imgListArr.pop(file);
+
             },
 
             typeFormatter (row) {
@@ -320,11 +319,22 @@
             edit (row) {
                 this.editing = true
                 this.isUpdate = true
+                this.imgListArr = [];
                 row.type = parseInt(row.type);
                 // row.oldManId = row.oldManId.toString();
-                console.log(row);
                 this.editingRow = row
-                this.imgListArr = row.imgList
+                console.log(row.imgList);
+                let editImgList = [];
+                row.imgList.forEach((item) => {
+                    console.log(item);
+                    editImgList.push({
+                        status: item.status,
+                        uid: item.uid,
+                        url: '/images'+item.url,
+                    })
+                })
+                this.imgListArr = editImgList
+
                 this.form = row
             },
             remove (id) {
@@ -389,7 +399,12 @@
                             let images = '';
                             this.imgListArr.forEach(img => {
                                 console.log(img);
-                                images += img.response.data.pic +','
+                                if(img.url.match('blob')) {
+                                    images += img.response.data.pic +','
+                                } else {
+                                    images += img.url.replace('/images', '') + ','
+                                }
+
                             })
                             // console.log(images);
                             this.form.imgs = images;

@@ -577,12 +577,13 @@
                 console.log(row, status);
             },
 
-            serviceOrder() {
+            serviceOrder(row) {
                 this.showDialogController();
                 this.dialogTitle = '服务工单';
                 this.dialogButtonText = '确认派单';
-                this.getServiceWorkers();
-
+                // this.getServiceWorkers();
+                this.commonOrder = row
+                console.log(row);
             },
 
             doctorOrder() {
