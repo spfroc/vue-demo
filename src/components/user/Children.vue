@@ -189,9 +189,10 @@
                                 <el-select v-model="form.bindOldManList[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                                     <el-option
                                             v-for="item in villageOptions"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
+                                            :key="item.id"
+                                            :label="item.name"
+                                            @change="getOldManOptions"
+                                            :value="item.id">
                                     </el-option>
                                 </el-select>
                                 <el-select v-model="form.bindOldManList[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
@@ -338,7 +339,8 @@
         methods: {
             getVillageOptions () {
                 this.$http.get('/apis/village/selectList').then((res) => {
-                    console.log(res);
+                    console.log(res.data.data);
+                    this.villageOptions = res.data.data.list
                 })
             },
 
@@ -348,7 +350,8 @@
                         villageId: villageId
                     }
                 }).then((res) => {
-                    console.log(res);
+
+                    console.log(res.data.data);
                 })
             },
             removeOldMan (oldMan) {
@@ -356,7 +359,6 @@
                 this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
             },
             bindButton () {
-                console.log(111);
                 this.form.bindOldManList.push({
                     id:'',
                     name:'',
@@ -405,8 +407,10 @@
             },
 
             showOperationButton(status) {
+                console.log(status, typeof status);
+
                 if(this.activeName == 'approval') {
-                    return status == 1 ? true : false;
+                    return status == "0" ? true : false;
                 } else {
                     return false;
                 }
