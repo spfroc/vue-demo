@@ -336,7 +336,21 @@
 
         },
         methods: {
+            getVillageOptions () {
+                this.$http.get('/apis/village/selectList').then((res) => {
+                    console.log(res);
+                })
+            },
 
+            getOldManOptions(villageId) {
+                this.$http.get('/apis/oldMan/selectList', {
+                    params: {
+                        villageId: villageId
+                    }
+                }).then((res) => {
+                    console.log(res);
+                })
+            },
             removeOldMan (oldMan) {
                 console.log(this.form.bindOldManList.indexOf(oldMan));
                 this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
@@ -496,6 +510,7 @@
 
         mounted() {
             this.fetchList(1);
+            this.getVillageOptions();
         }
     }
 </script>

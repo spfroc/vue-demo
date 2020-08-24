@@ -124,15 +124,15 @@
               form: {
                   id: '',
                   name: '',
-                  railRadius: 10,
+                  railRadius: 500,
                   secretaryId: '',
                   secretaryName: '',
                   secretaryMobile: '',
                   cadreId: '',
                   cadreName: '',
                   cadreMobile: '',
-                  lng: '',
-                  lat: '',
+                  lng: 117.11,
+                  lat: 36.67,
               },
               editing: false,
               isUpdate: false,
@@ -170,9 +170,9 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {
-                    railRadius: 500,
-                }
+                // this.form = {
+                //     railRadius: 500,
+                // }
 
                 this.mapInit();
 
