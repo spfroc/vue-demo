@@ -393,8 +393,6 @@
                         pageSize: 10,
                         pageNum: 1,
                     }, this.search)
-                }, {
-                    params: this.search
                 }).then(res => {
 
                     this.page.total = res.data.data.total

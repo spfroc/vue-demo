@@ -104,9 +104,19 @@
                                     <el-input :disabled="true" v-model="form.id"></el-input>
                                 </el-form-item>
                                 <el-form-item label="老人姓名" prop="oldManName">
-                                    <el-input v-model="form.oldManName"></el-input>
+                                    <!--<el-input v-model="form.oldManId"></el-input>-->
+                                    <el-autocomplete
+                                            v-model="form.oldManName"
+                                            value="age"
+                                            :fetch-suggestions="querySearchAsync"
+                                            placeholder="请输入内容"
+                                            value-key="name"
+                                            @select="handleSelect"
+                                    ></el-autocomplete>
                                 </el-form-item>
-                                <el-form-item label="类型" prop="oldManMobile">
+
+
+                                <el-form-item label="类型" prop="type">
                                     <el-select v-model="form.type" placeholder="请选择">
                                         <el-option
                                                 v-for="item in typeMap"
@@ -125,7 +135,8 @@
                                             :file-list="imgListArr"
                                             :add-file="addFile"
                                             :remove-file-list="removeFileList"
-                                            width="100" height="100"></multiple-image-upload>
+                                            width="100" height="100">
+                                    </multiple-image-upload>
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -213,9 +224,10 @@
                     content: '',
                     imgs: '',
                     imgListArr: [],
+                    imgList: [],
 
                 },
-
+                oldManOptions: [],
                 typeMap: [
                     {
                         value: 1,
@@ -233,7 +245,6 @@
                         value: 4,
                         label: '吃药提醒',
                     },
-
                 ],
                 filterText: '',
                 typeFormatterMap: ['未知', '病例档案', '自测数据', '体检报告', '吃药提醒'],
@@ -245,12 +256,43 @@
             }
         },
         methods: {
+            querySearchAsync(queryString, cb) {
+                let restaurants = this.oldManOptions;
+                let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+                clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    cb(results);
+                }, 500);
+            },
+
+            createStateFilter(queryString) {
+                return (state) => {
+                    return (state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                this.form.oldManId = item.id;
+
+                console.log(this.form.oldManId);
+                console.log(item);
+            },
+            getOldManOptions () {
+                this.$http.get('/apis/oldMan/list', {
+                    params: Object.assign({
+                        pageSize: 5000,
+                        pageNum: 1,
+                    }, this.search)
+                }).then((res) => {
+                    this.oldManOptions = res.data.data.list;
+                });
+            },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
             },
 
             addFile(fileList) {
+                console.log(fileList);
                 this.imgListArr = fileList;
             },
 
@@ -265,13 +307,25 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    id: '',
+                    oldManId: '',
+                    oldManName: '',
+                    type: '',
+                    content: '',
+                    imgs: '',
+                    imgListArr: [],
+                }
             },
             edit (row) {
                 this.editing = true
                 this.isUpdate = true
+                row.type = parseInt(row.type);
+                // row.oldManId = row.oldManId.toString();
+                console.log(row);
                 this.editingRow = row
-                this.form = Object.assign({}, row)
+                this.imgListArr = row.imgList
+                this.form = row
             },
             remove (id) {
                 this.$confirm('确定删除此老人档案吗？', '提示', {
@@ -281,15 +335,25 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList()
                     })
                     this.editing = false
-                    this.form = {}
-                }).catch(() => {
+                    this.form = {
+                        id: '',
+                        oldManId: '',
+                        imgList: [],
+                        oldManName: '',
+                        type: '',
+                        content: '',
+                        imgs: '',
+                        imgListArr: [],
+                    }
+                }).catch((error) => {
                     // do nothing
+                    console.log(error);
                 })
             },
 
@@ -316,18 +380,23 @@
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+                    console.log(this.imgList);
+                    if(this.form.id == '') {
+                        delete this.form.id;
+                    }
                     if (valid) {
                         if(this.imgListArr && this.imgListArr.length > 0) {
                             let images = '';
                             this.imgListArr.forEach(img => {
-                                images += img.response.data +','
+                                console.log(img);
+                                images += img.response.data.pic +','
                             })
-
+                            // console.log(images);
                             this.form.imgs = images;
                         }
                         this.$http.post('/apis/oldManArchives/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || "操作成功",
                                 type: 'success'
                             })
                             this.form = {}
@@ -344,6 +413,7 @@
 
         mounted() {
             this.fetchList();
+            this.getOldManOptions();
         }
     }
 </script>

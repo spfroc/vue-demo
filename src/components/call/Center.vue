@@ -162,16 +162,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination
-                        hide-on-single-page
-                        background
-                        layout="total, prev, pager, next"
-                        :page-size="this.firstTab.workOrderPage.pageSize"
-                        :total="this.firstTab.workOrderPage.total"
-                        :current-page="this.firstTab.workOrderPage.pageNum"
-                        @current-change="getWorkOrderLIst"
-                >
-                </el-pagination>
+                <!--<el-pagination-->
+                        <!--hide-on-single-page-->
+                        <!--background-->
+                        <!--layout="total, prev, pager, next"-->
+                        <!--:page-size="this.firstTab.workOrderPage.pageSize"-->
+                        <!--:total="this.firstTab.workOrderPage.total"-->
+                        <!--:current-page="this.firstTab.workOrderPage.pageNum"-->
+                        <!--@current-change="getWorkOrderLIst"-->
+                <!--&gt;-->
+                <!--</el-pagination>-->
 
 
             </el-row>
@@ -624,14 +624,15 @@
             reception() {
                 console.log(this.firstTab.oldManMobile);
                 if(this.firstTab.oldManMobile) {
-                    this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/getOldManByMobile', {
+                    this.$http.get('/apis/callCenter/reception', {
                         params: {
                             mobile: this.firstTab.oldManMobile,
                         }
                     }).then(res => {
-                        this.firstTab.oldManList = res.data.data.list;
                         console.log(res.data.data.list);
-
+                        this.firstTab.oldManList = [res.data.data.oldMan];
+                        // console.log(res.data.data.list);
+                        this.firstTab.workOrderList = res.data.data.list;
                     });
                 }
             },
@@ -644,7 +645,7 @@
                     createTime: '',
                 };
                 if(this.activeName == 'customerService') {
-                    this.getWorkOrderLIst(1);
+                    //this.getWorkOrderLIst(1);
                 } else if(this.activeName == 'historyWorkOrder') {
                     this.getHistoryWorkOrderLIst(1);
                 } else if(this.activeName == 'historyReception') {
@@ -669,10 +670,8 @@
             },
 
             getHistoryWorkOrderLIst(currentPage) {
-                // console.log(currentPage);
-                // this.secondTab.historyWorkOrderPage.pageNum = currentPage | 1;
                 this.searchForm = this.$common.searchParams(this.searchForm);
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/historyWorkOrderList', {
+                this.$http.get('/apis/callCenter/workerOrderList', {
                     params: Object.assign({
                         pageSize: this.secondTab.historyWorkOrderPage.pageSize,
                         pageNum: currentPage || 1,
@@ -688,7 +687,7 @@
 
             getHistoryReceptionLIst(currentPage) {
                 this.searchForm = this.$common.searchParams(this.searchForm);
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/historyReceptionList', {
+                this.$http.get('/apis/callCenter/receptionList', {
                     params: Object.assign({
                         pageSize: this.thirdTab.historyReceptionPage.pageSize,
                         pageNum: currentPage || 1,
@@ -711,7 +710,7 @@
         },
 
         mounted() {
-            this.getWorkOrderLIst(1);
+            // this.getWorkOrderLIst(1);
             this.getServiceWorkers();
             this.getDoctorOptions();
 

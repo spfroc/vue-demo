@@ -186,7 +186,7 @@
                             :value="oldMan.oldManId"
                         >
                             <el-form-item label="选择老人" label-width="100px">
-                                <el-select v-model="form.bindOldManList[index].villageId" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
+                                <el-select v-model="form.bindOldManList[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                                     <el-option
                                             v-for="item in villageOptions"
                                             :key="item.value"
@@ -269,7 +269,6 @@
                     id: '',
                     relation: '',
                 },
-                bindCount: 0,
                 genderOptions: [
                     {
                         label: '男',
@@ -343,9 +342,10 @@
                 this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
             },
             bindButton () {
+                console.log(111);
                 this.form.bindOldManList.push({
-                    villageId:'',
-                    oldManId:'',
+                    id:'',
+                    name:'',
                     relation: '',
                 });
             },
@@ -361,7 +361,6 @@
             },
             add () {
                 this.editing = true
-                this.bindCount = 0;
                 this.isUpdate = false
                 this.form = {
                     id: '',
@@ -389,7 +388,6 @@
                 });
                 // this.form = Object.assign({}, row)
                 this.form.userType = 1;
-                this.bindCount = 0;
             },
 
             showOperationButton(status) {
@@ -416,7 +414,6 @@
                     this.form = {
                         userType: 1,
                     }
-                    this.bindCount = 0;
 
                 }).catch(() => {
                     // do nothing
@@ -425,7 +422,16 @@
 
             cancel () {
                 this.editing = false
-                this.bindCount = 0;
+                this.form = {
+                    id: '',
+                    name: '',
+                    homeAddress: '',
+                    sex: '',
+                    userType: 1,
+                    mobile: '',
+                    idCardNumber:'',
+                    bindOldManList: [],
+                }
             },
 
 
@@ -441,7 +447,6 @@
                 }, {
                     params: this.search
                 }).then(res => {
-                    this.bindCount = 0;
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
@@ -467,7 +472,9 @@
 
                     this.form.bindOldManListStr = JSON.stringify(this.form.bindOldManList);
                     this.form.bindOldManList = this.form.bindOldManListStr;
-
+                    if(this.form.id == '') {
+                        delete this.form.id;
+                    }
                     if (valid) {
                         this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {
                         // this.$http.post('http://127.0.0.1:8000/api/test', this.form).then(res => {
@@ -475,11 +482,9 @@
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
-                            this.form = {
-                                userType: 1,
-                            }
                             this.fetchList()
                             this.editing = false
+                            console.log(this.form);
                         })
                     } else {
                         console.log('error submit!!')

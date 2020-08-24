@@ -44,9 +44,6 @@
                         <el-form-item label="驿站名称" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="老人姓名" prop="oldManName">
-                            <el-input v-model="form.oldManName"></el-input>
-                        </el-form-item>
                         <el-form-item label="地理位置" prop="address">
                             <el-input v-model="form.address"></el-input>
                         </el-form-item>
@@ -117,7 +114,7 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList()
@@ -151,7 +148,7 @@
                         this.form.roleId = this.form.roleName
                         this.$http.post('/apis/courierStation/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {}
