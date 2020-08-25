@@ -771,21 +771,14 @@
             },
 
             getSummary() {
+                // this.$http.get('/apis/statistic/countNum').then((res) => {
                 this.$http.get('http://rap2.taobao.org:38080/app/mock/261698/adminApi/statistic/countNum').then((res) => {
-                    console.log(res.data.data);
                     this.summary[0].value = res.data.data.oldManNum;
                     this.summary[1].value = res.data.data.doctorNum;
                     this.summary[2].value = res.data.data.socialWorkerNum;
                     this.summary[3].value = res.data.data.childNum;
                     this.summary[4].value = res.data.data.villageNum;
                     this.summary[5].value = res.data.data.courierStationNum;
-                    // childNum: "844"
-                    // courierStationNum: "821"
-                    // doctorNum: "962"
-                    // oldManNum: "864"
-                    // socialWorkerNum: "336"
-                    // villageNum: "521"
-
                 });
             }
         },
