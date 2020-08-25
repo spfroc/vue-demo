@@ -60,7 +60,7 @@
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="名称" prop="title">
+                        <el-form-item label="标题" prop="title">
                             <el-input v-model="form.title"></el-input>
                         </el-form-item>
                         <el-form-item label="封面" prop="cover">
@@ -116,7 +116,10 @@
                 },
                 editing: false,
                 isUpdate: false,
-                rules: {}
+                rules: {
+                    title: { required: true, message: '请输入标题', trigger: 'blur' },
+                    cover: { required: true, message: '请上传封面', trigger: 'blur' },
+                }
             }
 
         },

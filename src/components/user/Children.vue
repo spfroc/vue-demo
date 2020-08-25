@@ -186,12 +186,11 @@
                             :value="oldMan.oldManId"
                         >
                             <el-form-item label="选择老人" label-width="100px">
-                                <el-select v-model="form.bindOldManList[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
+                                <el-select @change="getOldManOptions" v-model="form.bindOldManList[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                                     <el-option
                                             v-for="item in villageOptions"
                                             :key="item.id"
                                             :label="item.name"
-                                            @change="getOldManOptions"
                                             :value="item.id">
                                     </el-option>
                                 </el-select>
@@ -292,14 +291,14 @@
                 ],
 
                 oldManOptions: [
-                    {
-                        name: 'xxx',
-                        id: 1,
-                    },
-                    {
-                        name: 'yyy',
-                        id: 2,
-                    },
+                    // {
+                    //     name: 'xxx',
+                    //     id: 1,
+                    // },
+                    // {
+                    //     name: 'yyy',
+                    //     id: 2,
+                    // },
                 ],
                 activeName: 'children',
                 childrenListApi: '/apis/user/list?userType=1',
@@ -339,23 +338,23 @@
         methods: {
             getVillageOptions () {
                 this.$http.get('/apis/village/selectList').then((res) => {
-                    console.log(res.data.data);
+                    // console.log(res.data.data);
                     this.villageOptions = res.data.data.list
                 })
             },
 
             getOldManOptions(villageId) {
+                console.log(villageId);
                 this.$http.get('/apis/oldMan/selectList', {
                     params: {
                         villageId: villageId
                     }
                 }).then((res) => {
-
-                    console.log(res.data.data);
+                    this.oldManOptions = res.data.data.list;
                 })
             },
             removeOldMan (oldMan) {
-                console.log(this.form.bindOldManList.indexOf(oldMan));
+                // console.log(this.form.bindOldManList.indexOf(oldMan));
                 this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
             },
             bindButton () {
@@ -364,6 +363,7 @@
                     name:'',
                     relation: '',
                 });
+                this.getVillageOptions();
             },
 
             genderFormatter (row, col, data) {
@@ -398,7 +398,7 @@
                         id: row.id
                     }
                 }).then(res => {
-                    console.log(res.data.data.bindOldManList);
+                    // console.log(res.data.data.bindOldManList);
                     this.form = Object.assign({}, res.data.data)
 
                 });
@@ -407,8 +407,6 @@
             },
 
             showOperationButton(status) {
-                console.log(status, typeof status);
-
                 if(this.activeName == 'approval') {
                     return status == "0" ? true : false;
                 } else {
@@ -514,7 +512,6 @@
 
         mounted() {
             this.fetchList(1);
-            this.getVillageOptions();
         }
     }
 </script>

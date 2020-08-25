@@ -94,7 +94,12 @@
                 },
                 editing: false,
                 isUpdate: false,
-                rules: {},
+                rules: {
+                    name: { required: true, message: '请输入关怀', trigger: 'blur' },
+                    content: { required: true, message: '请输入关怀内容', trigger: 'blur' },
+                    // careDate: { required: true, message: '请选择日期', trigger: 'blur' },
+                    alertSet: { required: true, message: '请选择推送设置', trigger: 'blur' },
+                },
                 page: {},
                 search: {}
             }
