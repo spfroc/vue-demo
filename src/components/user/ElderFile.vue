@@ -314,6 +314,7 @@
                     content: '',
                     imgs: '',
                     imgListArr: [],
+                    imgList: [],
                 }
             },
             edit (row) {
@@ -323,10 +324,8 @@
                 row.type = parseInt(row.type);
                 // row.oldManId = row.oldManId.toString();
                 this.editingRow = row
-                console.log(row.imgList);
                 let editImgList = [];
                 row.imgList.forEach((item) => {
-                    console.log(item);
                     editImgList.push({
                         status: item.status,
                         uid: item.uid,

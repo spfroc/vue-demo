@@ -167,7 +167,7 @@
                         </el-form-item>
                         <el-form-item label="已绑定子女" prop="">
                             <section
-                                    v-if="form.children && form.children.length > 0">
+                                    v-if="form.children && form.children.length > 0 && form.children[0].name">
                                 <el-tag v-for="child in form.children"
                                         :closable=true
                                         @close="removeChild(child)"
@@ -177,25 +177,25 @@
                         </el-form-item>
 
                         <section
-                                v-if="bindCount > 0"
-                                v-for="item in bindCount"
-                                :key="item"
-                                :label="item"
-                                :value="item">
+                                v-if="form.children.length > 0"
+                                v-for="(item, index) in form.children"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
                             <el-form-item label="子女" label-width="100px">
                                 <el-autocomplete
-                                        v-model="childMobile"
+                                        v-model="form.children[index].name"
                                         :fetch-suggestions="searchChildren"
-                                        placeholder="子女手机号"
-                                        @select="childSelected"
-                                        value-key="name"
+                                        placeholder="选择子女"
+                                        @select="childSelected(item, index)"
+                                        value-key="mobile"
                                         value="id"
                                         :style="{width:'20%'}"
                                 ></el-autocomplete>
 
                             </el-form-item>
                             <el-form-item label="关系">
-                                <el-input :style="{width:'20%'}" v-model="childRelation"></el-input>
+                                <el-input :style="{width:'20%'}" v-model="form.children[index].relation"></el-input>
                             </el-form-item>
                         </section>
                         <el-form-item>
@@ -259,8 +259,6 @@
                     nation: '',
                     villageId: '',
                     children: [],
-                    createTime: '',
-                    updateTime: '',
                 },
                 editing: false,
                 isUpdate: false,
@@ -283,7 +281,7 @@
             searchChildren (queryString, cb) {
                 let childrenOptions = this.childrenOptions;
                 let results = queryString ? childrenOptions.filter(this.createStateFilter(queryString)) : childrenOptions;
-
+                console.log('result:', results);
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     cb(results);
@@ -293,27 +291,19 @@
             createStateFilter(queryString) {
                 return (state) => {
                     console.log(state);
-                    return (state.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                    return (state.mobile.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            childSelected (item) {
-                // console.log(item);
-                let bindChild = this.form.children.filter(this.bindChildrenFilter(item))
-                console.log(bindChild);
-                if(bindChild.length > 0) {
-                    this.$message({
-                        message: '已绑定',
-                        type: 'error'
-                    });
-                } else {
-                    this.form.children.push({
-                        id: item.id,
-                        name: item.name,
-                        relation: this.childRelation ? this.childRelation : '母子',
-                    })
+            childSelected (item, index) {
+                console.log('item',item);
+                console.log('index',index);
+                // let bindChild = this.form.children.filter(this.bindChildrenFilter(item))
+                this.form.children[index] = {
+                    id: item.id,
+                    name: item.name,
+                    relation: this.childRelation ? this.childRelation : '母子',
                 }
-                this.childMobile = '';
-                this.childRelation = '母子';
+
             },
 
             bindChildrenFilter (item) {
@@ -329,7 +319,17 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    id: '',
+                    name: '',
+                    age: '',
+                    sex: '',
+                    mobile: '',
+                    idCardNumber: '',
+                    nation: '',
+                    villageId: '',
+                    children: [],
+                }
             },
             edit (row) {
                 this.editing = true
@@ -346,7 +346,11 @@
             },
 
             bindButton () {
-                this.bindCount ++;
+                this.form.children.push({
+                    id: '',
+                    name: '',
+                    relation: ''
+                });
             },
 
             genderFormatter (row, col, data) {
@@ -402,6 +406,10 @@
             },
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
+                    this.form.children = JSON.stringify(this.form.children);
+                    if(this.form.id == '') {
+                        delete this.form.id;
+                    }
                     if (valid) {
                         this.$http.post('/apis/oldMan/addOrUpdate', this.form).then(res => {
                             this.$message({
@@ -426,6 +434,7 @@
                         pageSize: 5000,
                     }
                 }).then(res => {
+                    console.log('children', res);
                     this.childrenOptions = res.data.data.list
                 });
             }

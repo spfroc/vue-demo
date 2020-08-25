@@ -157,32 +157,32 @@
                 summary: [
                     {
                         title: '老人数量',
-                        value: 50,
+                        value: 0,
                         unit: '人',
                     },
                     {
                         title: '医生数量',
-                        value: 50,
+                        value: 0,
                         unit: '人',
                     },
                     {
                         title: '驿工数量',
-                        value: 200,
+                        value: 0,
                         unit: '人',
                     },
                     {
                         title: '总注册子女用户数',
-                        value: 800,
+                        value: 0,
                         unit: '人',
                     },
                     {
                         title: '覆盖村庄数',
-                        value: 300,
+                        value: 0,
                         unit: '个',
                     },
                     {
                         title: '驿站数量',
-                        value: 300,
+                        value: 0,
                         unit: '个',
                     }
                 ],
@@ -769,6 +769,25 @@
                 });
 
             },
+
+            getSummary() {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/261698/adminApi/statistic/countNum').then((res) => {
+                    console.log(res.data.data);
+                    this.summary[0].value = res.data.data.oldManNum;
+                    this.summary[1].value = res.data.data.doctorNum;
+                    this.summary[2].value = res.data.data.socialWorkerNum;
+                    this.summary[3].value = res.data.data.childNum;
+                    this.summary[4].value = res.data.data.villageNum;
+                    this.summary[5].value = res.data.data.courierStationNum;
+                    // childNum: "844"
+                    // courierStationNum: "821"
+                    // doctorNum: "962"
+                    // oldManNum: "864"
+                    // socialWorkerNum: "336"
+                    // villageNum: "521"
+
+                });
+            }
         },
 
         mounted() {
@@ -783,6 +802,7 @@
             // this.dataStatisticsInit();
             this.doctorAverage();
             this.workerAverage();
+            this.getSummary();
 
         }
     }

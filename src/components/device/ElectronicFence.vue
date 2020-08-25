@@ -233,12 +233,13 @@
                 this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/electronic/fence', {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1
+                        // pageNum: 1
                     }, this.search)
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.list;                })
+                    this.tableData = res.data.data.list;
+                })
             },
 
             onSubmit () {
