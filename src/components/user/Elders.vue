@@ -13,7 +13,7 @@
                     <el-date-picker
                             v-model="search.createTime"
                             type="daterange"
-                            value-format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
@@ -422,6 +422,18 @@
                         })
                     } else {
                         console.log('error submit!!')
+                        if(this.isUpdate) {
+                            this.$http.get('/apis/oldMan/detail', {
+                                params: {
+                                    id: this.form.id
+                                }
+                            }).then(res => {
+                                console.log(res.data.data);
+                                this.form.children = res.data.data.children || [];
+                            });
+                        } else {
+                            this.form.children = [];
+                        }
                         return false
                     }
                 })

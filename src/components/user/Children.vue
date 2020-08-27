@@ -19,7 +19,7 @@
                             <el-date-picker
                                     v-model="search.createTime"
                                     type="daterange"
-                                    value-format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     range-separator="至"
                                     start-placeholder="开始日期"
                                     end-placeholder="结束日期">
@@ -191,12 +191,12 @@
                                             v-for="item in villageOptions"
                                             :key="item.id"
                                             :label="item.name"
-                                            :value="item.id">
+                                            :value="item.id+'_'+index">
                                     </el-option>
                                 </el-select>
-                                <el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
+                                <el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
                                     <el-option
-                                            v-for="item in oldManOptions"
+                                            v-for="item in oldManOptions[index]"
                                             :key="item.id"
                                             :label="item.name"
                                             :value="item.id">
@@ -207,8 +207,9 @@
                             <el-form-item label="亲属关系" label-width="100px">
                                 <el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
                                 <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
-
                             </el-form-item>
+                            <!--<bind-parents :index="index" :bind-old-man="form.bindOldMan" :old-man-options="oldManOptions[index]"></bind-parents>-->
+
                         </section>
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
@@ -227,11 +228,11 @@
 <script>
     import Editor from "../common/Editor"
     import { isValidPhone } from '../../util/validate'
-
+    import BindParents from '../common/BindParents'
     export default {
         name: "Children",
         components: {
-            Editor
+            Editor, BindParents
         },
 
         computed : {
@@ -291,16 +292,7 @@
                     },
                 ],
 
-                oldManOptions: [
-                    // {
-                    //     name: 'xxx',
-                    //     id: 1,
-                    // },
-                    // {
-                    //     name: 'yyy',
-                    //     id: 2,
-                    // },
-                ],
+                oldManOptions: [],
                 activeName: 'children',
                 childrenListApi: '/apis/user/list?userType=1',
                 approvalListApi: '/apis/childApply/list',
@@ -351,18 +343,22 @@
                 })
             },
 
-            getOldManOptions(villageId) {
-                console.log(villageId);
+            getOldManOptions(mixedParams) {
+                let _ = mixedParams.indexOf('_')
+                let villageId = mixedParams.substr(0, _);
+                let index = mixedParams.substr((_+1));
                 this.$http.get('/apis/oldMan/selectList', {
                     params: {
                         villageId: villageId
-                    }
+                    },
+
                 }).then((res) => {
-                    this.oldManOptions = res.data.data.list;
+                    this.oldManOptions[index] = res.data.data.list;
+                    console.log('index: ' +index);
+                    console.log(this.oldManOptions[index]);
                 })
             },
             removeOldMan (oldMan) {
-                // console.log(this.form.bindOldMan.indexOf(oldMan));
                 this.form.bindOldMan.splice(this.form.bindOldMan.indexOf(oldMan), 1);
             },
             bindButton () {
@@ -396,6 +392,7 @@
                     idCardNumber:'',
                     bindOldMan: [],
                 }
+                this.oldManOptions = [];
             },
             edit (row) {
                 this.editing = true
@@ -406,8 +403,10 @@
                         id: row.id
                     }
                 }).then(res => {
-                    console.log(res.data.data);
+
                     this.form = Object.assign({}, res.data.data)
+                    this.form.bindOldMan = res.data.data.bindOldManList;
+                    console.log(this.form.bindOldMan);
 
                 });
                 // this.form = Object.assign({}, row)
@@ -493,7 +492,7 @@
             },
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
-
+                    console.log(this.form.bindOldMan);
                     this.form.bindOldManListStr = JSON.stringify(this.form.bindOldMan);
                     this.form.bindOldMan = this.form.bindOldManListStr;
                     if(this.form.id == '') {
@@ -509,10 +508,23 @@
                             })
                             this.fetchList()
                             this.editing = false
-                            console.log(this.form);
+                            // console.log(this.form);
                         })
                     } else {
                         console.log('error submit!!')
+                        console.log(this.form.bindOldMan);
+                        if(this.isUpdate) {
+                            this.$http.get('/apis/user/detailForChild', {
+                                params: {
+                                    id: this.form.id
+                                }
+                            }).then(res => {
+                                console.log(res.data.data);
+                                this.form.bindOldMan = res.data.data.bindOldMan || [];
+                            });
+                        } else {
+                            this.form.bindOldMan = [];
+                        }
                         return false
                     }
                 })
