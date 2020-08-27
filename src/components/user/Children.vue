@@ -208,11 +208,14 @@
                                 <el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
                                 <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
                             </el-form-item>
-                            <!--<bind-parents :index="index" :bind-old-man="form.bindOldMan" :old-man-options="oldManOptions[index]"></bind-parents>-->
+                            <!--<bind-parents :index="index"-->
+                                          <!--:bind-old-man="form.bindOldMan"-->
+
+                                          <!--:village-options="villageOptions"-->
+                                          <!--:old-man-options="oldManOptions[index]"></bind-parents>-->
 
                         </section>
                         <el-form-item>
-                            <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
                             <el-button v-if="activeName=='children'" type="primary" @click="onSubmit">确定</el-button>
                             <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
                             <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>

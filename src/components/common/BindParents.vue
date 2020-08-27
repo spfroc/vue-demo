@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-form-item label="选择老人" label-width="100px">
-            <el-select @change="getOldManOptions" v-model="bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
+            <el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                 <el-option
                         v-for="item in villageOptions"
                         :key="item.id"
@@ -9,7 +9,7 @@
                         :value="item.id+'_'+index">
                 </el-option>
             </el-select>
-            <el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
+            <el-select v-model="bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
                 <el-option
                         v-for="item in oldManOptions"
                         :key="item.id"
@@ -32,7 +32,15 @@
     export default {
         name: "BindParents",
 
-        props: ['index', 'bindOldMan', 'oldManOptions'],
+        props: ['index', 'bindOldMan', 'oldManOptions', 'villageOptions'],
+
+        data() {
+            return {
+                form: {
+                    bindOldMan: [],
+                }
+            }
+        },
 
         methods: {
             getOldManOptions(mixedParams) {
@@ -52,7 +60,7 @@
             },
 
             removeOldMan (oldMan) {
-                this.form.bindOldMan.splice(this.form.bindOldMan.indexOf(oldMan), 1);
+                this.bindOldMan.splice(this.bindOldMan.indexOf(oldMan), 1);
             },
         }
     }

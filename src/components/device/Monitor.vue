@@ -37,10 +37,12 @@
                 <!--&gt;-->
                 <!--</iframe>-->
             <!--</div>-->
+            <!--<div>-->
+                <!--<CEZUIKitJS></CEZUIKitJS>-->
+            <!--</div>-->
             <div>
-                <CEZUIKitJS></CEZUIKitJS>
+                <iframe src="https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/E61621593/1.hd.live&autoplay=1&accessToken=at.33ou61w8794vrymu3x48ldi76shpl77z-1otrjucwpj-1mv6xeq-net8iobhe" frameborder="0"></iframe>
             </div>
-
         </el-col>
     </el-row>
 </template>
@@ -84,8 +86,8 @@
                 ],
                 player: null,
                 defaultProps: {
-                    children: 'children',
-                    label: 'label'
+                    children: 'cameraList',
+                    label: 'name'
                 },
                 oldManInVillage: [],
                 options: {
@@ -111,42 +113,14 @@
             }
         },
         methods: {
-
-            test() {
-
-                console.log(this.player);
-            },
-            // this.player.postMessage("play", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("stop", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("capturePicture", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("openSound", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("closeSound", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("startSave", "https://open.ys7.com/ezopen/h5/iframe")
-            // this.player.postMessage("stopSave", "https://open.ys7.com/ezopen/h5/iframe")
-
-            play() {
-                this.player.postMessage("play", "https://open.ys7.com/ezopen/h5/iframe")
-            },
-
-            stop() {
-                this.player.postMessage("stop", "https://open.ys7.com/ezopen/h5/iframe")
-            },
-
-            capturePicture() {
-                this.player.postMessage("capturePicture", "https://open.ys7.com/ezopen/h5/iframe")
-            },
-
-            showVideoZoom() {
-                console.log(21321);
-            },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
             },
 
             fetchList () {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/stage/monitor').then(res => {
-                    this.oldManInVillage = res.data.data;
+                this.$http.get('/apis/courierStation/cameraAllList').then(res => {
+                    this.oldManInVillage = res.data.data.list;
                 })
             },
 

@@ -27,14 +27,14 @@
                         <el-date-picker
                                 v-model="search.createTime"
                                 type="daterange"
-                                value-format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
                                 range-separator="至"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="" prop="type">
-                        <el-select v-model="search.type" placeholder="请选择">
+                        <el-select v-model="search.type" placeholder="请选择~">
                             <el-option
                                     v-for="item in typeMap"
                                     :key="item.value"
@@ -44,7 +44,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                     </el-form-item>
                 </el-form>
                 <section class="header-bar">
@@ -91,9 +91,9 @@
                                 hide-on-single-page
                                 background
                                 layout="total, prev, pager, next"
-                                :page-size="this.page.pageSize"
-                                :total="this.page.total"
-                                :current-page="this.search.pageNum"
+                                :page-size="page.pageSize"
+                                :total="page.total"
+                                :current-page="search.pageNum"
                                 @current-change="fetchList"
                         >
                         </el-pagination>
@@ -347,7 +347,7 @@
                             message: res.data.msg || '操作成功',
                             type: 'success'
                         })
-                        this.fetchList()
+                        this.fetchList(1)
                     })
                     this.editing = false
                     this.form = {
@@ -370,21 +370,28 @@
                 this.editing = false
             },
 
-            fetchList () {
-                if(this.search.createTime && this.search.createTime.length > 0) {
-                    this.search.timeStart = this.search.createTime[0];
-                    this.search.timeEnd = this.search.createTime[1];
-                }
-                delete this.search.createTime;
+            fetchList (currentPage) {
+                console.log(this.search);
+                this.search.pageNum = currentPage || this.search.pageNum
+                // console.log(this.search);
+                this.searchParams = this.$common.searchParams(this.search);
+                console.log(this.search);
                 this.$http.get('/apis/oldManArchives/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1
-                    }, this.search)
+                    }, this.searchParams)
                 }).then(res => {
                     this.page.total = res.data.data.total
+                    this.page.pageSize = res.data.data.pageSize
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.list;                })
+                    console.log(this.search);
+                    if(this.search.timeEnd && this.search.timeStart) {
+                        this.search.createTime[0] = this.search.timeStart;
+                        this.search.createTime[1] = this.search.timeEnd;
+                    }
+                    this.tableData = res.data.data.list;
+                })
             },
 
             onSubmit () {
@@ -414,7 +421,7 @@
                                 type: 'success'
                             })
                             this.form = {}
-                            this.fetchList()
+                            this.fetchList(1)
                             this.editing = false
                         })
                     } else {
@@ -423,11 +430,18 @@
                     }
                 })
             },
+
+            getVillageOldManTree() {
+                this.$http.get('/apis/village/villageOldManTree').then((res) => {
+                    this.oldManInVillage = res.data.data.list;
+                });
+            }
         },
 
         mounted() {
-            this.fetchList();
+            this.fetchList(1);
             this.getOldManOptions();
+            this.getVillageOldManTree()
         }
     }
 </script>

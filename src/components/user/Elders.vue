@@ -184,12 +184,13 @@
                                 :value="item.id">
                             <el-form-item label="子女" label-width="100px">
                                 <el-autocomplete
-                                        v-model="form.children[index].name"
+                                        v-model="form.children[index].id"
                                         :fetch-suggestions="searchChildren"
                                         placeholder="选择子女"
                                         @select="childSelected(item, index)"
                                         value-key="mobile"
                                         value="id"
+                                        key="id"
                                         :style="{width:'20%'}"
                                 ></el-autocomplete>
 
@@ -280,8 +281,8 @@
             },
             searchChildren (queryString, cb) {
                 let childrenOptions = this.childrenOptions;
+                console.log('children', this.childrenOptions);
                 let results = queryString ? childrenOptions.filter(this.createStateFilter(queryString)) : childrenOptions;
-                console.log('result:', results);
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
                     cb(results);
@@ -290,7 +291,6 @@
 
             createStateFilter(queryString) {
                 return (state) => {
-                    console.log(state);
                     return (state.mobile.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
@@ -303,6 +303,7 @@
                     name: item.name,
                     relation: this.childRelation ? this.childRelation : '母子',
                 }
+                console.log(this.form.children);
 
             },
 
@@ -419,7 +420,7 @@
                                 type: 'success'
                             })
                             this.form = {}
-                            this.fetchList()
+                            this.fetchList(1)
                             this.editing = false
                         })
                     } else {
