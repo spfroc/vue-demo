@@ -20,7 +20,7 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                 </el-form-item>
             </el-form>
         </section>
@@ -391,6 +391,8 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+                this.search = this.$common.searchParams(this.search);
+
                 // TODO id=1 是个接口bug
                 this.$http.get('/apis/oldMan/list', {
                     params: Object.assign({
