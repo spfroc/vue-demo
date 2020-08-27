@@ -1,7 +1,7 @@
 <template>
     <div>
-        <el-form-item label="选择老人" label-width="100px">
-            <el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
+        <el-form-item :label="label" label-width="100px">
+            <el-select @change="getOldManOptions" v-model="bindOldMan[index].villageId" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                 <el-option
                         v-for="item in villageOptions"
                         :key="item.id"
@@ -9,8 +9,10 @@
                         :value="item.id+'_'+index">
                 </el-option>
             </el-select>
+
             <el-select v-model="bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
                 <el-option
+                        v-if="oldManOptions"
                         v-for="item in oldManOptions"
                         :key="item.id"
                         :label="item.name"
@@ -21,27 +23,27 @@
 
         <el-form-item label="亲属关系" label-width="100px">
             <el-input :style="{width:'20%'}" v-model="bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
-            <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
+            <el-button @click.prevent="removeOldMan(index)">删除</el-button>
         </el-form-item>
+
     </div>
-
-
 </template>
 
 <script>
     export default {
         name: "BindParents",
-
-        props: ['index', 'bindOldMan', 'oldManOptions', 'villageOptions'],
-
+        props: ['bindOldMan', 'index', 'villageOptions'],
         data() {
             return {
-                form: {
-                    bindOldMan: [],
-                }
+                oldManOptions: [],
             }
         },
 
+        computed: {
+            label() {
+                return '选择老人'
+            }
+        },
         methods: {
             getOldManOptions(mixedParams) {
                 let _ = mixedParams.indexOf('_')
@@ -53,15 +55,21 @@
                     },
 
                 }).then((res) => {
-                    this.oldManOptions[index] = res.data.data.list;
+                    this.oldManOptions = res.data.data.list;
                     console.log('index: ' +index);
-                    console.log(this.oldManOptions[index]);
+                    console.log(this.oldManOptions);
                 })
             },
 
-            removeOldMan (oldMan) {
-                this.bindOldMan.splice(this.bindOldMan.indexOf(oldMan), 1);
+            removeOldMan (index) {
+                this.bindOldMan.splice(index, 1);
             },
+        },
+
+        mounted() {
+            console.log(this.bindOldMan);
+            console.log(this.index);
+            console.log(this.villageOptions);
         }
     }
 </script>

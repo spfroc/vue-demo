@@ -185,35 +185,38 @@
                             :label="index"
                             :value="oldMan.oldManId"
                         >
-                            <el-form-item label="选择老人" label-width="100px">
-                                <el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
-                                    <el-option
-                                            v-for="item in villageOptions"
-                                            :key="item.id"
-                                            :label="item.name"
-                                            :value="item.id+'_'+index">
-                                    </el-option>
-                                </el-select>
-                                <el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
-                                    <el-option
-                                            v-for="item in oldManOptions[index]"
-                                            :key="item.id"
-                                            :label="item.name"
-                                            :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
+                            <!--<el-form-item label="选择老人" label-width="100px">-->
+                                <!--<el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">-->
+                                    <!--<el-option-->
+                                            <!--v-for="item in villageOptions"-->
+                                            <!--:key="item.id"-->
+                                            <!--:label="item.name"-->
+                                            <!--:value="item.id+'_'+index">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                                <!--<el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">-->
+                                    <!--<el-option-->
+                                            <!--v-for="item in oldManOptions[index]"-->
+                                            <!--:key="item.id"-->
+                                            <!--:label="item.name"-->
+                                            <!--:value="item.id">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
 
-                            <el-form-item label="亲属关系" label-width="100px">
-                                <el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
-                                <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
-                            </el-form-item>
+                            <!--<el-form-item label="亲属关系" label-width="100px">-->
+                                <!--<el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>-->
+                                <!--<el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>-->
+                            <!--</el-form-item>-->
                             <!--<bind-parents :index="index"-->
                                           <!--:bind-old-man="form.bindOldMan"-->
-
+                                          <!--:old-man="oldMan"-->
                                           <!--:village-options="villageOptions"-->
-                                          <!--:old-man-options="oldManOptions[index]"></bind-parents>-->
-
+                                          <!--:old-man-options="oldManOptions"></bind-parents>-->
+                            <bind-parents
+                                    :village-options="villageOptions"
+                                    :index="index"
+                                    :bind-old-man="form.bindOldMan"></bind-parents>
                         </section>
                         <el-form-item>
                             <el-button v-if="activeName=='children'" type="primary" @click="onSubmit">确定</el-button>
@@ -317,7 +320,12 @@
                     userType: 1,
                     mobile: '',
                     idCardNumber:'',
-                    bindOldMan: [],
+                    bindOldMan: [
+                        {
+                            villageId: '',
+
+                        }
+                    ],
                 },
                 editing: false,
                 isUpdate: false,
@@ -341,7 +349,7 @@
         methods: {
             getVillageOptions () {
                 this.$http.get('/apis/village/selectList').then((res) => {
-                    // console.log(res.data.data);
+                    console.log(res.data.data);
                     this.villageOptions = res.data.data.list
                 })
             },
@@ -367,7 +375,7 @@
             bindButton () {
                 this.form.bindOldMan.push({
                     id:'',
-                    name:'',
+                    // name:'',
                     relation: '',
                 });
                 this.getVillageOptions();
@@ -382,7 +390,12 @@
                 this.fetchList(1);
                 // console.log(tab, event);
             },
+
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
             add () {
+                // this.resetForm('form')
                 this.editing = true
                 this.isUpdate = false
                 this.form = {
@@ -408,7 +421,7 @@
                 }).then(res => {
 
                     this.form = Object.assign({}, res.data.data)
-                    this.form.bindOldMan = res.data.data.bindOldManList;
+                    // this.form.bindOldMan = res.data.data.bindOldManList;
                     console.log(this.form.bindOldMan);
 
                 });
@@ -448,6 +461,7 @@
 
             cancel () {
                 this.editing = false
+                // this.$refs['form'].resetFields();
                 this.form = {
                     id: '',
                     name: '',
