@@ -168,8 +168,8 @@
 
                         <el-form-item label="绑定老人">
                             <section
-                                v-if="form.bindOldManList && form.bindOldManList.length && form.bindOldManList[0].oldManId > 0">
-                                <el-tag v-for="oldMan in form.bindOldManList"
+                                v-if="form.bindOldMan && form.bindOldMan.length && form.bindOldMan[0].oldManId > 0">
+                                <el-tag v-for="oldMan in form.bindOldMan"
                                         :closable=true
                                         @close="removeOldMan(oldMan)"
                                         v-bind:key="oldMan.oldManId">{{oldMan.oldManId}}
@@ -179,14 +179,14 @@
                         </el-form-item>
 
                         <section
-                            v-if="form.bindOldManList.length > 0 && activeName == 'children'"
-                            v-for="(oldMan, index) in form.bindOldManList"
+                            v-if="form.bindOldMan.length > 0 && activeName == 'children'"
+                            v-for="(oldMan, index) in form.bindOldMan"
                             :key="index"
                             :label="index"
                             :value="oldMan.oldManId"
                         >
                             <el-form-item label="选择老人" label-width="100px">
-                                <el-select @change="getOldManOptions" v-model="form.bindOldManList[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
+                                <el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">
                                     <el-option
                                             v-for="item in villageOptions"
                                             :key="item.id"
@@ -194,7 +194,7 @@
                                             :value="item.id">
                                     </el-option>
                                 </el-select>
-                                <el-select v-model="form.bindOldManList[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
+                                <el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
                                     <el-option
                                             v-for="item in oldManOptions"
                                             :key="item.id"
@@ -205,7 +205,7 @@
                             </el-form-item>
 
                             <el-form-item label="亲属关系" label-width="100px">
-                                <el-input :style="{width:'20%'}" v-model="form.bindOldManList[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
+                                <el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>
                                 <el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>
 
                             </el-form-item>
@@ -226,6 +226,7 @@
 
 <script>
     import Editor from "../common/Editor"
+    import { isValidPhone } from '../../util/validate'
 
     export default {
         name: "Children",
@@ -321,7 +322,7 @@
                     userType: 1,
                     mobile: '',
                     idCardNumber:'',
-                    bindOldManList: [],
+                    bindOldMan: [],
                 },
                 editing: false,
                 isUpdate: false,
@@ -330,7 +331,14 @@
                     createTime: ''
                 },
                 rules: {
-
+                    name: { required: true, message: '请输子女姓名', trigger: 'blur' },
+                    mobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+                    sex: { required: true, message: '请选择性别', trigger: 'blur' },
+                    homeAddress: { required: true, message: '请输入家庭住址', trigger: 'blur' },
+                    idCardNumber: { required: true, message: '请输入身份证号', trigger: 'blur' },
                 }
             }
 
@@ -354,11 +362,11 @@
                 })
             },
             removeOldMan (oldMan) {
-                // console.log(this.form.bindOldManList.indexOf(oldMan));
-                this.form.bindOldManList.splice(this.form.bindOldManList.indexOf(oldMan), 1);
+                // console.log(this.form.bindOldMan.indexOf(oldMan));
+                this.form.bindOldMan.splice(this.form.bindOldMan.indexOf(oldMan), 1);
             },
             bindButton () {
-                this.form.bindOldManList.push({
+                this.form.bindOldMan.push({
                     id:'',
                     name:'',
                     relation: '',
@@ -386,7 +394,7 @@
                     userType: 1,
                     mobile: '',
                     idCardNumber:'',
-                    bindOldManList: [],
+                    bindOldMan: [],
                 }
             },
             edit (row) {
@@ -398,7 +406,7 @@
                         id: row.id
                     }
                 }).then(res => {
-                    // console.log(res.data.data.bindOldManList);
+                    console.log(res.data.data);
                     this.form = Object.assign({}, res.data.data)
 
                 });
@@ -446,7 +454,7 @@
                     userType: 1,
                     mobile: '',
                     idCardNumber:'',
-                    bindOldManList: [],
+                    bindOldMan: [],
                 }
             },
 
@@ -486,10 +494,11 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
 
-                    this.form.bindOldManListStr = JSON.stringify(this.form.bindOldManList);
-                    this.form.bindOldManList = this.form.bindOldManListStr;
+                    this.form.bindOldManListStr = JSON.stringify(this.form.bindOldMan);
+                    this.form.bindOldMan = this.form.bindOldManListStr;
                     if(this.form.id == '') {
                         delete this.form.id;
+                        delete this.form.bindOldManListStr;
                     }
                     if (valid) {
                         this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {

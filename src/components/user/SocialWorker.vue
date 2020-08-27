@@ -193,7 +193,7 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.$http.get('/apis/user/detailForChild', {
+                this.$http.get('/apis/user/detail', {
                     params: {
                         id: row.id
                     }

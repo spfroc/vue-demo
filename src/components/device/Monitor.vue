@@ -26,8 +26,20 @@
                 <!--<source src="http://192.168.1.6:8080/video" type="video/ogg">-->
                 <!--您的浏览器不支持Video标签。-->
             <!--</video>-->
-
-            <img src="http://192.168.1.6:8080/video" alt="" width="200px">
+            <!--<div>-->
+                <!--<iframe-->
+                        <!--src="https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/E61621593/3.hd.live&autoplay=1&audio=0&accessToken=at.1ub4ksgo1puref4mdu8tzb1bbc99xr67-60skir0pat-07b4ymg-17lwnkvan&templete=0"-->
+                        <!--width="600"-->
+                        <!--height="400"-->
+                        <!--id="ysOpenDevice"-->
+                        <!--allowfullscreen-->
+                        <!--@dblclick="test"-->
+                <!--&gt;-->
+                <!--</iframe>-->
+            <!--</div>-->
+            <div>
+                <CEZUIKitJS></CEZUIKitJS>
+            </div>
 
         </el-col>
     </el-row>
@@ -35,17 +47,42 @@
 
 <script>
 
-    import VideoPlayer from "../common/VideoPlayer";
+    // import VideoPlayer from "../common/VideoPlayer";
+    import CustomVideo from "../common/CustomVideo"
+    import CEZUIKitJS from '../common/CEZUIKitJS'
     export default {
         name: "Monitor",
         components: {
-            VideoPlayer
+            CustomVideo, CEZUIKitJS
         },
         data () {
             return {
                 editorOption: {
                     placeholder: ''
                 },
+
+                devices: [
+                    {
+                        channel: '3',
+                        name: 'E61621593',
+                    },
+
+                    {
+                        channel: '3',
+                        name: 'E61621593',
+                    },
+
+                    {
+                        channel: '5',
+                        name: 'E61621593',
+                    },
+
+                    {
+                        channel: '5',
+                        name: 'E61621593',
+                    },
+                ],
+                player: null,
                 defaultProps: {
                     children: 'children',
                     label: 'label'
@@ -74,6 +111,34 @@
             }
         },
         methods: {
+
+            test() {
+
+                console.log(this.player);
+            },
+            // this.player.postMessage("play", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("stop", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("capturePicture", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("openSound", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("closeSound", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("startSave", "https://open.ys7.com/ezopen/h5/iframe")
+            // this.player.postMessage("stopSave", "https://open.ys7.com/ezopen/h5/iframe")
+
+            play() {
+                this.player.postMessage("play", "https://open.ys7.com/ezopen/h5/iframe")
+            },
+
+            stop() {
+                this.player.postMessage("stop", "https://open.ys7.com/ezopen/h5/iframe")
+            },
+
+            capturePicture() {
+                this.player.postMessage("capturePicture", "https://open.ys7.com/ezopen/h5/iframe")
+            },
+
+            showVideoZoom() {
+                console.log(21321);
+            },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
@@ -89,6 +154,7 @@
 
         mounted() {
             this.fetchList();
+
             // this.$refs['playerObj'].videoSrc = 'rtmp://192.168.1.6:8080/onvif/device_service'
             // this.$refs['playerObj'].playerOptions.sources[0].src = 'rtmp://rtmp://192.168.1.6:8080/onvif/device_service'
         }
