@@ -179,6 +179,7 @@
                         </el-form-item>
 
                         <section
+                            v-show="showRubbish"
                             v-if="form.bindOldMan.length > 0 && activeName == 'children'"
                             v-for="(oldMan, index) in form.bindOldMan"
                             :key="index"
@@ -245,6 +246,7 @@
         },
         data() {
             return {
+                showRubbish: true,
                 bindOldMan: {
                     id: '',
                     relation: '',

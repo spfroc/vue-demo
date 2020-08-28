@@ -163,7 +163,7 @@
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="" v-if="isUpdate">
-                            <el-button @click="getTrack">老人行动轨迹</el-button>
+                            <el-button @click="getTrack(form.id)">老人行动轨迹</el-button>
                         </el-form-item>
 
                         <el-form-item v-if="showTrack && isUpdate">
@@ -189,17 +189,24 @@
                                 :label="item.name"
                                 :value="item.id">
                             <el-form-item label="子女" label-width="100px">
-                                <el-autocomplete
-                                        v-model="form.children[index].id"
-                                        :fetch-suggestions="searchChildren"
-                                        placeholder="选择子女"
-                                        @select="childSelected(item, index)"
-                                        value-key="mobile"
-                                        value="id"
-                                        key="id"
-                                        :style="{width:'20%'}"
-                                ></el-autocomplete>
-
+                                <!--<el-autocomplete-->
+                                        <!--v-model="form.children[index].id"-->
+                                        <!--:fetch-suggestions="searchChildren"-->
+                                        <!--placeholder="选择子女"-->
+                                        <!--@select="childSelected"-->
+                                        <!--value-key="mobile"-->
+                                        <!--value="id"-->
+                                        <!--key="id"-->
+                                        <!--:style="{width:'20%'}"-->
+                                <!--&gt;</el-autocomplete>-->
+                                <el-select v-model="form.children[index].id" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in childrenOptions"
+                                            :key="item.name"
+                                            :label="item.mobile"
+                                            :value="item.id">
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="关系">
                                 <el-input :style="{width:'20%'}" v-model="form.children[index].relation"></el-input>
@@ -280,20 +287,20 @@
                     mobile: '',
                 },
                 rules: {
-                    name: {required: true, message: '请输入老人姓名'},
-                    sex: {required: true, message: '请选择性别'},
+                    name: {required: true, message: '请输入老人姓名' , trigger: 'blur'},
+                    sex: {required: true, message: '请选择性别', trigger: 'blur'},
                     mobile: [
-                        {required: true, message: '请输入老人手机号'},
+                        {required: true, message: '请输入老人手机号', trigger: 'blur'},
                         { validator: isValidPhone, trigger: 'blur' }
                     ],
-                    idCardNumber: {required: true, message: '请输入身份证号'},
-                    nation: {required: true, message: '请输入民族'},
+                    idCardNumber: {required: true, message: '请输入身份证号', trigger: 'blur'},
+                    nation: {required: true, message: '请输入民族', trigger: 'blur'},
                     age: [
-                        {required: true, message: '请输入年龄'},
+                        {required: true, message: '请输入年龄', trigger: 'blur'},
                         { validator: checkNumber, trigger: 'blur' }
                     ],
-                    villageId: {required: true, message: '请选择村庄'},
-                    homeAddress: {required: true, message: '请输入家庭住址'}
+                    villageId: {required: true, message: '请选择村庄', trigger: 'blur'},
+                    homeAddress: {required: true, message: '请输入家庭住址', trigger: 'blur'}
                 },
                 markers: [
                     {
@@ -376,7 +383,20 @@
                 // console.log(polyline);
                 this.mapInstance.add([polyline]);
             },
-            getTrack() {
+
+            getMarkers(oldManId) {
+                this.$http.get('/apis/badge/oldManTrail', {
+                    params: {
+                        oldManId: oldManId
+                    }
+                }).then((res) => {
+                    // this.markers =
+                    console.log(res);
+                });
+            },
+
+            getTrack(oldManId) {
+                this.getMarkers(oldManId)
                 this.showTrack = !this.showTrack;
                 if(this.showTrack == true) {
                     this.mapInit()
@@ -387,30 +407,25 @@
             },
             searchChildren (queryString, cb) {
                 let childrenOptions = this.childrenOptions;
-                console.log('children', this.childrenOptions);
                 let results = queryString ? childrenOptions.filter(this.createStateFilter(queryString)) : childrenOptions;
-                clearTimeout(this.timeout);
-                this.timeout = setTimeout(() => {
-                    cb(results);
-                }, 500);
+                cb(results);
             },
 
             createStateFilter(queryString) {
                 return (state) => {
+                    console.log(state, queryString);
                     return (state.mobile.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
                 };
             },
-            childSelected (item, index) {
-                console.log('item',item);
-                console.log('index',index);
+            childSelected (item) {
                 // let bindChild = this.form.children.filter(this.bindChildrenFilter(item))
-                this.form.children[index] = {
-                    id: item.id,
-                    name: item.name,
-                    relation: this.childRelation ? this.childRelation : '母子',
-                }
-                console.log(this.form.children);
 
+                console.log('selected', item);
+                // this.form.children[index] = {
+                //     id: item.id,
+                //     name: item.name,
+                //     relation: this.childRelation ? this.childRelation : '母子',
+                // }
             },
 
             bindChildrenFilter (item) {
