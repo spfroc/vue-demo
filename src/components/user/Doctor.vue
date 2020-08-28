@@ -132,6 +132,8 @@
 </template>
 
 <script>
+    import { isValidPhone } from '../../util/validate'
+    import { checkNumber } from '../../util/validate'
     export default {
         name: "Doctor",
         data () {
@@ -170,7 +172,18 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-
+                    name: { required: true, message: '请输子女姓名', trigger: 'blur' },
+                    mobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+                    age: [
+                        { required: true, message: '请输入年龄', trigger: 'blur' },
+                        { validator: checkNumber, trigger: 'blur' }
+                    ],
+                    sex: { required: true, message: '请选择性别', trigger: 'blur' },
+                    // homeAddress: { required: true, message: '请输入家庭住址', trigger: 'blur' },
+                    idCardNumber: { required: true, message: '请输入身份证号', trigger: 'blur' },
                 }
 
             };
