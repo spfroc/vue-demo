@@ -112,7 +112,9 @@
                 tableData: [],
                 editing: false,
                 isUpdate: false,
-                rules: {},
+                rules: {
+                    imei: {required: true, message: '请输入imei号'}
+                },
                 page: {},
                 search: {},
                 editingRow: {},
@@ -201,7 +203,6 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.form.roleId = this.form.roleName
                         this.$http.post('/apis/badge/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',
