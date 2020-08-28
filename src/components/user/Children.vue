@@ -185,34 +185,6 @@
                             :label="index"
                             :value="oldMan.oldManId"
                         >
-                            <!--<el-form-item label="选择老人" label-width="100px">-->
-                                <!--<el-select @change="getOldManOptions" v-model="form.bindOldMan[index].name" :prop="'oldMan.' + index + '.villageId'" placeholder="请选择">-->
-                                    <!--<el-option-->
-                                            <!--v-for="item in villageOptions"-->
-                                            <!--:key="item.id"-->
-                                            <!--:label="item.name"-->
-                                            <!--:value="item.id+'_'+index">-->
-                                    <!--</el-option>-->
-                                <!--</el-select>-->
-                                <!--<el-select v-model="form.bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">-->
-                                    <!--<el-option-->
-                                            <!--v-for="item in oldManOptions[index]"-->
-                                            <!--:key="item.id"-->
-                                            <!--:label="item.name"-->
-                                            <!--:value="item.id">-->
-                                    <!--</el-option>-->
-                                <!--</el-select>-->
-                            <!--</el-form-item>-->
-
-                            <!--<el-form-item label="亲属关系" label-width="100px">-->
-                                <!--<el-input :style="{width:'20%'}" v-model="form.bindOldMan[index].relation" :prop="'oldMan.' + index + '.relation'"></el-input>-->
-                                <!--<el-button @click.prevent="removeOldMan(oldMan)">删除</el-button>-->
-                            <!--</el-form-item>-->
-                            <!--<bind-parents :index="index"-->
-                                          <!--:bind-old-man="form.bindOldMan"-->
-                                          <!--:old-man="oldMan"-->
-                                          <!--:village-options="villageOptions"-->
-                                          <!--:old-man-options="oldManOptions"></bind-parents>-->
                             <bind-parents
                                     :village-options="villageOptions"
                                     :index="index"
@@ -331,7 +303,7 @@
                 isUpdate: false,
                 search: {
                     name: '',
-                    createTime: ''
+                    createTime: []
                 },
                 rules: {
                     name: { required: true, message: '请输子女姓名', trigger: 'blur' },
@@ -422,7 +394,6 @@
 
                     this.form = Object.assign({}, res.data.data)
                     // this.form.bindOldMan = res.data.data.bindOldManList;
-                    console.log(this.form.bindOldMan);
 
                 });
                 // this.form = Object.assign({}, row)
@@ -477,19 +448,26 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+
                 this.search = this.$common.searchParams(this.search);
+                console.log('old',this.search);
+
                 // TODO id=1 是个接口bug
                 this.$http.get(this.currentListApi, {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1,
+                        pageNum: this.search.pageNum,
                     }, this.search)
-                }, {
-                    params: this.search
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
+                    console.log('new',this.search);
                 })
             },
 
@@ -523,7 +501,7 @@
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
-                            this.fetchList()
+                            this.fetchList(this.search.pageNum)
                             this.editing = false
                             // console.log(this.form);
                         })

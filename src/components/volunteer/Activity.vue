@@ -6,7 +6,7 @@
                     <el-date-picker
                             v-model="search.createTime"
                             type="daterange"
-                            value-format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd HH:mm:ss"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
@@ -191,7 +191,7 @@
 
             fetchList (currentPage) {
                 console.log(currentPage);
-                this.search.pageNum = currentPage || 1
+                this.search.pageNum = currentPage || this.search.pageNum
                 this.search = this.$common.searchParams(this.search);
                 // TODO id=1 是个接口bug
                 this.$http.get('/apis/volunteerActivity/list', {
@@ -206,6 +206,11 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
             },
             onSubmit () {

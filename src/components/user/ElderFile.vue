@@ -210,7 +210,9 @@
                 isUpdate: false,
                 rules: {},
                 page: {},
-                search: {},
+                search: {
+                    pageNum: 1
+                },
                 editingRow: {},
                 leftForm: {
                     oldManName: '',
@@ -374,21 +376,22 @@
                 console.log(this.search);
                 this.search.pageNum = currentPage || this.search.pageNum
                 // console.log(this.search);
-                this.searchParams = this.$common.searchParams(this.search);
+                this.search = this.$common.searchParams(this.search);
                 console.log(this.search);
                 this.$http.get('/apis/oldManArchives/list', {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1
-                    }, this.searchParams)
+                        pageNum: this.search.pageNum
+                    }, this.search)
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.page.pageSize = res.data.data.pageSize
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     console.log(this.search);
-                    if(this.search.timeEnd && this.search.timeStart) {
-                        this.search.createTime[0] = this.search.timeStart;
-                        this.search.createTime[1] = this.search.timeEnd;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
                     }
                     this.tableData = res.data.data.list;
                 })

@@ -5,7 +5,7 @@
                 <el-date-picker
                         v-model="search.createTime"
                         type="daterange"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
@@ -230,6 +230,7 @@
             },
 
             fetchList () {
+                this.search = this.$common.searchParams(this.search);
                 this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/electronic/fence', {
                     params: Object.assign({
                         pageSize: 10,
@@ -239,6 +240,11 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
             },
 

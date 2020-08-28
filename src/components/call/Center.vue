@@ -19,7 +19,7 @@
                         v-model="searchForm.createTime"
                         type="daterange"
                         format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         range-separator="至"
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
@@ -681,6 +681,11 @@
                     this.secondTab.historyWorkOrderList = res.data.data.list;
                     this.secondTab.historyWorkOrderPage.total = res.data.data.total;
                     this.secondTab.historyWorkOrderPage.pageSize = res.data.data.pageSize;
+                    if(this.searchForm.timeStart && this.searchForm.timeEnd) {
+                        this.searchForm.createTime = [];
+                        this.searchForm.createTime.push(this.searchForm.timeStart);
+                        this.searchForm.createTime.push(this.searchForm.timeEnd);
+                    }
                     // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
                 });
             },
@@ -697,6 +702,11 @@
                     this.thirdTab.historyReceptionList = res.data.data.list;
                     this.thirdTab.historyReceptionPage.total = res.data.data.total;
                     this.thirdTab.historyReceptionPage.pageSize = res.data.data.pageSize;
+                    if(this.searchForm.timeStart && this.searchForm.timeEnd) {
+                        this.searchForm.createTime = [];
+                        this.searchForm.createTime.push(this.searchForm.timeStart);
+                        this.searchForm.createTime.push(this.searchForm.timeEnd);
+                    }
                     // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
                 });
             },

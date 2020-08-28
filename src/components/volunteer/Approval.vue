@@ -23,7 +23,7 @@
                             <el-date-picker
                                     v-model="search.createTime"
                                     type="daterange"
-                                    value-format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     range-separator="至"
                                     start-placeholder="开始日期"
                                     end-placeholder="结束日期">
@@ -324,7 +324,7 @@
                 this.$http.get(this.currentListApi, {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1,
+                        pageNum: this.search.pageNum,
                     }, this.search)
                 }, {
                     params: this.search
@@ -332,6 +332,11 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
             },
 

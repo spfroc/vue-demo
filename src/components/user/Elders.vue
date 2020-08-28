@@ -405,6 +405,11 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
             },
             onSubmit () {

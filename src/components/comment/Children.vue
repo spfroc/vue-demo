@@ -205,6 +205,7 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+                this.search = this.$common.searchParams(this.search);
                 // TODO id=1 是个接口bug
                 this.$http.get('/apis/childEvaluate/list', {
                     params: Object.assign({
@@ -218,6 +219,11 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
             },
 
