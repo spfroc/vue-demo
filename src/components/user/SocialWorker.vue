@@ -116,7 +116,17 @@
                         <el-form-item label="家庭住址" prop="homeAddress">
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
-                        <el-form-item label="权限是否开启登录权限" prop="homeAddress">
+                        <el-form-item label="公司" prop="companyId">
+                            <el-select v-model="form.companyId" placeholder="请选择">
+                                <el-option
+                                        v-for="item in companyOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="权限是否开启登录权限" prop="canLogin">
                             <el-radio v-model="form.canLogin" label=1>是</el-radio>
                             <el-radio v-model="form.canLogin" label=0>否</el-radio>
                         </el-form-item>
@@ -133,6 +143,9 @@
 </template>
 
 <script>
+    import { isValidPhone } from '../../util/validate'
+    import { checkNumber } from '../../util/validate'
+
     export default {
         name: "SocialWorker",
         data () {
@@ -152,7 +165,9 @@
                     age: '',
                     canLogin: '',
                     userType: 3,
+                    companyId: '',
                 },
+                companyOptions: [],
                 page: {
                     pageSize: 10
                 },
@@ -171,14 +186,29 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-
+                    name: { required: true, message: '请输子女姓名', trigger: 'blur' },
+                    mobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+                    age: [
+                        { required: true, message: '请输入年龄', trigger: 'blur' },
+                        { validator: checkNumber, trigger: 'blur' }
+                    ],
+                    sex: { required: true, message: '请选择性别', trigger: 'blur' },
+                    // homeAddress: { required: true, message: '请输入家庭住址', trigger: 'blur' },
+                    idCardNumber: { required: true, message: '请输入身份证号', trigger: 'blur' },
                 }
 
             };
         },
 
         methods: {
-
+            getCompanyOptions() {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company/options').then((res) => {
+                    this.companyOptions = res.data.data.list;
+                });
+            },
             genderFormatter (row, col, data) {
                 return row.sex == 1 ? '男' : '女';
             },
@@ -281,6 +311,7 @@
 
         mounted() {
             this.fetchList(1);
+            this.getCompanyOptions()
         }
     }
 </script>
