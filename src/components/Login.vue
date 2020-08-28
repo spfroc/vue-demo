@@ -57,7 +57,9 @@
               this.$message.success('登录成功');
               localStorage.setItem('auth-user-info', JSON.stringify(res.data));
               localStorage.setItem('auth-token', res.data.data.token);
-              localStorage.setItem('auth-username', res.data.data.userName);
+              localStorage.setItem('auth-username', res.data.data.userName)
+              localStorage.setItem('roleId', res.data.data.roleId)
+              console.log(res.data.data);
               this.$router.push('/');
             }).catch(reason => {
               console.log(reason);

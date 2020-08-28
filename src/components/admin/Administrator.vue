@@ -63,35 +63,12 @@
             <el-form-item label="角色" prop="roleId">
               <el-select v-model="form.roleId" :clearable="true" placeholder="请选择">
                 <el-option
-                  label="超级管理员"
-                  :value=1>
-                </el-option>
-                <el-option
-                  label="子女"
-                  :value=2>
-                </el-option>
-                <el-option
-                  label="社工"
-                  :value=3>
-                </el-option>
-                <el-option
-                  label="医生"
-                  :value=4>
-                </el-option>
-                <el-option
-                  label="村干部"
-                  :value=5>
+                v-for="item in this.roleOptions"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
                 </el-option>
               </el-select>
-
-              <!--<el-select v-model="form.roleId" placeholder="请选择">-->
-                <!--<el-option-->
-                <!--v-for="item in this.roleOptions"-->
-                <!--:key="item.id"-->
-                <!--:label="item.name"-->
-                <!--:value="item.id">-->
-                <!--</el-option>-->
-              <!--</el-select>-->
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -209,7 +186,7 @@
 
       getRoleList() {
         this.$http.get('/apis/manager/roleList').then(res => {
-          console.log(res);
+          this.roleOptions = res.data.data.list;
         });
       },
       cancel () {
