@@ -162,8 +162,14 @@
                         <el-form-item label="家庭住址" prop="homeAddress">
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
-                        <el-form-item label="" prop="">
-                            <el-button>老人行动轨迹</el-button>
+                        <el-form-item label="" prop="" v-if="isUpdate">
+                            <el-button @click="getTrack">老人行动轨迹</el-button>
+                        </el-form-item>
+
+                        <el-form-item v-if="showTrack && isUpdate">
+                            <section id="a-map-container" style="width:100%; height: 400px">
+
+                            </section>
                         </el-form-item>
                         <el-form-item label="已绑定子女" prop="">
                             <section
@@ -213,11 +219,13 @@
 <script>
     import Editor from "../common/Editor"
     import SingleImageUpload from "../common/SingleImageUpload"
+    import Amap from 'vue-amap';
+    import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
     export default {
         name: "Elders",
         components: {
-            Editor, SingleImageUpload
+            Editor, SingleImageUpload, Amap, lazyAMapApiLoaderInstance
         },
 
         computed : {
@@ -271,11 +279,93 @@
                 rules: {
 
                 },
+                markers: [
+                    {
+                        lng: 116.8,
+                        lat: 37.87816
+                    },
+                    {
+                        lng: 115.907,
+                        lat: 36.4542
+                    },
+                    {
+                        lng: 117.58448,
+                        lat: 36.96
+                    },
+                    {
+                        lng: 115.3,
+                        lat: 36.4453
+                    },
+                    {
+                        lng: 116.9,
+                        lat: 37.4269
+                    },
+                    {
+                        lng: 116.1588,
+                        lat: 36.5
+                    }
+                ],
                 villageOptions: [],
+                showTrack: false
             }
 
         },
         methods: {
+            mapInit () {
+                Amap.initAMapApiLoader({
+                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.CircleMarker', 'AMap.Marker'],
+                    v: '1.4.4'
+                });
+
+                lazyAMapApiLoaderInstance.load().then(() => {
+                    this.mapInstance = new AMap.Map('a-map-container', {
+                        // center: new AMap.LngLat(this.map.lng, this.map.lat),
+                        zoom: 14,
+                    });
+                    this.mapInstance.on('mapmove', this.centerChanged)
+                    if(this.markers && this.markers.length > 0) {
+                        this.markersInit(AMap);
+                        // console.log(newCenter);
+                    }
+                });
+
+            },
+
+            markersInit(AMap) {
+                let path = []
+                this.markers.forEach(marker => {
+                    // console.log(marker);
+                    path.push(new AMap.LngLat(marker.lng, marker.lat));
+                    new AMap.CircleMarker({
+                        map: this.mapInstance,
+                        center: new AMap.LngLat(marker.lng, marker.lat),
+                        radius: 10,
+                        strokeColor: '#4169E1',
+                        fillColor: '#4169E1',
+                        zIndex: 55,
+                    })
+                });
+                let newCenter = this.mapInstance.setFitView();
+                // console.log(newCenter);
+                let polyline = new AMap.Polyline({
+                    path: path,
+                    strokeColor: '#EEC900',
+                    fillColor: '#EEC900',
+                    lineCap: 'round',
+                    lineJoin: 'round',
+                    showDir: true,
+                    strokeWeight: 5
+                });
+                // console.log(polyline);
+                this.mapInstance.add([polyline]);
+            },
+            getTrack() {
+                this.showTrack = !this.showTrack;
+                if(this.showTrack == true) {
+                    this.mapInit()
+                }
+            },
             picUploaded(res, file) {
                 this.form.headImg = res.pic
             },
@@ -320,6 +410,7 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
+                this.showTrack = false
                 this.form = {
                     id: '',
                     name: '',

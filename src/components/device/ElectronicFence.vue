@@ -225,7 +225,6 @@
             },
             cancel () {
                 this.editing = false
-                console.log(this.mapInstance);
                 this.mapInstance.destroy();
             },
 
