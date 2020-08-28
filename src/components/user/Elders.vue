@@ -221,6 +221,8 @@
     import SingleImageUpload from "../common/SingleImageUpload"
     import Amap from 'vue-amap';
     import { lazyAMapApiLoaderInstance } from 'vue-amap';
+    import { isValidPhone } from '../../util/validate'
+    import { checkNumber } from '../../util/validate'
 
     export default {
         name: "Elders",
@@ -267,6 +269,7 @@
                     idCardNumber: '',
                     nation: '',
                     villageId: '',
+                    homeAddress: '',
                     children: [],
                 },
                 editing: false,
@@ -277,7 +280,20 @@
                     mobile: '',
                 },
                 rules: {
-
+                    name: {required: true, message: '请输入老人姓名'},
+                    sex: {required: true, message: '请选择性别'},
+                    mobile: [
+                        {required: true, message: '请输入老人手机号'},
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+                    idCardNumber: {required: true, message: '请输入身份证号'},
+                    nation: {required: true, message: '请输入民族'},
+                    age: [
+                        {required: true, message: '请输入年龄'},
+                        { validator: checkNumber, trigger: 'blur' }
+                    ],
+                    villageId: {required: true, message: '请选择村庄'},
+                    homeAddress: {required: true, message: '请输入家庭住址'}
                 },
                 markers: [
                     {
