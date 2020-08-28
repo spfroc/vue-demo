@@ -134,7 +134,7 @@
                 this.$confirm('确定删除此模板吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/careInfo/delete', {
+                    this.$http.post('/apis/lovingCare/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -161,7 +161,7 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/careInfo/list', {
+                this.$http.get('/apis/lovingCare/list', {
                     params: {
                         type: 1
                     }
@@ -175,7 +175,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.$http.post('/apis/careInfo/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/lovingCare/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'

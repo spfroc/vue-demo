@@ -38,14 +38,14 @@
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="名称" prop="name">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
+                        <!--<el-form-item label="名称" prop="name">-->
+                            <!--<el-input v-model="form.name"></el-input>-->
+                        <!--</el-form-item>-->
                         <el-form-item label="祝福内容" prop="content">
                             <el-input v-model="form.content"></el-input>
                         </el-form-item>
-                        <el-form-item label="推送设置" prop="alertSet">
-                            <el-select v-model="form.alertSet" placeholder="请选择">
+                        <el-form-item label="推送设置" prop="pushSet">
+                            <el-select v-model="form.pushSet" placeholder="请选择">
                                 <el-option
                                         v-for="item in pushSettingOptions"
                                         :key="item.value"
@@ -88,7 +88,7 @@
                     id: '',
                     name: '生日祝福',
                     content: '',
-                    alertSet: 1,
+                    pushSet: 1,
                     careDate: '',
                     type: 2
                 },
@@ -98,7 +98,7 @@
                     name: { required: true, message: '请输入关怀', trigger: 'blur' },
                     content: { required: true, message: '请输入关怀内容', trigger: 'blur' },
                     // careDate: { required: true, message: '请选择日期', trigger: 'blur' },
-                    alertSet: { required: true, message: '请选择推送设置', trigger: 'blur' },
+                    pushSet: { required: true, message: '请选择推送设置', trigger: 'blur' },
                 },
                 page: {},
                 search: {}
@@ -112,7 +112,7 @@
                 this.form = {
                     name: '生日祝福',
                     content: '',
-                    alertSet: 1,
+                    pushSet: 1,
                     careDate: '',
                     type: 2
                 }
@@ -127,7 +127,7 @@
                 this.$confirm('确定删除此模板吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/careBirthday/delete', {
+                    this.$http.post('/apis/lovingCare/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
@@ -150,7 +150,7 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/careInfo/list', {
+                this.$http.get('/apis/lovingCare/list', {
                     params: {
                         type: 2
                     }
@@ -164,7 +164,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/careInfo/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/lovingCare/addOrUpdateForBirthday', this.form).then(res => {
                             this.$message({
                                 message: res.data.message,
                                 type: 'success'
@@ -172,7 +172,7 @@
                             this.form = {
                                 name: '生日祝福',
                                 content: '',
-                                alertSet: 1,
+                                pushSet: 1,
                                 careDate: '',
                                 type: 2
                             }
