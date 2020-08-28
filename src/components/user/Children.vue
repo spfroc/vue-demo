@@ -350,7 +350,6 @@
                     // name:'',
                     relation: '',
                 });
-                this.getVillageOptions();
             },
 
             genderFormatter (row, col, data) {
@@ -387,6 +386,7 @@
                 this.isUpdate = true
                 this.editingRow = row
                 this.$http.get('/apis/user/detailForChild', {
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/261698/adminApi/user/detailForChild', {
                     params: {
                         id: row.id
                     }
@@ -503,11 +503,10 @@
                             })
                             this.fetchList(this.search.pageNum)
                             this.editing = false
+                            this.reload();
                             // console.log(this.form);
                         })
                     } else {
-                        console.log('error submit!!')
-                        console.log(this.form.bindOldMan);
                         if(this.isUpdate) {
                             this.$http.get('/apis/user/detailForChild', {
                                 params: {
@@ -528,6 +527,7 @@
 
         mounted() {
             this.fetchList(1);
+            this.getVillageOptions();
         }
     }
 </script>

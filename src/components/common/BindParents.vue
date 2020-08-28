@@ -6,7 +6,7 @@
                         v-for="item in villageOptions"
                         :key="item.id"
                         :label="item.name"
-                        :value="item.id+'_'+index">
+                        :value="item.id">
                 </el-option>
             </el-select>
 
@@ -45,19 +45,16 @@
             }
         },
         methods: {
-            getOldManOptions(mixedParams) {
-                let _ = mixedParams.indexOf('_')
-                let villageId = mixedParams.substr(0, _);
-                let index = mixedParams.substr((_+1));
+            getOldManOptions(villageId) {
                 this.$http.get('/apis/oldMan/selectList', {
                     params: {
-                        villageId: villageId
+                        villageId: villageId,
+                        time: Math.random()
                     },
 
                 }).then((res) => {
                     this.oldManOptions = res.data.data.list;
-                    console.log('index: ' +index);
-                    console.log(this.oldManOptions);
+
                 })
             },
 
@@ -67,9 +64,11 @@
         },
 
         mounted() {
-            console.log(this.bindOldMan);
-            console.log(this.index);
-            console.log(this.villageOptions);
+            if(this.bindOldMan[this.index].villageId) {
+                console.log('villageId', this.bindOldMan[this.index].villageId);
+                this.getOldManOptions(this.bindOldMan[this.index].villageId)
+            }
+
         }
     }
 </script>

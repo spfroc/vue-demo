@@ -117,8 +117,8 @@
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
                         <el-form-item label="权限是否开启登录权限" prop="homeAddress">
-                            <el-radio v-model="form.canLogin" label="1">是</el-radio>
-                            <el-radio v-model="form.canLogin" label="2">否</el-radio>
+                            <el-radio v-model="form.canLogin" label=1>是</el-radio>
+                            <el-radio v-model="form.canLogin" label=0>否</el-radio>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -213,7 +213,7 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList(1)
@@ -260,7 +260,7 @@
                     if (valid) {
                         this.$http.post('/apis/user/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {
