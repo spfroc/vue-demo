@@ -67,6 +67,8 @@
 </template>
 
 <script>
+    import { isValidPhone } from '../../util/validate'
+
     export default {
         name: "Stage",
         data() {
@@ -79,6 +81,14 @@
                         { required: true, message: '请输入驿站名称', trigger: 'blur' },
                         { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
                     ],
+
+                    contactNumber: [
+                        { required: true, message: '请输入联系电话', trigger: 'blur' },
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+
+                    address: {required: true, message: '请输入地理位置', trigger: 'blur'},
+                    manager: {required: true, message: '请输入负责人姓名', trigger: 'blur'},
                 },
                 page: {},
                 search: {},
