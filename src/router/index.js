@@ -14,6 +14,7 @@ import Store from "../components/store/Store";
 import Village from "../components/app/Village";
 import StoreComment from "../components/comment/Store";
 import CommunityComment from "../components/comment/Community";
+import ChildrenComment from "../components/comment/Children";
 import Template from "../components/care/Template";
 import Birthday from "../components/care/Birthday";
 import CommonSense from "../components/health/CommonSense";
@@ -209,6 +210,12 @@ export default new Router({
         path: '/call/center',
         meta: {title: '呼叫中心'},
         component: Center
+      },
+
+      {
+        path: '/comment/children',
+        meta: {title: '子女评价管理'},
+        component: ChildrenComment
       },
 
 

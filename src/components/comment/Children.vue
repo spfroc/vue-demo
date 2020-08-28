@@ -3,16 +3,16 @@
         <section class="header-bar">
             <el-form :inline="true" :model="search" size="mini" class="">
                 <el-form-item label="" prop="name">
-                    <el-input v-model="search.name" placeholder="按标题搜索"></el-input>
+                    <el-input v-model="search.mobile" placeholder="按标用户手机号搜索"></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="createTime">
                     <el-date-picker
-                        v-model="search.createTime"
-                        type="daterange"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                            v-model="search.createTime"
+                            type="daterange"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -113,7 +113,7 @@
     import Editor from "../common/Editor"
 
     export default {
-        name: "Community",
+        name: "Children",
         components: {
             Editor
         },
@@ -206,7 +206,7 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 // TODO id=1 是个接口bug
-                this.$http.get('/apis/communityComment/list', {
+                this.$http.get('/apis/childEvaluate/list', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
@@ -223,8 +223,8 @@
 
             operation(id, status) {
                 //暂时没有社区评论审核接口，使用商家评论接口代替
-                this.$http.post('/apis/communityComment/audit', {
-                // this.$http.post('/apis/storeComment/audit', {
+                this.$http.post('/apis/childEvaluate/audit', {
+                    // this.$http.post('/apis/storeComment/audit', {
                     id: id,
                     status: status,
                 }).then(res => {

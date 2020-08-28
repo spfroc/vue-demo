@@ -246,7 +246,6 @@
         // const roleId = 1; //临时使用
         const allMenus = Object.assign([], this.allMenuItems)
         if (roleId == 1) {
-          console.log(1111);
           return [
 
               {
@@ -269,7 +268,7 @@
                   },
                   {
                     index: '/app/community-banner',
-                    title: '社区播图管理'
+                    title: '社区轮播图管理'
                   },
                   {
                     index: '/community',
@@ -445,7 +444,6 @@
 
           ]
         } else if (roleId == 2) {
-          console.log(2222);
           return [
             {
               index: '/',
@@ -467,7 +465,7 @@
                 },
                 {
                   index: '/app/community-banner',
-                  title: '社区播图管理'
+                  title: '社区轮播图管理'
                 },
                 {
                   index: '/community',
@@ -511,6 +509,11 @@
                     {
                       index: '/comment/community',
                       title: '社区评价管理',
+                    },
+
+                    {
+                      index: '/comment/children',
+                      title: '子女评价管理',
                     }
                   ]
                 },
@@ -708,6 +711,11 @@
                     {
                       index: '/comment/community',
                       title: '社区评价管理',
+                    },
+
+                    {
+                      index: '/comment/children',
+                      title: '子女评价管理',
                     }
                   ]
                 },
