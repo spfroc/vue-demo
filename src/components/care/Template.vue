@@ -48,11 +48,12 @@
                             <el-date-picker
                                     v-model="form.careDate"
                                     type="date"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     placeholder="选择日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="推送设置" prop="alertSet">
-                            <el-select v-model="form.alertSet" placeholder="请选择">
+                        <el-form-item label="推送设置" prop="pushSet">
+                            <el-select v-model="form.pushSet" placeholder="请选择">
                                 <el-option
                                         v-for="item in pushSettingOptions"
                                         :key="item.value"
@@ -82,11 +83,11 @@
                 tableData: [],
                 pushSettingOptions: [
                     {
-                        value: 1,
+                        value: "1",
                         label: '当天',
                     },
                     {
-                        value: 2,
+                        value: "2",
                         label: '提前三天',
                     },
                 ],
@@ -95,7 +96,7 @@
                     id: '',
                     name: '',
                     content: '',
-                    alertSet: 1,
+                    pushSet: 1,
                     careDate: '',
                     type: 1
                 },
@@ -107,7 +108,7 @@
                     name: { required: true, message: '请输入关怀', trigger: 'blur' },
                     content: { required: true, message: '请输入关怀内容', trigger: 'blur' },
                     careDate: { required: true, message: '请选择日期', trigger: 'blur' },
-                    alertSet: { required: true, message: '请选择推送设置', trigger: 'blur' },
+                    pushSet: { required: true, message: '请选择推送设置', trigger: 'blur' },
                 }
             }
 
@@ -119,7 +120,7 @@
                 this.form = {
                     name: '',
                     content: '',
-                    alertSet: 1,
+                    pushSet: 1,
                     careDate: '',
                     type: 1
                 }
@@ -147,7 +148,7 @@
                     this.form = {
                         name: '',
                         content: '',
-                        alertSet: 1,
+                        pushSet: 1,
                         careDate: '',
                         type: 1
                     }
@@ -177,13 +178,13 @@
                     if (valid) {
                         this.$http.post('/apis/lovingCare/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {
                                 name: '',
                                 content: '',
-                                alertSet: 1,
+                                pushSet: 1,
                                 careDate: '',
                                 type: 1
                             }

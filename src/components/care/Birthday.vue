@@ -75,11 +75,11 @@
                 tableData: [],
                 pushSettingOptions: [
                     {
-                        value: 1,
+                        value: "1",
                         label: '当天',
                     },
                     {
-                        value: 2,
+                        value: "2",
                         label: '提前三天',
                     },
                 ],
