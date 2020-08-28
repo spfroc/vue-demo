@@ -112,7 +112,8 @@
             },
 
             fetchList () {
-                this.$http.get('/apis/communityCategory/list', {
+                // this.$http.get('/apis/communityCategory/list', {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company', {
                     params: {
 
                     }
