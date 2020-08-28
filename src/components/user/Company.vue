@@ -12,7 +12,7 @@
                     <el-table-column
                             prop="name"
                             align="center"
-                            label="分类">
+                            label="公司">
                     </el-table-column>
                     <el-table-column align="center" prop="createTime" label="创建时间">
                     </el-table-column>
@@ -32,7 +32,7 @@
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="名称" prop="name">
+                        <el-form-item label="公司名称" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
                         <el-form-item>
@@ -48,7 +48,7 @@
 
 <script>
     export default {
-        name: "CommunityCategory",
+        name: "Company",
 
         data() {
             return {
@@ -62,7 +62,7 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-                    name: { required: true, message: '请输入分类名称' }
+                    name: { required: true, message: '请输入公司名称' }
                 },
                 page: {
 

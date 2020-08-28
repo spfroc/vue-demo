@@ -33,6 +33,7 @@ import ElectronicFence from "../components/device/ElectronicFence";
 import Monitor from "../components/device/Monitor";
 import Center from "../components/call/Center";
 import IndexBanner from "../components/app/IndexBanner";
+import Company from "../components/user/Company";
 
 Vue.use(Router)
 
@@ -216,6 +217,12 @@ export default new Router({
         path: '/comment/children',
         meta: {title: '子女评价管理'},
         component: ChildrenComment
+      },
+
+      {
+        path: '/company',
+        meta: {title: '公司管理'},
+        component: Company
       },
 
 

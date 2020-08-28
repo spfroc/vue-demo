@@ -556,6 +556,10 @@
                   title: '村庄管理',
                 },
                 {
+                  index: '/company',
+                  title: '公司管理',
+                },
+                {
                   index: '/user/elders',
                   title: '老人信息列表'
                 },
@@ -756,6 +760,10 @@
                 {
                   index: '/village',
                   title: '村庄管理',
+                },
+                {
+                  index: '/company',
+                  title: '公司管理',
                 },
                 {
                   index: '/user/elders',
