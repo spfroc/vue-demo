@@ -126,7 +126,7 @@
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item>
+                                <el-form-item label="内容" prop="content">
                                     <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
                                 </el-form-item>
                                 <el-form-item label="图片" prop="imgListArr">
@@ -208,7 +208,7 @@
                 tableData: [],
                 editing: false,
                 isUpdate: false,
-                rules: {},
+
                 page: {},
                 search: {
                     pageNum: 1
@@ -250,6 +250,11 @@
                 ],
                 filterText: '',
                 typeFormatterMap: ['未知', '病例档案', '自测数据', '体检报告', '吃药提醒'],
+                rules: {
+                    oldManName: {required: true, message: '请选择老人'},
+                    type: {required: true, message: '请选类型'},
+                    content: {required: true, message: '请编辑内容'}
+                },
             }
         },
         watch: {
