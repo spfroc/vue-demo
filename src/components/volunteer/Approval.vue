@@ -67,7 +67,7 @@
                             label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="activityTitle"
+                            prop="activityId"
                             align="center"
                             label="活动">
                     </el-table-column>
@@ -146,8 +146,15 @@
                                 <el-form-item label="手机号" prop="mobile">
                                     <el-input v-model="form.mobile"></el-input>
                                 </el-form-item>
-                                <el-form-item label="活动" prop="activeTitle">
-                                    <el-input v-model="form.activityTitle"></el-input>
+                                <el-form-item label="活动" prop="activityId">
+                                    <el-select v-model="form.activityId" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in activitiesOptions"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.id">
+                                        </el-option>
+                                    </el-select>
                                 </el-form-item>
                                 <el-form-item label="身份证号" prop="idCardNumber">
                                     <el-input v-model="form.idCardNumber"></el-input>
@@ -160,6 +167,9 @@
                                 </el-form-item>
                                 <el-form-item label="职业" prop="career">
                                     <el-input v-model="form.career"></el-input>
+                                </el-form-item>
+                                <el-form-item label="个人简介" prop="description">
+                                    <editor ref="myTextEditor" v-model="form.description" :options="editorOption"></editor>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="6">
@@ -193,6 +203,7 @@
 <script>
     import Editor from '../common/Editor'
     import SingleImageUpload from '../common/SingleImageUpload'
+    import { isValidPhone } from '../../util/validate'
 
     export default {
         name: "Approval",
@@ -201,6 +212,9 @@
         },
         data () {
             return {
+                editorOption: {
+                    placeholder: ''
+                },
                 activeName: 'info',
                 tableData: [],
                 search: {},
@@ -229,15 +243,32 @@
                     nativePlace: '',
                     politicalStatus: '',
                     career: '',
-                    description: '~',
+                    description: '',
                     photo: '',
-                    activityTitle: '',
+                    activityId: '',
                     homeAddress: 'w'
                 },
                 editing: false,
                 isUpdate: false,
                 editingRow: {},
-                rules: {},
+                rules: {
+                    name: {required: true, message: '请输入志愿都姓名'},
+                    sex: {required: true, message: '请选择性别'},
+                    nation: {required: true, message: '请输入民族'},
+                    birthday: {required: true, message: '请选择出生年月'},
+                    mobile: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' },
+                        { validator: isValidPhone, trigger: 'blur' }
+                    ],
+                    idCardNumber: {required: true, message: '请输入身份证号'},
+                    nativePlace: {required: true, message: '请输入籍贯'},
+                    politicalStatus: {required: true, message: '请输入政治面貌'},
+                    career: {required: true, message: '请输入职业'},
+                    description: {required: true, message: '请个人简介'},
+                    activityId: {required: true, message: '请选择活动'},
+                    photo: {required: true, message: '请上传个人一寸照片'},
+                },
+                activitiesOptions: [],
             }
         },
         computed: {
@@ -266,6 +297,12 @@
             },
         },
         methods: {
+
+            getActivitiesOptions() {
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/activities/options').then((res) => {
+                    this.activitiesOptions = res.data.data.list;
+                });
+            },
             picUploaded(res, file) {
                 this.form.photo = res.pic
             },
@@ -386,6 +423,7 @@
 
         mounted() {
             this.fetchList(1);
+            this.getActivitiesOptions();
         }
     }
 </script>

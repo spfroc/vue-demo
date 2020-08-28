@@ -138,7 +138,9 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-
+                    title: {required: true, message: '请输入标题'},
+                    cover: {required: true, message: '请上传宣传图'},
+                    content: {required: true, message: '请输入活动内容'},
                 },
 
 
