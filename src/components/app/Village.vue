@@ -99,6 +99,8 @@
 <script>
     import Amap from 'vue-amap';
     import { lazyAMapApiLoaderInstance } from 'vue-amap';
+    import { isValidPhone } from '../../util/validate'
+    import { checkNumber } from '../../util/validate'
 
     export default {
 
@@ -136,7 +138,23 @@
               },
               editing: false,
               isUpdate: false,
-              rules: {},
+              rules: {
+                  name: {required: true, message: '请输村庄名称', trigger: 'blur'},
+                  secretaryName: { required: true, message: '请输村书记姓名', trigger: 'blur' },
+                  secretaryMobile: [
+                      {required: true, message: '请输村书记手机号', trigger: 'blur'},
+                      { validator: isValidPhone, trigger: 'blur' }
+                  ],
+                  cadreName: {required: true, message: '请输村专干手机号', trigger: 'blur'},
+                  cadreMobile: [
+                      {required: true, message: '请输村专干手机号', trigger: 'blur'},
+                      { validator: isValidPhone, trigger: 'blur' }
+                  ],
+                  railRadius: [
+                      {required: true, message: '请输围栏半径', trigger: 'blur'},
+                      { validator: checkNumber, trigger: 'blur' }
+                  ],
+              },
               page: {},
               search: {},
           }

@@ -8,3 +8,11 @@ export function isValidPhone(rule,value,callback) {
     callback(new Error('请输入正确的电话号'))
   }
 }
+
+export function checkNumber(rule, value, callback) {
+  if(isNaN(value)) {
+    callback(new Error('请输入数字'))
+  } else {
+    callback()
+  }
+}
