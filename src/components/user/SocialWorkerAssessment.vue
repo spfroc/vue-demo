@@ -2,6 +2,17 @@
     <div>
         <template>
             <section class="header-bar">
+                <el-row class="el-row" v-for="item in companyPoint">
+                    <el-col :span="1" align="center">{{item.name}}</el-col>
+                    <el-col :span="23">
+                        <el-progress stroke-width="20" status="success" :percentage=item.point :show-text=false></el-progress>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col align="center">公司服务评分</el-col>
+                </el-row>
+            </section>
+            <section class="header-bar">
                 <el-form :inline="true" :model="search" size="mini" class="">
                     <el-form-item label="" prop="createTime">
                         <el-date-picker
@@ -20,7 +31,16 @@
                     <el-form-item label="" prop="mobile">
                         <el-input v-model="search.mobile" placeholder="手机号搜索"></el-input>
                     </el-form-item>
-
+                    <el-form-item>
+                        <el-select v-model="search.companyId" placeholder="请选择">
+                            <el-option
+                                    v-for="item in companyOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                     </el-form-item>
@@ -36,35 +56,28 @@
                     <el-table-column
                             prop="name"
                             align="center"
-                            label="公司">
+                            label="姓名">
                     </el-table-column>
-                    <el-table-column align="center" prop="createTime" label="创建时间">
+                    <el-table-column align="center" prop="orderNum" label="接单数量">
                     </el-table-column>
-                    <el-table-column align="center" prop="updateTime" label="修改时间">
-                    </el-table-column>
-                    <el-table-column width="250" align="center" label="操作">
-                        <template slot-scope="scope">
-                            <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
-                            <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
-                        </template>
-                    </el-table-column>
+                    <el-table-column align="center" prop="five" label="五分钟接单数"></el-table-column>
+
+                    <el-table-column align="center" prop="ten" label="十分钟接单数"></el-table-column>
+                    <el-table-column align="center" prop="fifteen" label="十五分钟接单数"></el-table-column>
+                    <el-table-column align="center" prop="timeOut" label="超时未接单数"></el-table-column>
+                    <el-table-column align="center" prop="total" label="总分数"></el-table-column>
                 </el-table>
 
-
-                <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
-                    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="公司名称" prop="name">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">确定</el-button>
-                            <el-button v-on:click="cancel">取消</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-dialog>
+                <el-pagination
+                        hide-on-single-page
+                        background
+                        layout="total, prev, pager, next"
+                        :page-size="this.page.pageSize"
+                        :total="this.page.total"
+                        :current-page="this.search.pageNum"
+                        @current-change="fetchList"
+                >
+                </el-pagination>
             </div>
         </template>
     </div>
@@ -76,6 +89,21 @@
 
         data() {
             return {
+                companyPoint: [
+                    {
+                        name: '公司a',
+                        point: 50,
+                    },
+                    {
+                        name: '公司b',
+                        point: 60,
+                    },
+                    {
+                        name: '公司c',
+                        point: 75,
+                    }
+                ],
+
                 tableData: [],
 
                 editingRow: {},
@@ -109,9 +137,10 @@
             },
             remove (id) {
                 console.log(id);
-                this.$confirm('确定删除此分类吗？', '提示', {
+                this.$confirm('确定删除此社工考核吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
+                    // this.$http.post('/apis/communityCategory/delete', {
                     this.$http.post('/apis/communityCategory/delete', {
                         id: id
                     }, {
@@ -136,12 +165,14 @@
                 this.editing = false
             },
 
-            fetchList () {
-                // this.$http.get('/apis/communityCategory/list', {
-                this.$http.get('/apis/user/social-worker-assessment', {
-                    params: {
-
-                    }
+            fetchList (currentPage) {
+                this.search.pageNum = currentPage || this.search.pageNum
+                this.search = this.$common.searchParams(this.search);
+                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/apis/user/social-worker-assessment', {
+                    params: Object.assign({
+                        pageSize: 10,
+                        pageNum: this.search.pageNum,
+                    }, this.search)
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
@@ -181,5 +212,7 @@
 </script>
 
 <style scoped>
-
+    .el-row {
+        margin-bottom: 20px;
+    }
 </style>
