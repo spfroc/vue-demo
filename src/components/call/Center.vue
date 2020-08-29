@@ -423,9 +423,8 @@
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="驿工手机号">
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="历史派单">
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">
                     <el-input type="textarea" v-model="orderDetail.content"></el-input>
-
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>

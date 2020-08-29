@@ -226,11 +226,11 @@
                 genderOptions: [
                     {
                         label: '男',
-                        value: 1,
+                        value: "1",
                     },
                     {
                         label: '女',
-                        value: 2,
+                        value: "2",
                     },
                 ],
                 form: {
@@ -324,9 +324,7 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                // this.form = {
-                //     userType: 1,
-                // }
+                this.form = {}
             },
             edit (row) {
                 this.editing = true
