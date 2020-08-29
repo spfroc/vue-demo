@@ -376,7 +376,7 @@
                     <!--<el-input v-model="receptionDialog.detail"></el-input>-->
                     <el-input type="textarea" v-model="receptionDialog.detail"></el-input>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '医生工单'" prop="docktor" label="选择医生">
+                <el-form-item v-if="dialogTitle == '医生工单'" prop="doctor" label="选择医生">
                     <el-select v-model="doctorOrderDialog.doctor" placeholder="请选择">
                         <el-option
                                 v-for="item in doctorOptions"
@@ -483,7 +483,7 @@
                     id: '',
                     name: '',
                     mobile: '',
-                    village: '',
+                    villageName: '',
                     homeAddress: '',
                     sex: 1,
                 },
@@ -558,14 +558,24 @@
                 return row.sex == 1 ? '男' : '女';
             },
             getServiceWorkers() {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/workers').then(res => {
-                    this.serviceWorkers = res.data.data;
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/workers').then(res => {
+                this.$http.get('/apis/user/selectList', {
+                    params: {
+                        userType: 3
+                    }
+                }).then(res => {
+                    this.serviceWorkers = res.data.data.list;
                 });
             },
 
             getDoctorOptions() {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/doctors').then(res => {
-                    this.doctorOptions = res.data.data;
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/service/doctors').then(res => {
+                this.$http.get('/apis/user/selectList', {
+                    params: {
+                        userType: 2
+                    }
+                }).then(res => {
+                    this.doctorOptions = res.data.data.list;
                 });
             },
 
