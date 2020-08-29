@@ -1,13 +1,37 @@
 <template>
     <div>
-        <section class="header-bar">
-            <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
-        </section>
         <template>
+            <section class="header-bar">
+                <el-form :inline="true" :model="search" size="mini" class="">
+                    <el-form-item label="" prop="createTime">
+                        <el-date-picker
+                                v-model="search.createTime"
+                                type="daterange"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="" prop="name">
+                        <el-input v-model="search.name" placeholder="姓名搜索"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="" prop="mobile">
+                        <el-input v-model="search.mobile" placeholder="手机号搜索"></el-input>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                    </el-form-item>
+                </el-form>
+            </section>
+            <h4>员工评分</h4>
             <div>
                 <el-table
-                        :data="tableData">
-                    <el-table-column type="index" label="序号">
+                        :data="tableData"
+                >
+                    <el-table-column type="index" align="center" width="80" label="序号">
                     </el-table-column>
                     <el-table-column
                             prop="name"
@@ -66,7 +90,8 @@
                 },
                 page: {
 
-                }
+                },
+                search: {}
             }
 
         },
@@ -113,14 +138,15 @@
 
             fetchList () {
                 // this.$http.get('/apis/communityCategory/list', {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company', {
+                this.$http.get('/apis/user/social-worker-assessment', {
                     params: {
 
                     }
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.list;                })
+                    this.tableData = res.data.data.list;
+                })
             },
 
             onSubmit () {

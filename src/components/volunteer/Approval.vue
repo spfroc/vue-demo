@@ -67,8 +67,9 @@
                             label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="activityId"
+                            prop="volunteerActivityId"
                             align="center"
+                            :formatter="activityFormatter"
                             label="活动">
                     </el-table-column>
                     <el-table-column
@@ -146,8 +147,8 @@
                                 <el-form-item label="手机号" prop="mobile">
                                     <el-input v-model="form.mobile"></el-input>
                                 </el-form-item>
-                                <el-form-item label="活动" prop="activityId">
-                                    <el-select v-model="form.activityId" placeholder="请选择">
+                                <el-form-item label="活动" prop="volunteerActivityId">
+                                    <el-select v-model="form.volunteerActivityId" placeholder="请选择">
                                         <el-option
                                                 v-for="item in activitiesOptions"
                                                 :key="item.id"
@@ -245,7 +246,7 @@
                     career: '',
                     description: '',
                     photo: '',
-                    activityId: '',
+                    volunteerActivityId: '',
                     homeAddress: 'w'
                 },
                 editing: false,
@@ -265,7 +266,7 @@
                     politicalStatus: {required: true, message: '请输入政治面貌'},
                     career: {required: true, message: '请输入职业'},
                     description: {required: true, message: '请个人简介'},
-                    activityId: {required: true, message: '请选择活动'},
+                    volunteerActivityId: {required: true, message: '请选择活动'},
                     photo: {required: true, message: '请上传个人一寸照片'},
                 },
                 activitiesOptions: [],
@@ -297,7 +298,10 @@
             },
         },
         methods: {
-
+            activityFormatter(row) {
+                // console.log(row);
+                return row.activityTitle
+            },
             getActivitiesOptions() {
                 this.$http.get('/apis/volunteerActivity/list', {
                     params: {
@@ -428,8 +432,8 @@
         },
 
         mounted() {
-            this.fetchList(1);
             this.getActivitiesOptions();
+            this.fetchList(1);
         }
     }
 </script>
