@@ -151,7 +151,7 @@
                                         <el-option
                                                 v-for="item in activitiesOptions"
                                                 :key="item.id"
-                                                :label="item.name"
+                                                :label="item.title"
                                                 :value="item.id">
                                         </el-option>
                                     </el-select>
@@ -299,8 +299,14 @@
         methods: {
 
             getActivitiesOptions() {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/activities/options').then((res) => {
+                this.$http.get('/apis/volunteerActivity/list', {
+                    params: {
+                        pageSize:1000
+                    }
+                }).then((res) => {
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/activities/options').then((res) => {
                     this.activitiesOptions = res.data.data.list;
+                    // console.log(res);
                 });
             },
             picUploaded(res, file) {

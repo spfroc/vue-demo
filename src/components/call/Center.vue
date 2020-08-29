@@ -342,7 +342,7 @@
                 </el-form-item>
 
                 <el-form-item label="所在村庄" prop="village">
-                    <el-input :disabled="true" v-model="commonOrder.village"></el-input>
+                    <el-input :disabled="true" v-model="commonOrder.villageName"></el-input>
                 </el-form-item>
 
                 <el-form-item label="详细家庭住址" prop="homeAddress">

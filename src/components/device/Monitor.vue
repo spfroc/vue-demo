@@ -41,7 +41,12 @@
                 <!--<CEZUIKitJS></CEZUIKitJS>-->
             <!--</div>-->
             <div>
-                <iframe src="https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/E61621593/1.hd.live&autoplay=1&accessToken=at.33ou61w8794vrymu3x48ldi76shpl77z-1otrjucwpj-1mv6xeq-net8iobhe" frameborder="0"></iframe>
+                <iframe
+                        src="https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/E61621593/1.hd.live&autoplay=1&accessToken=at.33ou61w8794vrymu3x48ldi76shpl77z-1otrjucwpj-1mv6xeq-net8iobhe" width="600"
+                        height="400"
+                        id="ysOpenDevice"
+                        allowfullscreen></iframe>
+                <button @click="play">播放</button>
             </div>
         </el-col>
     </el-row>
@@ -118,6 +123,11 @@
                 return data.label.indexOf(value) !== -1;
             },
 
+            play() {
+                this.player.postMessage("fullScreen", "https://open.ys7.com/ezopen/h5/iframe?url=ezopen://open.ys7.com/E61621593/1.live") /* 播放 */
+
+            },
+
             fetchList () {
                 this.$http.get('/apis/courierStation/cameraAllList').then(res => {
                     this.oldManInVillage = res.data.data.list;
@@ -128,7 +138,7 @@
 
         mounted() {
             this.fetchList();
-
+            this.player = document.getElementById('ysOpenDevice').contentWindow;
             // this.$refs['playerObj'].videoSrc = 'rtmp://192.168.1.6:8080/onvif/device_service'
             // this.$refs['playerObj'].playerOptions.sources[0].src = 'rtmp://rtmp://192.168.1.6:8080/onvif/device_service'
         }
