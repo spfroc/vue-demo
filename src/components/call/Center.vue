@@ -129,7 +129,7 @@
                         style="width: 100%">
                     <el-table-column type="index" width="150"  label="工单号"></el-table-column>
                     <el-table-column
-                            prop="orderTime"
+                            prop="createTime"
                             label="下单时间"
                             align="center"
                             width="180">
@@ -223,6 +223,12 @@
                         label="创建时间">
                 </el-table-column>
                 <el-table-column
+                        prop="status"
+                        align="center"
+                        :formatter="statusFormatter"
+                        label="状态">
+                </el-table-column>
+                <el-table-column
                         prop=""
                         label=""
                         align="center"
@@ -233,6 +239,8 @@
                             <el-button style="float: left" @click="() => { serviceOrder(scope.row) }" type="primary" size="mini">服务工单</el-button>
                             <el-button style="margin: 10px 0 0 0" @click="() => { doctorOrder(scope.row) }" type="primary" size="mini">医生工单</el-button>
                             <el-button style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
+                            <el-button style="margin: 10px 0 0 0" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
+
                         </div>
 
                     </template>
@@ -304,8 +312,7 @@
                 >
                     <template slot-scope="scope">
                         <div style="float: left">
-                            <el-button style="float: left" @click="() => { orderView(scope.row) }" type="primary" size="mini">查看工单</el-button>
-
+                            <el-button style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
                         </div>
 
                     </template>
@@ -341,7 +348,7 @@
                     <el-input :disabled="true" v-model="commonOrder.mobile"></el-input>
                 </el-form-item>
 
-                <el-form-item label="所在村庄" prop="village">
+                <el-form-item label="所在村庄" prop="villageName">
                     <el-input :disabled="true" v-model="commonOrder.villageName"></el-input>
                 </el-form-item>
 
@@ -403,6 +410,7 @@
                         <el-table-column
                                 prop="status"
                                 align="center"
+                                :formatter="statusFormatter"
                                 label="状态">
                         </el-table-column>
                         <el-table-column
@@ -420,7 +428,10 @@
 
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单'" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单'" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderReconfirm()" v-if="dialogTitle == '查看工单'" type="primary">确认派单</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -547,13 +558,64 @@
                         total: 0
                     },
                 },
-
-                statusMap: ['', '已派单', '已结单', '服务中', '已超时', '服务完成'],
+                // 1待接单,2服务中,3已超时,4服务完成,5已结单
+                statusMap: ['', '已派单', '服务中', '已超时', '服务完成', '已结单'],
 
             }
         },
 
         methods: {
+            orderReconfirm(userId) {
+                console.log('this is 重新派单');
+                let data = {
+                    workOrderId: this.commonOrder.id,
+                    userId: userId || 1
+                }
+                this.$http.post('/apis/callCenter/reConfirmDispatchWorkOrder', data).then((res) => {
+                    console.log(res);
+                    this.$message({
+                        message: res.data.msg || '操作成功',
+                        type: 'success'
+                    })
+                })
+            },
+
+            orderConfirm(type) {
+                console.log('this is order type: ', type, this.commonOrder, this.serviceOrderDialog, this.doctorOrderDialog);
+                let data = {
+                    oldManId : this.commonOrder.id,
+                    type : type
+                };
+                if(type == 1) { //1 医生工单
+
+                    data.userId = this.doctorOrderDialog.doctor;
+                } else {    //2 服务工单
+
+                    data.userId = this.serviceOrderDialog.worker;
+                }
+
+                this.$http.post('/apis/callCenter/confirmDispatchWorkOrder', data).then((res) => {
+                    this.$message({
+                        message: res.data.msg || '操作成功',
+                        type: 'success'
+                    })
+                });
+            },
+
+            saveReception() {
+                let data = {
+                    oldManId: this.commonOrder.id,
+                    workerId: this.receptionDialog.worker,
+                    content: this.receptionDialog.detail,
+                }
+                this.$http.post('/apis/callCenter/receptionSave', data).then((res) => {
+                    this.$message({
+                        message: res.data.msg || '操作成功',
+                        type: 'success'
+                    })
+                });
+            },
+
             sexFormatter(row) {
                 return row.sex == 1 ? '男' : '女';
             },
@@ -596,28 +658,41 @@
                 console.log(row);
             },
 
-            doctorOrder() {
+            doctorOrder(row) {
                 this.showDialogController();
                 this.dialogButtonText = '确认派单';
-
+                this.commonOrder = row
                 this.dialogTitle = '医生工单';
 
             },
 
-            receptionRecord() {
+            receptionRecord(row) {
                 this.showDialogController();
                 this.dialogButtonText = '保存';
-
+                this.commonOrder = row
                 this.dialogTitle = '接待记录';
 
             },
 
-            orderView() {
+            orderView(row) {
                 this.showDialogController();
+                this.getOrderDetail(row.id)
+                //this.commonOrder = row;
                 this.dialogTitle = '查看工单';
                 this.dialogButtonText = '确认';
+            },
 
-
+            getOrderDetail(id) {
+                this.$http.get('/apis/callCenter/workOrderDetail', {
+                    params: {
+                        id: id
+                    }
+                }).then((res) => {
+                    console.log(res.data.data);
+                    this.commonOrder = res.data.data;
+                    this.orderDetail.historyOrders = res.data.data.dispatchList;
+                    // console.log(res);
+                });
             },
 
             showDialogController() {
@@ -656,7 +731,7 @@
                     createTime: '',
                 };
                 if(this.activeName == 'customerService') {
-                    //this.getWorkOrderLIst(1);
+
                 } else if(this.activeName == 'historyWorkOrder') {
                     this.getHistoryWorkOrderLIst(1);
                 } else if(this.activeName == 'historyReception') {
@@ -664,21 +739,7 @@
                 }
             },
 
-            getWorkOrderLIst(currentPage) {
 
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/call/center/workOrderList', {
-                    params: {
-                        pageSize: this.firstTab.workOrderPage.pageSize,
-                        pageNum: currentPage || 1,
-                    }
-                }).then(res => {
-                    this.firstTab.workOrderList = res.data.data.list;
-                    console.log(res.data.data);
-                    this.firstTab.workOrderPage.total = res.data.data.total;
-                    this.firstTab.workOrderPage.pageSize = res.data.data.pageSize;
-                    // this.firstTab.workOrderPage.pageNum = res.data.data.pageNum;
-                });
-            },
 
             getHistoryWorkOrderLIst(currentPage) {
                 this.searchForm = this.$common.searchParams(this.searchForm);
@@ -731,7 +792,6 @@
         },
 
         mounted() {
-            // this.getWorkOrderLIst(1);
             this.getServiceWorkers();
             this.getDoctorOptions();
 

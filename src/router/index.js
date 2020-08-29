@@ -34,6 +34,7 @@ import Monitor from "../components/device/Monitor";
 import Center from "../components/call/Center";
 import IndexBanner from "../components/app/IndexBanner";
 import Company from "../components/user/Company";
+import SocialWorkerAssessment from "../components/user/SocialWorkerAssessment";
 
 Vue.use(Router)
 
@@ -223,6 +224,12 @@ export default new Router({
         path: '/company',
         meta: {title: '公司管理'},
         component: Company
+      },
+
+      {
+        path: '/user/social-worker-assessment',
+        meta: {title: '公司管理'},
+        component: SocialWorkerAssessment
       },
 
 

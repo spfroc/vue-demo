@@ -372,6 +372,11 @@
                   {
                     index: '/user/doctor',
                     title: '医生管理',
+                  },
+
+                  {
+                    index: '/user/social-worker-assessment',
+                    title: '社工考核管理',
                   }
                 ]
               },
@@ -578,6 +583,11 @@
                 {
                   index: '/user/doctor',
                   title: '医生管理',
+                },
+
+                {
+                  index: '/user/social-worker-assessment',
+                  title: '社工考核管理',
                 }
               ]
             },

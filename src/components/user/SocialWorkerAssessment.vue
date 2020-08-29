@@ -48,7 +48,7 @@
 
 <script>
     export default {
-        name: "Company",
+        name: "SocialWorkerAssessment",
 
         data() {
             return {
@@ -84,7 +84,7 @@
             },
             remove (id) {
                 console.log(id);
-                this.$confirm('确定删除此公司吗？', '提示', {
+                this.$confirm('确定删除此分类吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
                     this.$http.post('/apis/communityCategory/delete', {
