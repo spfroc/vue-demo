@@ -20,7 +20,7 @@
             <section><h4>{{defaultCameraList.title}}</h4></section>
 
             <section>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col v-if="defaultCameraList.list[0]" :span="8">
                         <iframe
                                 :src="defaultCameraList.list[0].cameraUrl"
@@ -46,7 +46,7 @@
                                 allowfullscreen></iframe>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col v-if="defaultCameraList.list[3]" :span="8">
                         <iframe
                                 :src="defaultCameraList.list[3].cameraUrl"
@@ -72,7 +72,7 @@
                                 allowfullscreen></iframe>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="20">
                     <el-col v-if="defaultCameraList.list[6]" :span="8">
                         <iframe
                                 :src="defaultCameraList.list[6].cameraUrl"
@@ -140,6 +140,7 @@
                     size="89%"
                     :before-close="handleClose">
                 <iframe
+                        v-if="drawer"
                         :src="HDUrl"
                         width="100%"
                         height="100%"
