@@ -116,8 +116,8 @@
                         <el-form-item label="家庭住址" prop="homeAddress">
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
-                        <el-form-item label="公司" prop="companyId">
-                            <el-select v-model="form.companyId" placeholder="请选择">
+                        <el-form-item label="公司" prop="serviceCompanyId">
+                            <el-select v-model="form.serviceCompanyId" placeholder="请选择">
                                 <el-option
                                         v-for="item in companyOptions"
                                         :key="item.id"
@@ -165,7 +165,7 @@
                     age: '',
                     canLogin: '',
                     userType: 3,
-                    companyId: '',
+                    serviceCompanyId: '',
                 },
                 companyOptions: [],
                 page: {
@@ -198,6 +198,7 @@
                     sex: { required: true, message: '请选择性别', trigger: 'blur' },
                     // homeAddress: { required: true, message: '请输入家庭住址', trigger: 'blur' },
                     idCardNumber: { required: true, message: '请输入身份证号', trigger: 'blur' },
+                    serviceCompanyId: {required: true, message: '请选择服务公司'}
                 }
 
             };
@@ -205,7 +206,7 @@
 
         methods: {
             getCompanyOptions() {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company/options').then((res) => {
+                this.$http.get('/apis/serviceCompany/selectList').then((res) => {
                     this.companyOptions = res.data.data.list;
                 });
             },
