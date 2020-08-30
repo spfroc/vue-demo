@@ -14,7 +14,6 @@
                     ref="tree">
             </el-tree>
         </el-col>
-        <!--<el-col :span="">&nbsp;</el-col>-->
         <el-col :span="20" class="container">
 
             <section><h4>{{defaultCameraList.title}}</h4></section>
@@ -166,7 +165,7 @@
                 HDTitle: '',
                 drawer: false,
                 direction: 'rtl',
-                width: 400,
+                width: '95%',
                 height: 250,
                 editorOption: {
                     placeholder: ''
