@@ -156,7 +156,7 @@
                         <template slot-scope="scope">
                             <div style="float: left">
                                 <el-button style="float: left" @click="() => { orderView(scope.row) }" type="primary" size="mini">查看工单</el-button>
-                                <el-button v-if="scope.row.status != 2" style="margin: 10px 0 0 0" @click="() => { orderOperator(scope.row, 2) }" type="primary" size="mini">结束工单</el-button>
+                                <el-button v-if="scope.row.status != '2' && scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单{{scope.row.status}}</el-button>
                             </div>
 
                         </template>
@@ -181,6 +181,7 @@
                     :data="secondTab.historyWorkOrderList"
                     :highlight-current-row=true
                     :row-style="rowStyle"
+                    :stripe=true
                     style="width: 100%">
                 <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
                 <el-table-column
@@ -236,11 +237,11 @@
                 >
                     <template slot-scope="scope">
                         <div style="float: left">
-                            <el-button style="float: left" @click="() => { serviceOrder(scope.row) }" type="primary" size="mini">服务工单</el-button>
-                            <el-button style="margin: 10px 0 0 0" @click="() => { doctorOrder(scope.row) }" type="primary" size="mini">医生工单</el-button>
-                            <el-button style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
-                            <el-button style="margin: 10px 0 0 0" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
-
+                            <el-button v-if="scope.row.status == '1'" style="float: left" @click="() => { getOrderDetail(scope.row.id) }" type="primary" size="mini">服务工单</el-button>
+                            <el-button v-if="scope.row.status == '1'" style="margin: 10px 0 0 0" @click="() => { getOrderDetail(scope.row.id) }" type="primary" size="mini">医生工单</el-button>
+                            <el-button v-if="scope.row.status == '1'" style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
+                            <el-button v-if="scope.row.status != '1'" style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
+                            <el-button v-if="scope.row.status != '2' && scope.row.status != '5' && scope.row.status != '1'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单{{scope.row.status}}</el-button>
                         </div>
 
                     </template>
@@ -366,6 +367,9 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item v-if="dialogTitle == '服务工单'">
+                    <el-input type="hidden" v-model="commonOrder.type" value="2"></el-input>
+                </el-form-item>
 
                 <el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="选择社工">
                     <el-select v-model="receptionDialog.worker" placeholder="请选择">
@@ -392,6 +396,9 @@
                                 :value="item.id">
                         </el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '医生工单'">
+                    <el-input type="hidden" v-model="commonOrder.type" value="1"></el-input>
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="" label="历史派单">
                     <el-table :data="orderDetail.historyOrders">
@@ -428,9 +435,11 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderReconfirm()" v-if="dialogTitle == '查看工单'" type="primary">确认派单</el-button>
+                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单'" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单'" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status != 1)" type="primary">{{dialogButtonText}}-改</el-button>
+                    <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status != 1)" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="hideDialog()" v-if="dialogTitle == '查看工单'" type="primary">{{dialogButtonText}}</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -450,9 +459,9 @@
             return {
                 dialogButtonText: '确认派单',
                 orderDetail: {
-                    mobile: '2343243243',
+                    mobile: '',
                     name: 'xxx',
-                    content: 'ccccccccccc',
+                    content: '',
                     historyOrders: [
                         {
                             name: '111',
@@ -496,6 +505,7 @@
                     villageName: '',
                     homeAddress: '',
                     sex: 1,
+                    type: '',
                 },
                 activeName: 'customerService',
                 showDialog: false,
@@ -558,7 +568,7 @@
                     },
                 },
                 // 1待接单,2服务中,3已超时,4服务完成,5已结单
-                statusMap: ['', '已派单', '服务中', '已超时', '服务完成', '已结单'],
+                statusMap: ['', '待接单', '服务中', '已超时', '服务完成', '已结单'],
 
             }
         },
@@ -586,10 +596,8 @@
                     type : type
                 };
                 if(type == 1) { //1 医生工单
-
                     data.userId = this.doctorOrderDialog.doctor;
                 } else {    //2 服务工单
-
                     data.userId = this.serviceOrderDialog.worker;
                 }
 
@@ -598,6 +606,7 @@
                         message: res.data.msg || '操作成功',
                         type: 'success'
                     })
+                    this.hideDialog();
                 });
             },
 
@@ -611,7 +620,8 @@
                     this.$message({
                         message: res.data.msg || '操作成功',
                         type: 'success'
-                    })
+                    });
+                    this.hideDialog();
                 });
             },
 
@@ -644,8 +654,21 @@
                 return this.statusMap[row.status];
             },
 
+            terminateOrder(row) {
+                this.$http.post('/apis/callCenter/finishWorkOrder', {
+                    id: row.id
+                }).then((res) => {
+                    this.$message({
+                        message: res.data.msg || '操作成功',
+                        type: 'success'
+                    })
+                    row.status = 5;
+                })
+            },
+
             orderOperator(row, status) {
                 console.log(row, status);
+
             },
 
             serviceOrder(row) {
@@ -690,7 +713,7 @@
                     console.log(res.data.data);
                     this.commonOrder = res.data.data;
                     this.orderDetail.historyOrders = res.data.data.dispatchList;
-                    // console.log(res);
+                    this.orderDetail.mobile = res.data.data.latestUserMobile;
                 });
             },
 
