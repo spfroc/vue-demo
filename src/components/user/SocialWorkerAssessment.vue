@@ -2,7 +2,7 @@
     <div>
         <template>
             <section class="header-bar">
-                <el-row class="el-row" v-for="item in companyPoint">
+                <el-row class="el-row" :key="item.name" v-for="item in companyPoint">
                     <el-col :span="1" align="center">{{item.name}}</el-col>
                     <el-col :span="23">
                         <el-progress stroke-width="20" status="success" :percentage=item.point :show-text=false></el-progress>

@@ -65,7 +65,7 @@
                     name: { required: true, message: '请输入公司名称' }
                 },
                 page: {
-
+                    pageNum: 1
                 }
             }
 
@@ -87,19 +87,15 @@
                 this.$confirm('确定删除此公司吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/communityCategory/delete', {
+                    this.$http.post('/apis/serviceCompany/delete', {
                         id: id
-                    }, {
-                        params: {
-                            token: localStorage.getItem('auth-token')
-                        }
                     }).then(res => {
                         this.$message({
                             message: res.data.msg  || '操作成功',
                             type: 'success'
                         })
                     })
-                    this.fetchList()
+                    this.fetchList(this.page.pageNum)
                     this.editing = false
 
                 }).catch(() => {
@@ -111,11 +107,13 @@
                 this.editing = false
             },
 
-            fetchList () {
-                // this.$http.get('/apis/communityCategory/list', {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company', {
-                    params: {
+            fetchList (currentPage) {
+                this.page.pageNum = currentPage || this.page.pageNum
 
+                this.$http.get('/apis/serviceCompany/list', {
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/company', {
+                    params: {
+                        pageNum: this.page.pageNum
                     }
                 }).then(res => {
                     this.page.total = res.data.data.total
@@ -127,17 +125,13 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/communityCategory/addOrUpdate', this.form, {
-                            params: {
-                                token: localStorage.getItem('auth-token')
-                            }
-                        }).then(res => {
+                        this.$http.post('/apis/serviceCompany/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {}
-                            this.fetchList()
+                            this.fetchList(this.page.pageNum)
                             this.editing = false
                         })
                     } else {
