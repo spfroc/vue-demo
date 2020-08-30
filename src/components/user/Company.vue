@@ -62,7 +62,7 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-                    name: { required: true, message: '请输入公司名称' }
+                    name: { required: true, message: '请输入公司名称', trigger: 'blur' }
                 },
                 page: {
                     pageNum: 1
