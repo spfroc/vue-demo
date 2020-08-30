@@ -1,7 +1,7 @@
 <template>
     <el-row>
 
-        <el-col :span="5" class="container">
+        <el-col :span="4" class="container">
             <section>
                 魏善庄镇驿站监控
             </section>
@@ -14,8 +14,8 @@
                     ref="tree">
             </el-tree>
         </el-col>
-        <el-col :span="1">&nbsp;</el-col>
-        <el-col :span="18" class="container">
+        <!--<el-col :span="">&nbsp;</el-col>-->
+        <el-col :span="20" class="container">
 
             <section><h4>{{defaultCameraList.title}}</h4></section>
 
