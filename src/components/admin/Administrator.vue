@@ -7,7 +7,7 @@
       <div>
         <el-table
           :data="tableData">
-          <el-table-column type="index" label="序号">
+          <el-table-column type="index" align="center" width="80" label="序号">
           </el-table-column>
           <el-table-column
             prop="userName"
