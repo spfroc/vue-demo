@@ -133,6 +133,18 @@
             <!--<div>-->
                 <!--<CEZUIKitJS></CEZUIKitJS>-->
             <!--</div>-->
+            <el-drawer
+                    :title="HDTitle"
+                    :visible.sync="drawer"
+                    :direction="direction"
+                    size="89%"
+                    :before-close="handleClose">
+                <iframe
+                        :src="HDUrl"
+                        width="100%"
+                        height="100%"
+                        allowfullscreen></iframe>
+            </el-drawer>
         </el-col>
     </el-row>
 </template>
@@ -149,6 +161,10 @@
         },
         data () {
             return {
+                HDUrl: '',
+                HDTitle: '',
+                drawer: false,
+                direction: 'rtl',
                 width: 400,
                 height: 250,
                 editorOption: {
@@ -214,13 +230,30 @@
         },
         methods: {
 
-            nodeSelected(data, node, self) {
-                console.log(data, node, self);
-                console.log(data.$treeNodeId);
+            nodeSelected(data) {
+                console.log(data.cameraHdUrl);
+                if(data.cameraHdUrl) {
+                    this.HDUrl = data.cameraHdUrl;
+                    this.HDTitle = data.name;
+                    this.showHD();
+                }
+
             },
             filterNode(value, data) {
                 if (!value) return true;
                 return data.label.indexOf(value) !== -1;
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        this.drawer = false;
+                        done();
+                    })
+                    .catch(_ => {});
+            },
+
+            showHD() {
+                this.drawer = true;
             },
 
             fetchList (currentPage) {
