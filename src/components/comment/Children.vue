@@ -30,7 +30,7 @@
                     <el-table-column type="index" align="center" width="80" label="序号">
                     </el-table-column>
                     <el-table-column
-                            prop="title"
+                            prop="name"
                             align="center"
                             label="标题">
                     </el-table-column>
@@ -41,7 +41,7 @@
                             label="评论内容">
                     </el-table-column>
                     <el-table-column
-                            prop="userName"
+                            prop="childrenName"
                             align="center"
                             label="评论用户">
                     </el-table-column>
@@ -78,15 +78,18 @@
                 </el-pagination>
 
                 <el-dialog :close-on-click-modal="false" title="详情" :visible.sync="editing" :append-to-body="true">
-                    <el-form ref="form" :rules="rules" :model="form">
+                    <el-form ref="form" :rules="rules" :model="form" label-width="80px">
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="评价用户" prop="userName">
-                            <el-input v-model="form.userName" :disabled=true></el-input>
+                        <el-form-item label="评价用户" prop="childrenName">
+                            <el-input v-model="form.childrenName" :disabled=true></el-input>
                         </el-form-item>
-                        <el-form-item label="标题" prop="title">
-                            <el-input v-model="form.title" :disabled=true></el-input>
+                        <el-form-item label="服务者" prop="name">
+                            <el-input v-model="form.name" :disabled=true></el-input>
+                        </el-form-item>
+                        <el-form-item label="星际" prop="star">
+                            <el-input v-model="form.star" :disabled=true></el-input>
                         </el-form-item>
                         <el-form-item label="评论内容" prop="content">
                             <el-input
@@ -98,8 +101,8 @@
 
                         <el-form-item>
                             <!--<el-button type="primary" @click="onSubmit">确定</el-button>-->
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
-                            <el-button v-if="showApprovalButton" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>
+                            <el-button v-if="showOperationButton(form.status)" v-on:click="operation(form.id, 1)" class="el-button--success">通过</el-button>
+                            <el-button v-if="showOperationButton(form.status)" v-on:click="operation(form.id, 2)" class="el-button--danger">不通过</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>
@@ -141,8 +144,9 @@
                 introductionFileList: [],
                 form: {
                     id: '',
-                    userName: '',
-                    title: '',
+                    childrenName: '',
+                    name: '',
+                    star: '',
                     content: '',
                     status: '',
                     createTime: '',
@@ -153,7 +157,7 @@
                 editing: false,
                 isUpdate: false,
                 search: {
-                    name: '',
+                    mobile: '',
                     createTime: ''
                 },
                 rules: {
@@ -205,7 +209,9 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+                console.log(this.search);
                 this.search = this.$common.searchParams(this.search);
+                console.log(this.search);
                 // TODO id=1 是个接口bug
                 this.$http.get('/apis/childEvaluate/list', {
                     params: Object.assign({

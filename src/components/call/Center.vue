@@ -126,6 +126,10 @@
                 <section><h3>工单列表</h3></section>
                 <el-table
                         :data="firstTab.workOrderList"
+                        :stripe=true
+                        :highlight-current-row=true
+                        :row-style="rowStyle"
+                        :row-class-name="tableRowClassName"
                         style="width: 100%">
                     <el-table-column type="index" width="150"  label="工单号"></el-table-column>
                     <el-table-column
@@ -155,8 +159,9 @@
                     >
                         <template slot-scope="scope">
                             <div style="float: left">
-                                <el-button style="float: left" @click="() => { orderView(scope.row) }" type="primary" size="mini">查看工单</el-button>
-                                <el-button v-if="scope.row.status != '2' && scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单{{scope.row.status}}</el-button>
+                                <el-button style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
+                                <el-button style="margin: 10px 0 0 0" v-if="receptionListShowOrderButton(scope.row)" type="primary" size="mini">{{receptionListOrderButtonText(scope.row)}}</el-button>
+                                <el-button v-if="scope.row.status != '2' && scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单</el-button>
                             </div>
 
                         </template>
@@ -169,7 +174,7 @@
                         <!--:page-size="this.firstTab.workOrderPage.pageSize"-->
                         <!--:total="this.firstTab.workOrderPage.total"-->
                         <!--:current-page="this.firstTab.workOrderPage.pageNum"-->
-                        <!--@current-change="getWorkOrderLIst"-->
+                        <!--@current-change="getWorkOrderList"-->
                 <!--&gt;-->
                 <!--</el-pagination>-->
 
@@ -237,13 +242,11 @@
                 >
                     <template slot-scope="scope">
                         <div style="float: left">
-                            <el-button v-if="scope.row.status == '1'" style="float: left" @click="() => { getOrderDetail(scope.row.id) }" type="primary" size="mini">服务工单</el-button>
-                            <el-button v-if="scope.row.status == '1'" style="margin: 10px 0 0 0" @click="() => { getOrderDetail(scope.row.id) }" type="primary" size="mini">医生工单</el-button>
-                            <el-button v-if="scope.row.status == '1'" style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
-                            <el-button v-if="scope.row.status != '1'" style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
-                            <el-button v-if="scope.row.status != '2' && scope.row.status != '5' && scope.row.status != '1'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单{{scope.row.status}}</el-button>
+                            <el-button v-if="scope.row.status != '3'" style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
+                            <el-button v-if="scope.row.status == '3'" style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
+                            <el-button style="margin: 10px 0 0 0" @click="orderOperation(scope.row)" v-if="receptionListShowOrderButton(scope.row)" type="primary" size="mini">{{receptionListOrderButtonText(scope.row)}}</el-button>
+                            <el-button v-if="scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单</el-button>
                         </div>
-
                     </template>
                 </el-table-column>
             </el-table>
@@ -255,7 +258,7 @@
                     :page-size="this.secondTab.historyWorkOrderPage.pageSize"
                     :total="this.secondTab.historyWorkOrderPage.total"
                     :current-page="this.secondTab.historyWorkOrderPage.pageNum"
-                    @current-change="getHistoryWorkOrderLIst"
+                    @current-change="getHistoryWorkOrderList"
             >
             </el-pagination>
         </el-row>
@@ -313,7 +316,7 @@
                 >
                     <template slot-scope="scope">
                         <div style="float: left">
-                            <el-button style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
+                            <el-button style="float: left" @click="() => { receptionRecord(scope.row) }" size="mini">查看详情</el-button>
                         </div>
 
                     </template>
@@ -327,7 +330,7 @@
                     :page-size="this.thirdTab.historyReceptionPage.pageSize"
                     :total="this.thirdTab.historyReceptionPage.total"
                     :current-page="this.thirdTab.historyReceptionPage.pageNum"
-                    @current-change="getHistoryReceptionLIst"
+                    @current-change="getHistoryReceptionList"
             >
             </el-pagination>
         </el-row>
@@ -370,20 +373,20 @@
                 <el-form-item v-if="dialogTitle == '服务工单'">
                     <el-input type="hidden" v-model="commonOrder.type" value="2"></el-input>
                 </el-form-item>
+                <!--接待记录详情是否有社工选项待定-->
+                <!--<el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="选择社工">-->
+                    <!--<el-select v-model="receptionDialog.worker" placeholder="请选择">-->
+                        <!--<el-option-->
+                                <!--v-for="item in serviceWorkers"-->
+                                <!--:key="item.id"-->
+                                <!--:label="item.name"-->
+                                <!--:value="item.id">-->
+                        <!--</el-option>-->
+                    <!--</el-select>-->
+                <!--</el-form-item>-->
 
-                <el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="选择社工">
-                    <el-select v-model="receptionDialog.worker" placeholder="请选择">
-                        <el-option
-                                v-for="item in serviceWorkers"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
 
-
-                <el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="接待详情">
+                <el-form-item v-if="dialogTitle == '接待记录'" prop="content" label="接待详情">
                     <!--<el-input v-model="receptionDialog.detail"></el-input>-->
                     <el-input type="textarea" v-model="receptionDialog.detail"></el-input>
                 </el-form-item>
@@ -401,7 +404,9 @@
                     <el-input type="hidden" v-model="commonOrder.type" value="1"></el-input>
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="" label="历史派单">
-                    <el-table :data="orderDetail.historyOrders">
+                    <el-table
+                            :show-header=false
+                            :data="orderDetail.historyOrders">
                         <el-table-column
                                 prop="name"
                                 label="姓名"
@@ -431,14 +436,22 @@
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">
-                    <el-input type="textarea" v-model="orderDetail.content"></el-input>
+                    <section v-for="(detail, index) in orderDetail.serviceDetail" :key="index">
+                        <div>
+                            <span>{{detail.content}}</span>
+                        </div>
+                        <el-image v-for="(img, index) in detail.imgs"
+                              :key="index"
+                              style="width: 100px; height: 100px; margin-right: 10px;"
+                              :src="img"></el-image>
+                    </section>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单'" type="primary">{{dialogButtonText}}-新</el-button>
-                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单'" type="primary">{{dialogButtonText}}-新</el-button>
-                    <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status != 1)" type="primary">{{dialogButtonText}}-改</el-button>
-                    <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status != 1)" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.id == ''" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.id == ''" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
+                    <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
                     <el-button @click="hideDialog()" v-if="dialogTitle == '查看工单'" type="primary">{{dialogButtonText}}</el-button>
                 </el-form-item>
             </el-form>
@@ -568,12 +581,43 @@
                     },
                 },
                 // 1待接单,2服务中,3已超时,4服务完成,5已结单
-                statusMap: ['', '待接单', '服务中', '已超时', '服务完成', '已结单'],
+                statusMap: ['', '已派单', '服务中', '已超时', '服务完成', '已结单'],
 
             }
         },
 
         methods: {
+
+            receptionDetail(row) {
+
+            },
+            tableRowClassName({row, rowIndex}) {
+
+                if (rowIndex === 1) {
+                    console.log(rowIndex);
+                    return 'warning-row';
+                } else if (rowIndex === 3) {
+                    console.log(rowIndex);
+                    return 'success-row';
+                }
+                return '';
+            },
+
+
+            receptionListShowOrderButton(row) {
+                if(row.type && row.status == '3') {
+                    return true;
+                }
+                return false;
+            },
+
+            receptionListOrderButtonText(row) {
+                return row.type == '1' ? '医生工单' : '服务工单';
+            },
+
+
+
+
             orderReconfirm(userId) {
                 console.log('this is 重新派单');
                 let data = {
@@ -606,6 +650,11 @@
                         message: res.data.msg || '操作成功',
                         type: 'success'
                     })
+                    if(this.activeName == 'customerService') {
+                        this.reception();
+                    } else if(this.activeName == 'historyWorkOrder') {
+                        this.getHistoryWorkOrderList();
+                    }
                     this.hideDialog();
                 });
             },
@@ -655,19 +704,23 @@
             },
 
             terminateOrder(row) {
-                this.$http.post('/apis/callCenter/finishWorkOrder', {
-                    id: row.id
-                }).then((res) => {
-                    this.$message({
-                        message: res.data.msg || '操作成功',
-                        type: 'success'
-                    })
-                    row.status = 5;
-                })
-            },
 
-            orderOperator(row, status) {
-                console.log(row, status);
+                this.$confirm('确认结束工单吗？', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.post('/apis/callCenter/finishWorkOrder', {
+                        id: row.id
+                    }).then((res) => {
+                        this.$message({
+                            message: res.data.msg || '操作成功',
+                            type: 'success'
+                        })
+                        row.status = 5;
+                    })
+                }).catch(() => {
+                    // do nothing
+                })
+
 
             },
 
@@ -692,8 +745,18 @@
                 this.showDialogController();
                 this.dialogButtonText = '保存';
                 this.commonOrder = row
+                this.receptionDialog.detail = row.content;
                 this.dialogTitle = '接待记录';
 
+            },
+
+            orderOperation(row) {
+                this.getOrderDetail(row.id);
+                if(row.type == 1) {
+                    this.doctorOrder(row);
+                } else if(row.type == 2) {
+                    this.serviceOrder(row);
+                }
             },
 
             orderView(row) {
@@ -714,6 +777,29 @@
                     this.commonOrder = res.data.data;
                     this.orderDetail.historyOrders = res.data.data.dispatchList;
                     this.orderDetail.mobile = res.data.data.latestUserMobile;
+                    if(res.data.data.type == '1') {
+                        this.doctorOrderDialog.doctor = res.data.data.latestUserId;
+                    } else if(res.data.data.type == '2') {
+                        this.serviceOrderDialog.worker = res.data.data.latestUserId;
+                    }
+                    console.log(res.data.data.serviceDetail.length);
+                    this.orderDetail.serviceDetail = res.data.data.serviceDetail.length > 0 ? res.data.data.serviceDetail : [
+                        {
+                            content: '~~~',
+                            imgs: [
+                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
+                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
+                            ]
+                        },
+
+                        {
+                            content: '~~~',
+                            imgs: [
+                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
+                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
+                            ]
+                        }
+                    ];
                 });
             },
 
@@ -726,7 +812,7 @@
             },
             rowStyle() {
                 return {
-                    border: 'solid 1px black'
+                    border: 'solid 1px black',
                 }
             },
             reception() {
@@ -752,18 +838,19 @@
                     mobile: '',
                     createTime: '',
                 };
+                console.log(this.activeName);
                 if(this.activeName == 'customerService') {
 
                 } else if(this.activeName == 'historyWorkOrder') {
-                    this.getHistoryWorkOrderLIst(1);
+                    this.getHistoryWorkOrderList(1);
                 } else if(this.activeName == 'historyReception') {
-                    this.getHistoryReceptionLIst(1);
+                    this.getHistoryReceptionList(1);
                 }
             },
 
 
 
-            getHistoryWorkOrderLIst(currentPage) {
+            getHistoryWorkOrderList(currentPage) {
                 this.searchForm = this.$common.searchParams(this.searchForm);
                 this.$http.get('/apis/callCenter/workerOrderList', {
                     params: Object.assign({
@@ -784,7 +871,7 @@
             },
 
 
-            getHistoryReceptionLIst(currentPage) {
+            getHistoryReceptionList(currentPage) {
                 this.searchForm = this.$common.searchParams(this.searchForm);
                 this.$http.get('/apis/callCenter/receptionList', {
                     params: Object.assign({
@@ -806,9 +893,9 @@
 
             searchList() {
                 if(this.activeName == 'historyWorkOrder') {
-                    this.getHistoryWorkOrderLIst(1);
+                    this.getHistoryWorkOrderList(1);
                 } else if(this.activeName == 'historyReception') {
-                    this.getHistoryReceptionLIst(1);
+                    this.getHistoryReceptionList(1);
                 }
             }
         },
@@ -886,5 +973,13 @@
         top: 20px;
         left: 10px;
         /*margin-bottom: 10px;*/
+    }
+
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
     }
 </style>

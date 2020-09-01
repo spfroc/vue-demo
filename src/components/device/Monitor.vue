@@ -231,11 +231,13 @@
         methods: {
 
             nodeSelected(data) {
-                console.log(data.cameraHdUrl);
+                console.log(data);
                 if(data.cameraHdUrl) {
                     this.HDUrl = data.cameraHdUrl;
                     this.HDTitle = data.name;
                     this.showHD();
+                } else {
+
                 }
 
             },
