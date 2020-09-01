@@ -314,7 +314,7 @@
                         align="center"
                         width="100"
                 >
-                    <template slot-scope="scope">
+                    <template slot-scope="scope" v-if="activeName == 'historyReception'">
                         <div style="float: left">
                             <el-button style="float: left" @click="() => { receptionRecord(scope.row) }" size="mini">查看详情</el-button>
                         </div>
@@ -745,6 +745,7 @@
                 this.showDialogController();
                 this.dialogButtonText = '保存';
                 this.commonOrder = row
+                console.log(row);
                 this.receptionDialog.detail = row.content;
                 this.dialogTitle = '接待记录';
 
