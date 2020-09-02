@@ -167,11 +167,15 @@
                 this.isUpdate = true
                 this.editingRow = row
                 this.form = Object.assign({}, row)
+                console.log(row);
+                // this.$http.get('/apis/badge/oldManTrail', {
+                //     params: {
+                //         oldManId: row.oldManId
+                //     }
+                // });
                 this.markers = row.movement;
                 this.mapInit();
-                // this.mapInit();
-                // console.log(this.markers);
-                // console.log(this.map);
+
             },
 
             mapInit () {
@@ -231,6 +235,7 @@
             fetchList () {
                 this.search = this.$common.searchParams(this.search);
                 this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/electronic/fence', {
+                // this.$http.get('/apis/badge/railList', {
                     params: Object.assign({
                         pageSize: 10,
                         // pageNum: 1

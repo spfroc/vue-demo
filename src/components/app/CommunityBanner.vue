@@ -128,14 +128,14 @@
                 isUpdate: false,
                 search: {},
                 rules: {
-                    text: [
-                        { required: true, message: '请输入轮播图内容描述', trigger: 'blur' },
-                        { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
-                    ],
-                    link: [
-                        { required: true, message: '请输入轮播图链接地址', trigger: 'blur' },
-                        { type: 'url', message: '请输入有效的链接地址', trigger: 'blur' }
-                    ],
+                    // text: [
+                    //     { required: true, message: '请输入轮播图内容描述', trigger: 'blur' },
+                    //     { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' }
+                    // ],
+                    // link: [
+                    //     { required: true, message: '请输入轮播图链接地址', trigger: 'blur' },
+                    //     { type: 'url', message: '请输入有效的链接地址', trigger: 'blur' }
+                    // ],
                     pic: [
                         { required: true, message: '请上传轮播图片' }
                     ],
