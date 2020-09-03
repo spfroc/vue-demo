@@ -14,7 +14,9 @@
 
         methods: {
             getDetail() {
-                this.$http.get('/app/children/volunteerActivityDetail?id='+this.queryParams.id + '&token='+ 'ewrewr').then((res) => {
+                this.$http.get('/app/children/volunteerActivityDetail', {
+                    params: this.queryParams
+                }).then((res) => {
                     console.log(res);
                     this.detail = res.data.data;
                 });
