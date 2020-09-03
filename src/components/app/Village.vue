@@ -34,9 +34,9 @@
                         hide-on-single-page
                         background
                         layout="total, prev, pager, next"
-                        :page-size="this.page.pageSize"
-                        :total="this.page.total"
-                        :current-page="this.search.pageNum"
+                        :page-size="page.pageSize"
+                        :total="page.total"
+                        :current-page="search.pageNum"
                         @current-change="fetchList"
                 >
                 </el-pagination>
@@ -304,8 +304,15 @@
                 this.editing = false
             },
 
-            fetchList () {
-                this.$http.get('/apis/village/list', this.search).then(res => {
+            fetchList (currentPage) {
+                this.search.pageNum = currentPage || this.search.pageNum
+
+                this.$http.get('/apis/village/list', {
+                    params: Object.assign({
+                        pageSize: 10,
+                        pageNum: 1,
+                    }, this.search)
+                }).then(res => {
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
