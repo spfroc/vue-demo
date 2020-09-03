@@ -21,7 +21,13 @@ Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | 魏善庄智慧养老院`;
   const role = localStorage.getItem('auth-user-info');
-  if (!role && to.path !== '/login') {
+  console.log(to.path.match('/app/'));
+  if(to.path.match('/app')) {
+    console.log(to.path);
+    console.log(to.query);
+    next();
+    // next({path: to.path, params: to.query});
+  } else if (!role && to.path !== '/login') {
     next('/login');
   } else if (to.meta.permission) {
     // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已

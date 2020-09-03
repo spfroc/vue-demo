@@ -35,6 +35,12 @@ import Center from "../components/call/Center";
 import IndexBanner from "../components/app/IndexBanner";
 import Company from "../components/user/Company";
 import SocialWorkerAssessment from "../components/user/SocialWorkerAssessment";
+import BannerLink from "../components/mobile/BannerLink";
+import Agreement from "../components/mobile/Agreement";
+import CommunityDetail from "../components/mobile/Community";
+import About from "../components/mobile/About";
+import VolunteerDetail from "../components/mobile/VolunteerDetail";
+import HealthDetail from "../components/mobile/HealthDetail";
 
 Vue.use(Router)
 
@@ -231,23 +237,7 @@ export default new Router({
         meta: {title: '公司管理'},
         component: SocialWorkerAssessment
       },
-
-
-
-
-
-
-      // {
-      //   path: '/museum/traffic',
-      //   meta: { title: '地理交通' },
-      //   component: RichContent,
-      //   props: {
-      //     fetchActionUrl: '/apis/admin/geographicTraffic',
-      //     editActionUrl: '/apis/admin/geographicTraffic',
-      //     label: '地理交通'
-      //   }
-      // },
-
+        
       {
         path: '404',
         meta: {
@@ -257,13 +247,37 @@ export default new Router({
         component: Page404
       }
     ]
-  }, {
+  },{
+      path: '/app/banner',
+      meta: {title: '轮播图详情'},
+      component: BannerLink
+    },{
+      path: '/app/agreement',
+      meta: {title: '注册协议'},
+      component: Agreement
+    },{
+      path: '/app/community',
+      meta: {title: '社区详情'},
+      component: CommunityDetail
+    },{
+    path: '/app/about',
+    meta: {title: '关于软件'},
+    component: About
+  },{
+    path: '/app/volunteer',
+    meta: {title: '志愿者服务详情'},
+    component: VolunteerDetail
+  },{
+    path: '/app/healthy',
+    meta: {title: '健康详情'},
+    component: HealthDetail
+  },{
     path: '/login',
     meta: {
       title: '登录'
     },
     component: Login
-  }, {
+  },{
     path: '*',
     redirect: '/'
   }]

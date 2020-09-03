@@ -19,6 +19,14 @@ module.exports = {
           '^/apis': ''   //需要rewrite的,
         }
       },
+      '/app': {    //将www.example.com映射为/apis
+        target: 'http://47.104.217.169:8084/appApi',  // 接口域名
+        secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/app': ''   //需要rewrite的,
+        }
+      },
       '/images': {
         target: 'http://47.104.217.169:8886',  // 接口域名
         secure: false,  // 如果是https接口，需要配置这个参数
