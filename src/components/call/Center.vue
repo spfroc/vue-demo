@@ -160,7 +160,7 @@
                         <template slot-scope="scope">
                             <div style="float: left">
                                 <el-button style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
-                                <el-button style="margin: 10px 0 0 0" v-if="receptionListShowOrderButton(scope.row)" type="primary" size="mini">{{receptionListOrderButtonText(scope.row)}}</el-button>
+                                <el-button style="margin: 10px 0 0 0" @click="receptionOrderClick(scope.row)" v-if="receptionListShowOrderButton(scope.row)" type="primary" size="mini">{{receptionListOrderButtonText(scope.row)}}</el-button>
                                 <el-button v-if="scope.row.status != '2' && scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单</el-button>
                             </div>
 
@@ -448,8 +448,8 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.id == ''" type="primary">{{dialogButtonText}}-新</el-button>
-                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.id == ''" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}-新</el-button>
+                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}-新</el-button>
                     <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
                     <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
                     <el-button @click="hideDialog()" v-if="dialogTitle == '查看工单'" type="primary">{{dialogButtonText}}</el-button>
@@ -723,13 +723,24 @@
 
 
             },
+            receptionOrderClick(row) {
+                this.showDialog = true;
 
+                if(row.type == 1) {
+                    this.doctorOrder(row)
+                } else if(row.type == 2) {
+                    this.serviceOrder(row)
+                }
+                this.getOrderDetail(row.id);
+
+            },
             serviceOrder(row) {
                 this.showDialogController();
                 this.dialogTitle = '服务工单';
                 this.dialogButtonText = '确认派单';
                 // this.getServiceWorkers();
                 this.commonOrder = row
+                console.log(this.commonOrder);
                 console.log(row);
             },
 
