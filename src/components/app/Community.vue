@@ -241,8 +241,7 @@
 
             getCategoryName(row, col, data) {
                 let categoryObj = (this.categoryOptions.filter((item) => {
-                        console.log(item.id + '=' + data);
-                    if(data == item.id) {
+                    if(data == item.name) {
                         return true;
                     }
                 }));
