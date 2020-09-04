@@ -91,9 +91,10 @@
         this.editor = new E(this.$refs.toolbar, this.$refs.editor)
 
         this.editor.customConfig.uploadImgShowBase64 = true // base 64 存储图片
-        this.editor.customConfig.uploadImgServer = ''// 配置服务器端地址
-        this.editor.customConfig.uploadImgHeaders = {      }// 自定义 header
-        this.editor.customConfig.uploadFileName = '' // 后端接受上传文件的参数名
+        this.editor.customConfig.uploadImgServer = '/apis/upload/file?token='+localStorage.getItem('auth-token')// 配置服务器端地址
+        this.editor.customConfig.uploadImgHeaders = {
+        }// 自定义 header
+        this.editor.customConfig.uploadFileName = 'file' // 后端接受上传文件的参数名
         this.editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024 // 将图片大小限制为 5M
         this.editor.customConfig.uploadImgMaxLength = 10 // 限制一次最多上传 10 张图片
         this.editor.customConfig.uploadImgTimeout = 3 * 60 * 1000 // 设置超时时间
@@ -144,6 +145,7 @@
           },
           customInsert: (insertImg, result, editor) => {
             // 图片上传成功，插入图片的回调
+            insertImg('/images'+result.data.pic);
           }
         }
         this.editor.customConfig.onchange = (html) => {
