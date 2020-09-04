@@ -227,8 +227,16 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.form = Object.assign({}, row)
-                this.introductionFileList = this.form.introduction
+                this.$http.get('/apis/store/detail', {
+                    params: {
+                        id: row.id
+                    }
+                }).then((res) => {
+                    console.log(res.data.data);
+                    this.form = Object.assign({}, row)
+                    this.introductionFileList = this.form.introduction
+                });
+
 
             },
 
@@ -301,17 +309,19 @@
             },
 
             onSubmit () {
+                console.log(this.introductionFileList);
                 if(this.introductionFileList && this.introductionFileList.length) {
                     this.form.introduction = '';
                     this.introductionFileList.forEach(file => {
                         // console.log(file.url);
-                        if(this.isUpdate) {
+                        if(file.response == undefined) {
                             this.form.introduction += file.url.toString()+',';
                         } else {
-                            this.form.introduction += file.response.data.toString()+',';
+                            this.form.introduction += file.response.data.pic.toString()+',';
                         }
                     })
                 }
+                console.log(this.form.introduction);
                 // console.log(this.$refs['form']);
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
