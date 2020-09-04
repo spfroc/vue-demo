@@ -1,14 +1,13 @@
 <template>
     <div>
-        <h4>{{detail.name}}</h4>
-
-        <div class="text-container" v-html="detail.text"></div>
+        商家页面
     </div>
 </template>
 
 <script>
     export default {
-        name: "BannerLink",
+        name: "Merchant",
+
         components: {
         },
         data() {
@@ -19,10 +18,10 @@
         },
         methods: {
             getDetail() {
-                this.$http.get('/app/banner/detail', {
+                this.$http.get('/app/merchant/detail', {
                     params: this.queryParams
                 }).then((res) => {
-                    this.detail = res.data.data.banner;
+                    this.detail = res.data.data;
                 });
             }
         },
@@ -36,9 +35,5 @@
 </script>
 
 <style scoped>
-    .text-container {
-        padding-top: 10px;
-        height: 800px;
-        overflow-y:auto
-    }
+
 </style>

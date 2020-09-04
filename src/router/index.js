@@ -41,6 +41,7 @@ import CommunityDetail from "../components/mobile/Community";
 import About from "../components/mobile/About";
 import VolunteerDetail from "../components/mobile/VolunteerDetail";
 import HealthDetail from "../components/mobile/HealthDetail";
+import Merchant from "../components/mobile/Merchant";
 
 Vue.use(Router)
 
@@ -271,6 +272,10 @@ export default new Router({
     path: '/app/healthy',
     meta: {title: '健康详情'},
     component: HealthDetail
+  },{
+    path: '/app/merchant',
+    meta: {title: '商家详情'},
+    component: Merchant
   },{
     path: '/login',
     meta: {
