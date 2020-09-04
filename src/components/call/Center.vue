@@ -796,21 +796,21 @@
                     }
                     console.log(res.data.data.serviceDetail.length);
                     this.orderDetail.serviceDetail = res.data.data.serviceDetail.length > 0 ? res.data.data.serviceDetail : [
-                        {
-                            content: '~~~',
-                            imgs: [
-                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
-                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
-                            ]
-                        },
-
-                        {
-                            content: '~~~',
-                            imgs: [
-                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
-                                'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
-                            ]
-                        }
+                        // {
+                        //     content: '~~~',
+                        //     imgs: [
+                        //         'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
+                        //         'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
+                        //     ]
+                        // },
+                        //
+                        // {
+                        //     content: '~~~',
+                        //     imgs: [
+                        //         'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg',
+                        //         'https://static.vecteezy.com/system/resources/previews/000/259/710/original/charts-ui-kit-mobile-element-set-vector.jpg'
+                        //     ]
+                        // }
                     ];
                 });
             },
