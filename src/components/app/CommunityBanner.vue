@@ -34,6 +34,7 @@
                     <el-table-column
                             prop="text"
                             align="center"
+                            :show-overflow-tooltip=true
                             label="文本">
                     </el-table-column>
                     <el-table-column align="center" prop="createTime" label="创建时间">
