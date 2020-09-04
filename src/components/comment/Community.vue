@@ -70,10 +70,10 @@
                         hide-on-single-page
                         background
                         layout="total, prev, pager, next"
-                        :page-size="this.page.pageSize"
-                        :total="this.page.total"
-                        :current-page="this.search.pageNum"
-                        @current-change="fetchList(1)"
+                        :page-size="page.pageSize"
+                        :total="page.total"
+                        :current-page="search.pageNum"
+                        @current-change="fetchList"
                 >
                 </el-pagination>
 
@@ -205,6 +205,8 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
+
+                console.log(this.search.pageNum);
                 this.search = this.$common.searchParams(this.search);
                 // TODO id=1 是个接口bug
                 this.$http.get('/apis/communityComment/list', {

@@ -73,7 +73,7 @@
                         :page-size="this.page.pageSize"
                         :total="this.page.total"
                         :current-page="this.search.pageNum"
-                        @current-change="fetchList(1)"
+                        @current-change="fetchList"
                 >
                 </el-pagination>
 

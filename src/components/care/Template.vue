@@ -31,7 +31,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
-
+                <el-pagination
+                        hide-on-single-page
+                        background
+                        layout="total, prev, pager, next"
+                        :page-size="page.pageSize"
+                        :total="page.total"
+                        :current-page="search.pageNum"
+                        @current-change="fetchList"
+                >
+                </el-pagination>
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="80px">
