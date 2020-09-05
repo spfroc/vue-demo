@@ -193,11 +193,11 @@
                     },
 
                     xAxis: {
-                        data: ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "24:00"]
+                        data: ["00", "01", "02", "03", "04", "05", "06", "07", "08", '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
                     },
 
                     xAxisDay: {
-                        data: ["00:00", "03:00", "06:00", "09:00", "12:00", "15:00", "18:00", "21:00", "24:00"]
+                        data: ["00", "01", "02", "03", "04", "05", "06", "07", "08", '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
                     },
 
                     xAxisWeek: {
@@ -285,7 +285,7 @@
                                     "AAAARXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBwL3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5" +
                                     "NjU0ODQ2MDEyNTQwODdfNl9bMF2hHQjUAAAAAElFTkSuQmCC",
                                 onclick: () => {
-                                    this.switchSos('day');
+                                    this.switchSos(1);
                                 },
                             },
                             myWeek: {
@@ -324,7 +324,7 @@
                                     "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
                                     "YII=",
                                 onclick: () => {
-                                    this.switchSos('week');
+                                    this.switchSos(2);
                                 }
 
                             },
@@ -364,7 +364,7 @@
                                     "RU5ErkJggg==",
                                 // onclick: this.switchSos('month')
                                 onclick: () => {
-                                    this.switchSos('month');
+                                    this.switchSos(3);
                                 }
                             },
 
@@ -746,33 +746,43 @@
 
             switchSos (type) {
                 console.log(type);
-                if(type == 'day') {
-                    this.sosData.series = this.sosData.seriesDay
-                    this.sosData.xAxis = this.sosData.xAxisDay
-                } else if(type == 'week') {
-                    this.sosData.series = this.sosData.seriesWeek
-                    this.sosData.xAxis = this.sosData.xAxisWeek
+                this.$http.get('/apis/statistic/countSos', {
+                    params: {
+                        type: type
+                    }
+                }).then((res) => {
+                    // console.log(res.data.data.value);
+                    this.sosData.series[0].data = res.data.data.value;
+                    if(type == 1) {
+                        this.sosData.series = this.sosData.seriesDay
+                        this.sosData.xAxis = this.sosData.xAxisDay
+                    } else if(type == 2) {
+                        // this.sosData.series = this.sosData.seriesWeek
+                        this.sosData.xAxis = this.sosData.xAxisWeek
 
-                } else if(type == 'month') {
-                    this.sosData.series = this.sosData.seriesMonth
-                    this.sosData.xAxis = this.sosData.xAxisMonth
+                    } else if(type == 3) {
+                        // this.sosData.series = this.sosData.seriesMonth
+                        this.sosData.xAxis = this.sosData.xAxisMonth
 
-                } else {
-                    this.sosData.series = this.sosData.seriesDay
-                    this.sosData.xAxis = this.sosData.xAxisDay
-                }
-                // this.sos(this.sosData.xAxisWeek, this.sosData.seriesWeek)
-                this.chartSos.setOption({
-                    xAxis: this.sosData.xAxis,
-                    yAxis: {},
-                    series: this.sosData.series,
+                    } else {
+                        // this.sosData.series = this.sosData.seriesDay
+                        this.sosData.xAxis = this.sosData.xAxisDay
+                    }
+                    console.log('mmp', this.sosData.series);
+                    // this.sos(this.sosData.xAxisWeek, this.sosData.seriesWeek)
+                    this.chartSos.setOption({
+                        xAxis: this.sosData.xAxis,
+                        yAxis: {},
+                        series: this.sosData.series,
+                    });
                 });
+
 
             },
 
             getSummary() {
-                // this.$http.get('/apis/statistic/countNum').then((res) => {
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/261698/adminApi/statistic/countNum').then((res) => {
+                this.$http.get('/apis/statistic/countNum').then((res) => {
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/261698/adminApi/statistic/countNum').then((res) => {
                     this.summary[0].value = res.data.data.oldManNum;
                     this.summary[1].value = res.data.data.doctorNum;
                     this.summary[2].value = res.data.data.socialWorkerNum;
@@ -785,6 +795,7 @@
 
         mounted() {
             this.sos(this.sosData.xAxisDay, this.sosData.seriesDay);
+            this.switchSos(1);
             this.cumulativeNumberOfCallsReceivedInit();
             this.cumulativeCallTimeInit();
             this.cumulativeDispatchedOrderNumberInit();
