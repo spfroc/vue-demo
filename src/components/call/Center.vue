@@ -35,15 +35,17 @@
                         <el-date-picker
                                 v-model="firstTab.searchDate"
                                 type="date"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                @change="statistics"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form>
                 </el-col>
                 <el-col :span="12">
                     <div>
-                        <el-button>本日</el-button>
-                        <el-button>本周</el-button>
-                        <el-button>本月</el-button>
+                        <el-button @click="statistics(1)">本日</el-button>
+                        <el-button @click="statistics(2)">本周</el-button>
+                        <el-button @click="statistics(3)">本月</el-button>
                     </div>
                 </el-col>
 
@@ -550,7 +552,7 @@
                         },
                         {
                             title: 3,
-                            text: '派单次数',
+                            text: '结单次数',
                             total: 20,
                             self: 15
                         },
@@ -588,8 +590,30 @@
 
         methods: {
 
-            receptionDetail(row) {
+            statistics(item) {
+                let params = {};
+                if(item == undefined) {
+                    params.type = 1
+                } else {
+                    if(isNaN(item)) {
+                        params.time = item;
 
+                    } else {
+                        params.type = item;
+
+                    }
+                }
+                this.$http.get('/apis/callCenter/count', {
+                    params: params
+                }).then((res) => {
+                    console.log(res.data.data);
+                    this.firstTab.list[0].self = res.data.data.receptionNum
+                    this.firstTab.list[0].total = res.data.data.totalReceptionNum
+                    this.firstTab.list[1].self = res.data.data.dispatchNum
+                    this.firstTab.list[1].total = res.data.data.totalDispatchNum
+                    this.firstTab.list[2].self = res.data.data.finishWorkOrderNum
+                    this.firstTab.list[2].total = res.data.data.totalFinishWorkOrderNum
+                });
             },
             tableRowClassName({row, rowIndex}) {
 
@@ -913,6 +937,7 @@
         },
 
         mounted() {
+            this.statistics();
             this.getServiceWorkers();
             this.getDoctorOptions();
 
