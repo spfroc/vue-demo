@@ -154,6 +154,13 @@
                 monthlyTotalReception: '',
                 weeklyServiceSummary: '',
                 dataStatistics: '',
+
+                callNumbers: {
+                    pickUpPhoneNum: 123,
+                    dispatchNum: 345,
+                    workOrderNum: 456,
+                    phoneTime: 789
+                },
                 summary: [
                     {
                         title: '老人数量',
@@ -414,28 +421,38 @@
             cumulativeNumberOfCallsReceivedInit() {
                 this.cumulativeNumberOfCallsReceived = Echart.init(document.getElementById('cumulative-number-of-calls-received'));
                 this.cumulativeNumberOfCallsReceived.hideLoading();
-                this.serviceCommon(this.cumulativeNumberOfCallsReceived, '累计接听电话数', 456);
+                this.serviceCommon(this.cumulativeNumberOfCallsReceived, '累计接听电话数', this.callNumbers.pickUpPhoneNum);
+            },
+
+            getCallNumber() {
+                this.$http.get('/apis/statistic/countCallCenter').then((res) => {
+                    this.callNumbers = res.data.data
+                    this.cumulativeNumberOfCallsReceivedInit();
+                    this.cumulativeCallTimeInit();
+                    this.cumulativeDispatchedOrderNumberInit();
+                    this.cumulativeNumberOfCompletedWorkInit();
+                });
             },
 
             //累计接听电话时长
             cumulativeCallTimeInit() {
                 this.cumulativeCallTime = Echart.init(document.getElementById('cumulative-call-time'));
                 this.cumulativeCallTime.hideLoading();
-                this.serviceCommon(this.cumulativeCallTime, '累计接听电话时长', 9891)
+                this.serviceCommon(this.cumulativeCallTime, '累计接听电话时长', this.callNumbers.phoneTime || 100)
             },
 
             //累计派单数
             cumulativeDispatchedOrderNumberInit() {
                 this.cumulativeDispatchedOrderNumber = Echart.init(document.getElementById('cumulative-dispatched-order-number'));
                 this.cumulativeDispatchedOrderNumber.hideLoading();
-                this.serviceCommon(this.cumulativeDispatchedOrderNumber, '累计派单数', 156)
+                this.serviceCommon(this.cumulativeDispatchedOrderNumber, '累计派单数', this.callNumbers.dispatchNum)
             },
 
             //累计完成工单数
             cumulativeNumberOfCompletedWorkInit() {
                 this.cumulativeNumberOfCompletedWork = Echart.init(document.getElementById('cumulative-number-of-completed-work'));
                 this.cumulativeNumberOfCompletedWork.hideLoading();
-                this.serviceCommon(this.cumulativeNumberOfCompletedWork, '累计完成工单数', 368)
+                this.serviceCommon(this.cumulativeNumberOfCompletedWork, '累计完成工单数', this.callNumbers.workOrderNum)
             },
 
             //本月接待总计
@@ -644,104 +661,124 @@
             doctorAverage() {
                 let doctorAverage = Echart.init(document.getElementById('doctor-average'));
                 doctorAverage.hideLoading();
-
-                let option = {
-                    title: {
-                        text: '医生平均接单时间',
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            data: [820, 932, 901, 934, 1290, 1330, 1320],
-                            type: 'line',
-                            smooth: true,
-                            markPoint: {
-                                data: [
-                                    {
-                                        name: '最大值',
-                                        type: 'max'
-                                    },
-
-                                    {
-                                        name: '最小值',
-                                        type: 'min'
-                                    },
-                                ]
-                            },
+                let data = [];
+                let average = 0;
+                this.$http.get('/apis/statistic/countAvgWorkOrderTime', {
+                    params: {
+                        type: 1
+                    }
+                }).then((res) => {
+                    data = res.data.data.value;
+                    average = res.data.data.avg;
+                    let option = {
+                        title: {
+                            text: '医生平均接单时间',
                         },
-
-                        {
-                            data: [950, 950, 950, 950, 950, 950, 950],
-                            type: 'line',
-                            smooth: true,
-                            symbol: 'none',
-                            lineStyle: {
-                                type: 'dashed',
-                                color: 'red'
-                            },
+                        xAxis: {
+                            type: 'category',
+                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                         },
-                    ]
-                };
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: data,
+                                type: 'line',
+                                smooth: true,
+                                markPoint: {
+                                    data: [
+                                        {
+                                            name: '最大值',
+                                            type: 'max'
+                                        },
 
-                doctorAverage.setOption(option);
+                                        {
+                                            name: '最小值',
+                                            type: 'min'
+                                        },
+                                    ]
+                                },
+                            },
+
+                            {
+                                data: [average, average, average, average, average, average, average],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle: {
+                                    type: 'dashed',
+                                    color: 'red'
+                                },
+                            },
+                        ]
+                    };
+
+                    doctorAverage.setOption(option);
+                });
+
 
             },
 
             workerAverage() {
                 let workerAverage = Echart.init(document.getElementById('worker-average'));
                 workerAverage.hideLoading();
-
-                let option = {
-                    title: {
-                        text: '驿工平均接单时间',
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            data: [820, 932, 901, 934, 1290, 1330, 1320],
-                            type: 'line',
-                            smooth: true,
-                            markPoint: {
-                                data: [
-                                    {
-                                        name: '最大值',
-                                        type: 'max'
-                                    },
-
-                                    {
-                                        name: '最小值',
-                                        type: 'min'
-                                    },
-                                ]
-                            },
+                let data = [];
+                let average = 0;
+                this.$http.get('/apis/statistic/countAvgWorkOrderTime', {
+                    params: {
+                        type: 2
+                    }
+                }).then((res) => {
+                    data = res.data.data.value;
+                    average = res.data.data.avg;
+                    let option = {
+                        title: {
+                            text: '驿工平均接单时间',
                         },
-
-                        {
-                            data: [950, 950, 950, 950, 950, 950, 950],
-                            type: 'line',
-                            smooth: true,
-                            symbol: 'none',
-                            lineStyle: {
-                                type: 'dashed',
-                                color: 'red'
-                            },
+                        xAxis: {
+                            type: 'category',
+                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                         },
-                    ]
-                };
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: data,
+                                type: 'line',
+                                smooth: true,
+                                markPoint: {
+                                    data: [
+                                        {
+                                            name: '最大值',
+                                            type: 'max'
+                                        },
 
-                workerAverage.setOption(option);
+                                        {
+                                            name: '最小值',
+                                            type: 'min'
+                                        },
+                                    ]
+                                },
+                            },
+
+                            {
+                                data: [average,average,average,average,average,average,average],
+                                type: 'line',
+                                smooth: true,
+                                symbol: 'none',
+                                lineStyle: {
+                                    type: 'dashed',
+                                    color: 'red'
+                                },
+                            },
+                        ]
+                    };
+
+                    workerAverage.setOption(option);
+                });
+
             },
 
             switchSos (type) {
@@ -794,12 +831,9 @@
         },
 
         mounted() {
+            this.getCallNumber();
             this.sos(this.sosData.xAxisDay, this.sosData.seriesDay);
             this.switchSos(1);
-            this.cumulativeNumberOfCallsReceivedInit();
-            this.cumulativeCallTimeInit();
-            this.cumulativeDispatchedOrderNumberInit();
-            this.cumulativeNumberOfCompletedWorkInit();
             this.orderRateInit();
             this.monthlyTotalReceptionInit();
             this.weeklyServiceSummaryInit();
