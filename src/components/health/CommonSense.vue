@@ -30,6 +30,7 @@
                     <el-table-column
                             prop="content"
                             align="center"
+                            :formatter="$common.richTextContentFormatter"
                             :show-tooltip-when-overflow=true
                             label="文本">
                     </el-table-column>
