@@ -36,9 +36,14 @@ const searchParams = (searchParamsObject) => {
     }
     return searchParamsObject;
 }
+
+const richTextContentFormatter = (row) => {
+        return row.text.replace(/(<.*?>|&nbsp;)/g,"")
+
+}
 export default function(Vue) {
     //添加全局API
     Vue.prototype.$common = {
-        format, searchParams
+        format, searchParams, richTextContentFormatter
     }
 }

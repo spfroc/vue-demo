@@ -35,6 +35,7 @@
                             prop="text"
                             align="center"
                             :show-overflow-tooltip=true
+                            :formatter="$common.richTextContentFormatter"
                             label="文本">
                     </el-table-column>
                     <el-table-column prop="createTime" align="center" label="创建时间">
