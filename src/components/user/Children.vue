@@ -499,14 +499,16 @@
                     if (valid) {
                         this.$http.post('/apis/user/addOrUpdateForChild', this.form).then(res => {
                         // this.$http.post('http://127.0.0.1:8000/api/test', this.form).then(res => {
+                            console.log('502', res);
                             this.$message({
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.fetchList(this.search.pageNum)
                             this.editing = false
-                            this.reload();
                             // console.log(this.form);
+                        }).catch(error => {
+                            this.form.bindOldMan = JSON.parse(this.form.bindOldMan);
                         })
                     } else {
                         if(this.isUpdate) {

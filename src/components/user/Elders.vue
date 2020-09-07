@@ -549,6 +549,8 @@
                             this.form = {}
                             this.fetchList(1)
                             this.editing = false
+                        }).catch(error => {
+                            this.form.children = JSON.parse(this.form.children);
                         })
                     } else {
                         console.log('error submit!!')
