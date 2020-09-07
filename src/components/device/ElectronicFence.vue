@@ -14,6 +14,9 @@
             <el-form-item label="" prop="name">
                 <el-input v-model="search.name" placeholder="按老人姓名搜索"></el-input>
             </el-form-item>
+            <el-form-item label="" prop="mobile">
+                <el-input v-model="search.mobile" placeholder="按老人手机号搜索"></el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
             </el-form-item>
