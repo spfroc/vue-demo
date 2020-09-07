@@ -37,8 +37,9 @@ const searchParams = (searchParamsObject) => {
     return searchParamsObject;
 }
 
-const richTextContentFormatter = (row) => {
-        return row.text.replace(/(<.*?>|&nbsp;)/g,"")
+const richTextContentFormatter = (row, column, cellValue) => {
+    // console.log(cellValue);
+    return cellValue.replace(/(<.*?>|&nbsp;)/g,"")
 
 }
 export default function(Vue) {

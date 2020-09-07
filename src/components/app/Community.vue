@@ -31,6 +31,7 @@
                             :show-tooltip-when-overflow=true
                             prop="content"
                             align="center"
+                            :formatter="$common.richTextContentFormatter"
                             label="内容">
                     </el-table-column>
                     <el-table-column
