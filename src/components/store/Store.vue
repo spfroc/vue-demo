@@ -127,9 +127,8 @@
                         <el-form-item label="简介" prop="introduction">
                             <multiple-image-upload
                                     v-model="form.introduction"
-                                    :file-list="introductionFileList"
-                                    :add-file="addFile"
-                                    :remove-file-list="removeFileList"
+                                    :file-list="fileListContainer"
+                                    :file-list-container="fileListContainer"
                                     width="100" height="100"></multiple-image-upload>
                         </el-form-item>
                         <el-form-item label="封面图" prop="cover">
@@ -164,6 +163,7 @@
         },
         data() {
             return {
+                fileListContainer: [],
                 editorOption: {
                     placeholder: ''
                 },
@@ -222,6 +222,7 @@
                 this.isUpdate = false
                 this.form = {}
                 this.introductionFileList = [];
+                this.fileListContainer = [];
             },
             edit (row) {
                 this.editing = true
@@ -232,12 +233,17 @@
                         id: row.id
                     }
                 }).then((res) => {
-                    console.log(res.data.data);
-                    this.form = Object.assign({}, row)
+                    this.fileListContainer = [];
+                    this.form = Object.assign({}, res.data.data)
                     this.introductionFileList = this.form.introduction
+                    this.form.introduction.forEach((file, index) => {
+                        this.fileListContainer.push({
+                            name: file.url,
+                            path: file.url,
+                            url: '/images'+ file.url
+                        })
+                    })
                 });
-
-
             },
 
             getCategoryOptions () {
@@ -275,15 +281,6 @@
                 this.editing = false
             },
 
-            addFile(fileList) {
-                this.introductionFileList = fileList;
-            },
-
-            removeFileList(file) {
-                console.log(file);
-                this.introductionFileList.pop(file);
-            },
-
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 this.search = this.$common.searchParams(this.search);
@@ -309,20 +306,13 @@
             },
 
             onSubmit () {
-                console.log(this.introductionFileList);
-                if(this.introductionFileList && this.introductionFileList.length) {
+                if(this.fileListContainer && this.fileListContainer.length) {
                     this.form.introduction = '';
-                    this.introductionFileList.forEach(file => {
-                        // console.log(file.url);
-                        if(file.response == undefined) {
-                            this.form.introduction += file.url.toString()+',';
-                        } else {
-                            this.form.introduction += file.response.data.pic.toString()+',';
-                        }
+                    this.fileListContainer.forEach(file => {
+                        this.form.introduction += file.path.toString()+',';
                     })
                 }
-                console.log(this.form.introduction);
-                // console.log(this.$refs['form']);
+                // console.log('form.introduction:', this.form.introduction);return;
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.$http.post('/apis/store/addOrUpdate', this.form).then(res => {
