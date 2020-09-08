@@ -49,7 +49,7 @@
         </el-row>
 
         <el-row>
-            <el-col :span="8">
+            <el-col :span="12">
                 <section id="order-rate" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生工单 服务工单在总工单中占比</section>
             </el-col>
             <el-col :span="12">
@@ -601,61 +601,69 @@
             orderRateInit() {
                 this.orderRate = Echart.init(document.getElementById('order-rate'));
                 this.orderRate.hideLoading();
-
-                let option = {
-                    title: {
-                        text: '医生工单 服务工单在总工单中占比'
-                    },
-                    legend: {
-                        orient: 'vertical',
-                        bottom: 'bottom',
-                        itemGap: 30,
-                        // formatter: function (name) {
-                        //     return name + '  占比';
-                        // },
-                        formatter: {name},
-                        data: [
-                            {
-                                name: '医生工单',
-                            },
-                            {
-                                name: '服务工单',
-                            },
-                        ],
-                        // itemGap: 20
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
-                    },
-                    series: [
-                        {
-                            name: '工单',
-                            type: 'pie',
-                            radius: '60%',
-                            center: ['50%', '50%'],
-                            label: {
-                                position: 'inner',
-                                verticalAlign: 'top',
-                                offset: [40, 50],
-                                fontSize: 10,
-                                padding: [-60, 0, 0, 0]
-                            },
+                let doctorOrderNum = 124;
+                let serviceOrderNum = 987;
+                this.$http.get('/apis/statistic/countWorkOrder').then(res => {
+                    console.log('service and doctor order:', res.data.data);
+                    serviceOrderNum = res.data.data.serviceOrderNum;
+                    doctorOrderNum = res.data.data.doctorOrderNum;
+                    let option = {
+                        title: {
+                            text: '医生工单 服务工单在总工单中占比'
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            bottom: 'bottom',
+                            itemGap: 20,
+                            // formatter: function (name) {
+                            //     return name + '  占比';
+                            // },
+                            formatter: {name},
                             data: [
-                                {value: 159, name: '医生工单'},
-                                {value: 236, name: '服务工单'},
+                                {
+                                    name: '医生工单',
+                                },
+                                {
+                                    name: '服务工单',
+                                },
                             ],
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            // itemGap: 20
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                        },
+                        series: [
+                            {
+                                name: '工单',
+                                type: 'pie',
+                                radius: '60%',
+                                center: ['50%', '50%'],
+                                label: {
+                                    position: 'inner',
+                                    verticalAlign: 'top',
+                                    offset: [10, 50],
+                                    fontSize: 10,
+                                    padding: [-40, 0, 0, 0]
+                                },
+                                data: [
+                                    {value: doctorOrderNum, name: '医生工单'},
+                                    {value: serviceOrderNum, name: '服务工单'},
+                                ],
+                                emphasis: {
+                                    itemStyle: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
                                 }
                             }
-                        }
-                    ]
-                };
-                this.orderRate.setOption(option);
+                        ]
+                    };
+                    this.orderRate.setOption(option);
+                });
+
+
             },
 
             doctorAverage() {
