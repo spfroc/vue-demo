@@ -28,7 +28,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            :show-tooltip-when-overflow=true
+                            :show-tooltip-overflow=false
                             prop="content"
                             align="center"
                             :formatter="$common.richTextContentFormatter"

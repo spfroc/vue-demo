@@ -44,7 +44,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="content"
-                            :show-tooltip-when-overflow=true
+                            :show-tooltip-overflow=false
                             align="center"
                             :formatter="$common.richTextContentFormatter"
                             label="详情">
