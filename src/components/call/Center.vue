@@ -36,16 +36,16 @@
                                 v-model="firstTab.searchDate"
                                 type="date"
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                                @change="statistics"
+                                @change="statisticsByDate"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form>
                 </el-col>
                 <el-col :span="12">
                     <div>
-                        <el-button @click="statistics(1)">本日</el-button>
-                        <el-button @click="statistics(2)">本周</el-button>
-                        <el-button @click="statistics(3)">本月</el-button>
+                        <el-button @click="statistics(1)" :type="buttonType(1)">本日</el-button>
+                        <el-button @click="statistics(2)" :type="buttonType(2)">本周</el-button>
+                        <el-button @click="statistics(3)" :type="buttonType(3)">本月</el-button>
                     </div>
                 </el-col>
 
@@ -468,11 +468,13 @@
         computed: {
             genderFormatter() {
                 return this.commonOrder.sex == 1 ? '男': '女';
-            }
+            },
+
         },
         data() {
             return {
                 dialogButtonText: '确认派单',
+                defaultButton: 1,
                 orderDetail: {
                     mobile: '',
                     name: 'xxx',
@@ -584,14 +586,23 @@
                 },
                 // 1待接单,2服务中,3已超时,4服务完成,5已结单
                 statusMap: ['', '已派单', '服务中', '已超时', '服务完成', '已结单'],
-
             }
+
         },
 
-        methods: {
 
+        methods: {
+            buttonType(item) {
+                console.log('~~~', this.defaultButton, item);
+                if(this.defaultButton == item) {
+                    return 'primary'
+                }
+                return 'default'
+            },
             statistics(item) {
+                console.log(2343242);
                 let params = {};
+
                 if(item == undefined) {
                     params.type = 1
                 } else {
@@ -603,10 +614,27 @@
 
                     }
                 }
+                this.defaultButton = params.type;
                 this.$http.get('/apis/callCenter/count', {
                     params: params
                 }).then((res) => {
-                    console.log(res.data.data);
+                    this.firstTab.list[0].self = res.data.data.receptionNum
+                    this.firstTab.list[0].total = res.data.data.totalReceptionNum
+                    this.firstTab.list[1].self = res.data.data.dispatchNum
+                    this.firstTab.list[1].total = res.data.data.totalDispatchNum
+                    this.firstTab.list[2].self = res.data.data.finishWorkOrderNum
+                    this.firstTab.list[2].total = res.data.data.totalFinishWorkOrderNum
+                });
+            },
+
+            statisticsByDate(item) {
+
+                this.defaultButton = undefined;
+                this.$http.get('/apis/callCenter/count', {
+                    params: {
+                        time: item
+                    }
+                }).then((res) => {
                     this.firstTab.list[0].self = res.data.data.receptionNum
                     this.firstTab.list[0].total = res.data.data.totalReceptionNum
                     this.firstTab.list[1].self = res.data.data.dispatchNum
@@ -940,7 +968,6 @@
             this.statistics();
             this.getServiceWorkers();
             this.getDoctorOptions();
-
         }
     }
 </script>
