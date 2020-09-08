@@ -76,7 +76,7 @@
                     <section style="text-align: center">数据统计</section>
                     <custom-progress
                             progress=25
-                            value="25k"
+                            :value="processData.socialWorkerNum"
                             background-color="#1E90FF"
                             text="驿工"
                             dot-color="#1E90FF"
@@ -84,7 +84,7 @@
 
                     <custom-progress
                             progress=75
-                            value="750"
+                            :value="processData.totalReceptionCallNum"
                             background-color="#708090"
                             text="总接待电话数"
                             dot-color="#708090"
@@ -92,7 +92,7 @@
 
                     <custom-progress
                             progress=80
-                            value="240"
+                            :value="processData.oldManNum"
                             background-color="#32CD32"
                             text="老人"
                             dot-color="#32CD32"
@@ -100,7 +100,7 @@
 
                     <custom-progress
                             progress=33
-                            value="348"
+                            :value="processData.stationNum"
                             background-color="#40E0D0"
                             text="驿站数"
                             dot-color="#40E0D0"
@@ -110,18 +110,19 @@
                             progress=100
                             background-color="#FF4500"
                             text="医生"
-                            value="1240"
+                            :value="processData.doctorNum"
                             dot-color="#FF4500"
                     ></custom-progress>
                     <custom-progress
                             progress=80
-                            value="3368"
+                            :value="processData.childrenNum"
                             background-color="#4169E1"
                             text="子女用户数"
                             dot-color="#4169E1"
                     ></custom-progress>
                     <custom-progress
                             progress=40
+                            :value="processData.orderNum"
                             background-color="#838B8B"
                             text="总工单数"
                             dot-color="#838B8B"
@@ -160,6 +161,17 @@
                     dispatchNum: 345,
                     workOrderNum: 456,
                     phoneTime: 789
+                },
+
+                processData: {
+                    socialWorkerNum: 10,
+                    totalReceptionCallNum: 20,
+                    oldManNum: 30,
+                    stationNum: 40,
+                    doctorNum: 50,
+                    childrenNum: 60,
+                    orderNum: 70,
+
                 },
                 summary: [
                     {
@@ -459,28 +471,36 @@
             monthlyTotalReceptionInit() {
                 this.monthlyTotalReception = Echart.init(document.getElementById('monthly-total-reception'));
                 this.monthlyTotalReception.hideLoading();
+                let total = 234;
+                let data = [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+                let value = []
+                this.$http.get('/apis/statistic/countReception').then(res => {
+                    total = res.data.data.totalNum;
+                    data = res.data.data.data;
+                    value = res.data.data.value;
+                    let option = {
+                        title: {
+                            text: '本月累计接待总计',
+                            left: "center",
+                            // top: "center",
+                            subtext: '共计'+total+'人次',
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: data
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: value,
+                            type: 'line'
+                        }]
+                    };
 
-                let option = {
-                    title: {
-                        text: '本月累计接待总计',
-                        left: "center",
-                        // top: "center",
-                        subtext: '共计234人次',
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,820, 932, 901, 934, 1290, 1330, 1320,1212,3333],
-                        type: 'line'
-                    }]
-                };
+                    this.monthlyTotalReception.setOption(option);
+                });
 
-                this.monthlyTotalReception.setOption(option);
             },
 
             //本周服务汇总
@@ -488,27 +508,40 @@
             //    weekly-service-summary
                 this.weeklyServiceSummary = Echart.init(document.getElementById('weekly-service-summary'));
                 this.weeklyServiceSummary.hideLoading();
+                let totalNum = 332;
+                let value = [820, 932, 901, 934, 1290, 1330, 1320];
+                this.$http.get('/apis/statistic/countWorkOrderForWeek').then(res => {
+                    console.log('statistics weekly:', res);
+                    totalNum = res.data.data.totalNum;
+                    value = res.data.data.value;
+                    let option = {
+                        title: {
+                            text: '本周服务汇总',
+                            left: "center",
 
-                let option = {
-                    title: {
-                        text: '本周服务汇总',
-                        left: "center",
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                data: value,
+                                type: 'bar'
+                            },
+                            {
+                                data: value,
+                                type: 'line'
+                            },
+                        ]
+                    };
 
-                    },
-                    xAxis: {
-                        type: 'category',
-                        data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [{
-                        data: [820, 932, 901, 934, 1290, 1330, 1320],
-                        type: 'bar'
-                    }]
-                };
+                    this.weeklyServiceSummary.setOption(option);
+                });
 
-                this.weeklyServiceSummary.setOption(option);
             },
 
             //数据统计
@@ -607,6 +640,7 @@
                     console.log('service and doctor order:', res.data.data);
                     serviceOrderNum = res.data.data.serviceOrderNum;
                     doctorOrderNum = res.data.data.doctorOrderNum;
+                    this.processData.orderNum = serviceOrderNum + doctorOrderNum;
                     let option = {
                         title: {
                             text: '医生工单 服务工单在总工单中占比'
@@ -834,6 +868,11 @@
                     this.summary[3].value = res.data.data.childNum;
                     this.summary[4].value = res.data.data.villageNum;
                     this.summary[5].value = res.data.data.courierStationNum;
+                    this.processData.doctorNum = res.data.data.doctorNum;
+                    this.processData.socialWorkerNum = res.data.data.socialWorkerNum;
+                    this.processData.childrenNum = res.data.data.childNum;
+                    this.processData.stationNum = res.data.data.courierStationNum;
+                    this.processData.oldManNum = res.data.data.oldManNum;
                 });
             }
         },
