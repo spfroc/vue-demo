@@ -3,9 +3,9 @@
         <template>
             <section class="header-bar">
                 <el-row class="el-row" :key="item.name" v-for="item in companyPoint">
-                    <el-col :span="1" align="center">{{item.name}}</el-col>
-                    <el-col :span="23">
-                        <el-progress stroke-width="20" status="success" :percentage=item.point :show-text=false></el-progress>
+                    <el-col :span="2" align="center">{{item.companyName}}</el-col>
+                    <el-col :span="22">
+                        <el-progress :stroke-width=20 status="success" :percentage=Math.abs(item.score) :show-text=false></el-progress>
                     </el-col>
                 </el-row>
                 <el-row>
@@ -35,9 +35,9 @@
                         <el-select v-model="search.companyId" placeholder="请选择">
                             <el-option
                                     v-for="item in companyOptions"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -58,14 +58,14 @@
                             align="center"
                             label="姓名">
                     </el-table-column>
-                    <el-table-column align="center" prop="orderNum" label="接单数量">
+                    <el-table-column align="center" prop="workOrderNum" label="接单数量">
                     </el-table-column>
-                    <el-table-column align="center" prop="five" label="五分钟接单数"></el-table-column>
+                    <el-table-column align="center" prop="_5_workOrderNum" label="五分钟接单数"></el-table-column>
 
-                    <el-table-column align="center" prop="ten" label="十分钟接单数"></el-table-column>
-                    <el-table-column align="center" prop="fifteen" label="十五分钟接单数"></el-table-column>
-                    <el-table-column align="center" prop="timeOut" label="超时未接单数"></el-table-column>
-                    <el-table-column align="center" prop="total" label="总分数"></el-table-column>
+                    <el-table-column align="center" prop="_10_workOrderNum" label="十分钟接单数"></el-table-column>
+                    <el-table-column align="center" prop="_15_workOrderNum" label="十五分钟接单数"></el-table-column>
+                    <el-table-column align="center" prop="_over_workOrderNum" label="超时未接单数"></el-table-column>
+                    <el-table-column align="center" prop="score" label="总分数"></el-table-column>
                 </el-table>
 
                 <el-pagination
@@ -91,16 +91,16 @@
             return {
                 companyPoint: [
                     {
-                        name: '公司a',
-                        point: 50,
+                        companyName: '公司a',
+                        score: 50,
                     },
                     {
-                        name: '公司b',
-                        point: 60,
+                        companyName: '公司b',
+                        score: 60,
                     },
                     {
-                        name: '公司c',
-                        point: 75,
+                        companyName: '公司c',
+                        score: 75,
                     }
                 ],
 
@@ -119,11 +119,17 @@
                 page: {
 
                 },
-                search: {}
+                search: {},
+                companyOptions: []
             }
 
         },
         methods: {
+            getCompanyOptions() {
+                this.$http.get('/apis/serviceCompany/selectList').then((res) => {
+                    this.companyOptions = res.data.data.list;
+                });
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false
@@ -168,7 +174,9 @@
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
                 this.search = this.$common.searchParams(this.search);
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/apis/user/social-worker-assessment', {
+                this.getCompany();
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/apis/user/social-worker-assessment', {
+                this.$http.get('/apis/kpi/socialWorkerList', {
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: this.search.pageNum,
@@ -177,7 +185,24 @@
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
+                    if(this.search.timeStart && this.search.timeEnd) {
+                        this.search.createTime = [];
+                        this.search.createTime.push(this.search.timeStart);
+                        this.search.createTime.push(this.search.timeEnd);
+                    }
                 })
+            },
+
+            getCompany() {
+                this.search = this.$common.searchParams(this.search);
+
+                this.$http.get('/apis/kpi/companyList', {
+
+                    params: this.search
+                }).then(res => {
+                    console.log(res);
+                    this.companyPoint = res.data.data.list;
+                });
             },
 
             onSubmit () {
@@ -207,6 +232,7 @@
 
         mounted() {
             this.fetchList();
+            this.getCompanyOptions();
         }
     }
 </script>
