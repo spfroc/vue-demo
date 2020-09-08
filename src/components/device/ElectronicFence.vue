@@ -31,18 +31,18 @@
                     <el-table-column type="index" align="center" width="80" label="序号">
                     </el-table-column>
                     <el-table-column
-                            prop="name"
+                            prop="oldManName"
                             align="center"
                             label="老人姓名">
                     </el-table-column>
 
                     <el-table-column
-                            prop="mobile"
+                            prop="oldManMobile"
                             align="center"
                             label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="status"
+                            prop="type"
                             align="center"
                             label="时间类型">
                         <template slot-scope="scope">
@@ -51,14 +51,14 @@
                                     <div style="float: right">{{statusFormatter(scope.row)}}</div>
                                 </el-col>
                                 <el-col :span="12">
-                                    <div v-if="scope.row.status == 2" style="margin-left: 20px; width: 20px; height: 20px; border: solid 1px red; background-color: red; border-radius: 10px"></div>
-                                    <div v-if="scope.row.status == 1" style="margin-left: 20px; width: 20px; height: 20px; border: solid 1px limegreen; background-color: limegreen; border-radius: 10px"></div>
+                                    <div v-if="scope.row.type == '12'" style="margin-left: 20px; width: 20px; height: 20px; border: solid 1px red; background-color: red; border-radius: 10px"></div>
+                                    <div v-if="scope.row.type == '10'" style="margin-left: 20px; width: 20px; height: 20px; border: solid 1px limegreen; background-color: limegreen; border-radius: 10px"></div>
                                 </el-col>
                             </el-row>
                         </template>
                     </el-table-column>
                     <el-table-column
-                            prop="alarmingTime"
+                            prop="createAt"
                             align="center"
                             label="报警时间">
                     </el-table-column>
@@ -81,9 +81,6 @@
 
                 <el-dialog :close-on-click-modal="false" title="行动轨迹" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="150px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
                         <el-form-item label="老人姓名" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
@@ -93,11 +90,11 @@
                         </el-form-item>
 
                         <el-form-item label="家庭住址" prop="address">
-                            <el-input v-model="form.address"></el-input>
+                            <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
 
                         <el-form-item label="最近位置上报时间" prop="latestPositionReportedAt">
-                            <el-input v-model="form.latestPositionReportedAt"></el-input>
+                            <el-input v-model="form.lastestTime"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <section id="a-map-container" style="width:100%; height: 400px">
@@ -145,12 +142,11 @@
                 editingRow: {},
 
                 form: {
-                    id: '',
                     name: '',
                     mobile: '',
-                    latestPositionReportedAt: '',
-                    movement: '',
-                    address: '',
+                    lastestTime: '',
+                    list: [],
+                    homeAddress: '',
 
                 },
             }
@@ -158,7 +154,7 @@
 
         methods: {
             statusFormatter (row) {
-                return row.status && row.status == 1 ? '进入围栏' : '离开围栏';
+                return row.type && row.type == '10' ? '进入围栏' : '离开围栏';
             },
             add () {
                 this.editing = true
@@ -169,15 +165,17 @@
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
-                this.form = Object.assign({}, row)
-                console.log(row);
-                // this.$http.get('/apis/badge/oldManTrail', {
-                //     params: {
-                //         oldManId: row.oldManId
-                //     }
-                // });
-                this.markers = row.movement;
-                this.mapInit();
+                this.$http.get('/apis/badge/fenceAlarmTrail', {
+                    params: {
+                        id: row.id
+                    }
+                }).then(res => {
+                    console.log('track: ',res.data.data);
+                    this.form = res.data.data
+                    this.markers = this.form.list;
+                    this.mapInit();
+                });
+
 
             },
 
@@ -235,10 +233,11 @@
                 this.mapInstance.destroy();
             },
 
-            fetchList () {
+            fetchList (currentPage) {
+                this.search.pageNum = currentPage || this.search.pageNum
                 this.search = this.$common.searchParams(this.search);
-                this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/electronic/fence', {
-                // this.$http.get('/apis/badge/railList', {
+                // this.$http.get('http://rap2.taobao.org:38080/app/mock/262326/adminApi/electronic/fence', {
+                this.$http.get('/apis/badge/railList', {
                     params: Object.assign({
                         pageSize: 10,
                         // pageNum: 1
@@ -246,6 +245,7 @@
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
+                    console.log(res.data.data.list);
                     this.tableData = res.data.data.list;
                     if(this.search.timeStart && this.search.timeEnd) {
                         this.search.createTime = [];
