@@ -442,7 +442,7 @@
                         <div>
                             <span>{{detail.content}}</span>
                         </div>
-                        <el-image v-for="(img, index) in detail.imgs"
+                        <el-image v-for="(img, index) in detail.imgs" v-if="img.length > 0"
                               :key="index"
                               style="width: 100px; height: 100px; margin-right: 10px;"
                               :src="img"></el-image>
