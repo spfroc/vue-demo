@@ -357,6 +357,7 @@
 
             markersInit(AMap) {
                 let path = []
+                console.log('marker:', this.markers);
                 this.markers.forEach(marker => {
                     // console.log(marker);
                     path.push(new AMap.LngLat(marker.lng, marker.lat));
@@ -390,17 +391,17 @@
                         oldManId: oldManId
                     }
                 }).then((res) => {
-                    // this.markers =
-                    console.log(res);
+                    this.markers = res.data.data.list
+                    console.log(res.data.data.list);
+                    this.showTrack = !this.showTrack;
+                    if(this.showTrack == true) {
+                        this.mapInit()
+                    }
                 });
             },
 
             getTrack(oldManId) {
                 this.getMarkers(oldManId)
-                this.showTrack = !this.showTrack;
-                if(this.showTrack == true) {
-                    this.mapInit()
-                }
             },
             picUploaded(res, file) {
                 this.form.headImg = res.pic
@@ -455,6 +456,7 @@
                 }
             },
             edit (row) {
+                this.showTrack = false;
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row

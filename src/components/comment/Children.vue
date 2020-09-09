@@ -123,7 +123,7 @@
 
         computed : {
             showApprovalButton: function() {
-                if(this.editingRow.status == 1) {
+                if(this.editingRow.status == '0') {
                     return true;
                 } else {
                     return false;
@@ -180,7 +180,7 @@
             },
 
             showOperationButton(status) {
-                return status == 0 ? true : false;
+                return status == '0' ? true : false;
             },
             remove (id) {
                 this.$confirm('确定删除此评论吗？', '提示', {
