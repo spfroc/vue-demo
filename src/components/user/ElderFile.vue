@@ -134,8 +134,7 @@
                                     <multiple-image-upload
                                             v-model="form.imgList"
                                             :file-list="imgListArr"
-                                            :add-file="addFile"
-                                            :remove-file-list="removeFileList"
+                                            :file-list-container="imgListArr"
                                             width="100" height="100">
                                     </multiple-image-upload>
                                 </el-form-item>
@@ -307,14 +306,6 @@
                 return data.label.indexOf(value) !== -1;
             },
 
-            addFile(fileList) {
-                console.log(fileList);
-                this.imgListArr = fileList;
-            },
-
-            removeFileList(file) {
-
-            },
 
             typeFormatter (row) {
                 return this.typeFormatterMap[row.type];
@@ -413,7 +404,6 @@
 
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
-                    console.log(this.imgList);
                     if(this.form.id == '') {
                         delete this.form.id;
                     }
@@ -421,16 +411,11 @@
                         if(this.imgListArr && this.imgListArr.length > 0) {
                             let images = '';
                             this.imgListArr.forEach(img => {
-                                console.log(img);
-                                if(img.url.match('blob')) {
-                                    images += img.response.data.pic +','
-                                } else {
-                                    images += img.url.replace('/images', '') + ','
-                                }
-
+                                    images += img.path +','
                             })
-                            // console.log(images);
+                            console.log(images);
                             this.form.imgs = images;
+                            return false;
                         }
                         this.$http.post('/apis/oldManArchives/addOrUpdate', this.form).then(res => {
                             this.$message({
