@@ -33,11 +33,11 @@
             //     IOS下载地址: https://www.pgyer.com/a0ti  com.yz.ainursing
             if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) { //判断iPhone|iPad|iPod|iOS
                 this.userAgent = 'IOS'
-                window.open('https://apps.apple.com/cn/app/%E9%AD%8F%E6%B0%91%E5%85%BB%E8%80%81/id1530116256');
+                window.location.href = 'https://apps.apple.com/cn/app/%E9%AD%8F%E6%B0%91%E5%85%BB%E8%80%81/id1530116256';
             } else if (/(Android)/i.test(navigator.userAgent)) { //判断Android
                 // window.location.href ="Android.html";
                 this.userAgent = 'Android'
-                window.open('https://www.pgyer.com/Le5S');
+                window.location.href = 'https://www.pgyer.com/Le5S';
             } else { //pc
                 this.userAgent = 'PC'
                 window.close();
