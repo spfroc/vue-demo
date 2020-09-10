@@ -337,6 +337,8 @@
                         status: item.status,
                         uid: item.uid,
                         url: '/images'+item.url,
+                        name: item.url,
+                        path: item.url,
                     })
                 })
                 this.imgListArr = editImgList
@@ -415,7 +417,6 @@
                             })
                             console.log(images);
                             this.form.imgs = images;
-                            return false;
                         }
                         this.$http.post('/apis/oldManArchives/addOrUpdate', this.form).then(res => {
                             this.$message({
