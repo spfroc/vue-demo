@@ -81,16 +81,16 @@
                         <el-form-item label="电话白名单" prop="whitePhones" aria-placeholder="23432">
                             <el-input v-model="form.whitePhones" placeholder='多个手机号使用英文格式逗号 "," 分割'></el-input>
                         </el-form-item>
-                        <el-form-item label="设备统一定位上报时间" label-width="180px" prop="oldManMobile">
-                            <el-select v-model="form.oldManMobile" placeholder="请选择">
-                                <el-option
-                                        v-for="item in pushSettingOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
+                        <!--<el-form-item label="设备统一定位上报时间" label-width="180px" prop="oldManMobile">-->
+                            <!--<el-select v-model="form.oldManMobile" placeholder="请选择">-->
+                                <!--<el-option-->
+                                        <!--v-for="item in pushSettingOptions"-->
+                                        <!--:key="item.value"-->
+                                        <!--:label="item.label"-->
+                                        <!--:value="item.value">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                        <!--</el-form-item>-->
 
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>

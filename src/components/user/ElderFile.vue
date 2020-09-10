@@ -13,6 +13,7 @@
                     class="filter-tree"
                     :data="oldManInVillage"
                     :props="defaultProps"
+                    @node-click="clickOldMan"
                     :filter-node-method="filterNode"
                     :default-expand-all="true"
                     ref="tree">
@@ -263,6 +264,14 @@
             }
         },
         methods: {
+            clickOldMan(data, node, self) {
+                console.log(data, node, self);
+                if(data.children == undefined) {
+
+                    console.log('this is old man');
+                }
+            },
+
             querySearchAsync(queryString, cb) {
                 let restaurants = this.oldManOptions;
                 let results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
