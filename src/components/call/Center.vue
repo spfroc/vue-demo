@@ -442,10 +442,10 @@
                         <div>
                             <span>{{detail.content}}</span>
                         </div>
-                        <el-image v-for="(img, index) in detail.imgs" v-if="img.length > 0"
+                        <el-image v-for="(img, index) in detail.imgs" v-if="img.url.length > 0"
                               :key="index"
                               style="width: 100px; height: 100px; margin-right: 10px;"
-                              :src="img"></el-image>
+                              :src="'/images'+img.url"></el-image>
                     </section>
                 </el-form-item>
                 <el-form-item>
