@@ -42,6 +42,7 @@ import About from "../components/mobile/About";
 import VolunteerDetail from "../components/mobile/VolunteerDetail";
 import HealthDetail from "../components/mobile/HealthDetail";
 import Merchant from "../components/mobile/Merchant";
+import Download from "../components/mobile/Download";
 
 Vue.use(Router)
 
@@ -276,7 +277,12 @@ export default new Router({
     path: '/app/merchant',
     meta: {title: '商家详情'},
     component: Merchant
-  },{
+  },
+    {
+      path: '/app/download',
+      meta: {title: '下载'},
+      component: Download
+    },{
     path: '/login',
     meta: {
       title: '登录'
