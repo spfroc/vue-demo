@@ -18,7 +18,7 @@
                 <el-input v-model="search.mobile" placeholder="按老人手机号搜索"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
             </el-form-item>
         </el-form>
         <!--<section class="header-bar">-->
