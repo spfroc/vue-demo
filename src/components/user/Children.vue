@@ -13,7 +13,7 @@
                 <div class="grid-content bg-purple">
                     <el-form :inline="true" :model="search" size="mini" class="">
                         <el-form-item label="" prop="name">
-                            <el-input v-model="search.name" placeholder="按标题搜索"></el-input>
+                            <el-input v-model="search.name" placeholder="按姓名搜索"></el-input>
                         </el-form-item>
                         <el-form-item label="" prop="createTime">
                             <el-date-picker
