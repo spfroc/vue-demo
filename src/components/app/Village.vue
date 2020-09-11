@@ -282,7 +282,7 @@
                 this.$confirm('确定删除此村庄吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.$http.post('/apis/userVillage/delete', {
+                    this.$http.post('/apis/village/delete', {
                         id: id
                     }).then(res => {
                         this.$message({
