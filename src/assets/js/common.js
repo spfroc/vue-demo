@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import axios from 'axios'
+
 const format = (o, format) => { //日期类型
     let args = {
         "M+": o.getMonth() + 1,
@@ -43,9 +45,18 @@ const richTextContentFormatter = (row, column, cellValue) => {
     return handledStr.length < 10 ? handledStr : handledStr + '...';
 
 }
+
+const appTokenAxios = () => {
+    return axios.create({
+        baseURL: '/',
+        timeout: 1000,
+    });
+
+}
+
 export default function(Vue) {
     //添加全局API
     Vue.prototype.$common = {
-        format, searchParams, richTextContentFormatter
+        format, searchParams, richTextContentFormatter,appTokenAxios
     }
 }

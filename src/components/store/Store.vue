@@ -109,7 +109,13 @@
                             <el-input v-model="form.mobile"></el-input>
                         </el-form-item>
                         <el-form-item label="商家地址" prop="address">
-                            <el-input v-model="form.address"></el-input>
+                            <el-input id="address" v-model="form.address"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <div id="container">
+
+                            </div>
+
                         </el-form-item>
                         <el-form-item label="营业时间" prop="businessHours">
                             <el-input v-model="form.businessHours"></el-input>
@@ -155,11 +161,13 @@
     import Editor from "../common/Editor"
     import MultipleImageUpload from "../common/MultipleImageUpload"
     import { isValidPhone } from '../../util/validate'
+    import VueAMap from 'vue-amap'
+    import { lazyAMapApiLoaderInstance } from 'vue-amap'
 
     export default {
         name: "Community",
         components: {
-            SingleImageUpload,Editor,MultipleImageUpload
+            SingleImageUpload,Editor,MultipleImageUpload,VueAMap,lazyAMapApiLoaderInstance
         },
         data() {
             return {
@@ -204,7 +212,10 @@
                     discount: { required: true, message: '请输入商家优惠信息', trigger: 'blur' },
                     introduction: { required: true, message: '请上传商家简介图片', trigger: 'blur' },
 
-                }
+                },
+
+                map: null,
+                searchPlace: null
             }
 
         },
@@ -223,6 +234,8 @@
                 this.form = {}
                 this.introductionFileList = [];
                 this.fileListContainer = [];
+                this.mapInit();
+
             },
             edit (row) {
                 this.editing = true
@@ -330,14 +343,55 @@
                     }
                 })
             },
+
+            mapInit() {
+
+                VueAMap.initAMapApiLoader({
+                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
+                    v: '1.4.4'
+                });
+                lazyAMapApiLoaderInstance.load().then(() => {
+                    console.log(AMap);
+                    this.map = new AMap.Map('container', {
+                        center: new AMap.LngLat(117.11, 36.67),
+                        zoom: 14,
+                        resizeEnable: true,
+                    });
+                    // 输入提示
+                    let autoOptions = {
+                        input: "address",
+                        zIndex: 2002
+                    };
+                    let auto = new AMap.Autocomplete(autoOptions);
+                    this.placeSearch = new AMap.PlaceSearch({
+                        map: this.map
+                    });
+                    AMap.event.addListener(auto, "select", this.select);//注册监听，当选中某条记录时会触发
+                });
+                let results = document.getElementsByClassName('amap-sug-result')
+                console.log(results);
+
+            },
+
+            select(e) {
+                console.log(e);
+                this.placeSearch.setCity(e.poi.adcode);
+                this.placeSearch.search(e.poi.name);  //关键字查询查询
+            }
         },
 
         mounted() {
             this.fetchList(1);
             this.getCategoryOptions();
+
         }
     }
 </script>
 
 <style scoped>
+    #container{
+        width:90%;
+        height:300px;
+    }
 </style>

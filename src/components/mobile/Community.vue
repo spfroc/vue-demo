@@ -256,8 +256,8 @@
             },
 
             reply() {
-                console.log(this.form);
-                this.$http.get('/app/community/evaluate', {
+                this.form.token = this.queryParams.token;
+                this.$common.appTokenAxios().get('/app/community/evaluate', {
                     params: this.form
                 }).then(res => {
                     console.log(res);
@@ -266,7 +266,7 @@
 
             deleteComment(id) {
                 this.removeCommentFromCommentsList(id)
-                this.$http.get('/app/mine/deleteEvaluate', {
+                this.$common.appTokenAxios().get('/app/mine/deleteEvaluate', {
                     params: {
                         id: id,
                         type: 2,
@@ -291,14 +291,19 @@
             },
 
             getDetail() {
-                this.$http.get('/app/community/detail?id='+this.queryParams.id).then((res) => {
+                this.$common.appTokenAxios().get('/app/community/detail?id='+this.queryParams.id, {
+                    params: {
+                        token: this.queryParams.token,
+                    }
+                }).then((res) => {
                     this.detail = res.data.data;
                 });
             },
 
             getComments() {
-                this.$http.get('/app/community/evaluateList', {
+                this.$common.appTokenAxios().get('/app/community/evaluateList', {
                     params: {
+                        token: this.queryParams.token,
                         communityId: this.queryParams.id,
                         // merchantId: 1,
                         pageNo: this.page.pageNo,
@@ -347,9 +352,8 @@
             this.queryParams = this.$route.query;
             this.getDetail();
             this.getComments();
+
             window.addEventListener('scroll', this.handleScroll, true)
-
-
         }
     }
 </script>
