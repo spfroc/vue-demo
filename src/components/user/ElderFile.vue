@@ -267,7 +267,10 @@
                 console.log(data, node, self);
                 if(data.children == undefined) {
 
-                    console.log('this is old man');
+                } else if(data.children) {
+
+                    this.search.villageId= data.id;
+                    this.fetchList(1)
                 }
             },
 
@@ -380,11 +383,11 @@
             },
 
             fetchList (currentPage) {
-                console.log(this.search);
+                // console.log(this.search);
                 this.search.pageNum = currentPage || this.search.pageNum
                 // console.log(this.search);
                 this.search = this.$common.searchParams(this.search);
-                console.log(this.search);
+                // console.log(this.search);
                 this.$http.get('/apis/oldManArchives/list', {
                     params: Object.assign({
                         pageSize: 10,
@@ -394,7 +397,7 @@
                     this.page.total = res.data.data.total
                     this.page.pageSize = res.data.data.pageSize
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    console.log(this.search);
+                    // console.log(this.search);
                     if(this.search.timeStart && this.search.timeEnd) {
                         this.search.createTime = [];
                         this.search.createTime.push(this.search.timeStart);
