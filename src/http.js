@@ -64,11 +64,12 @@ axios.interceptors.response.use(
                 localStorage.removeItem('auth-token')
                 localStorage.removeItem('auth-user-info')
                 localStorage.removeItem('auth-username')
-                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg}`)
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg || response.data.message}`)
             } else {
-                Message.error(response.data.msg)
-                console.log(response.data);
-                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg}`)
+                // console.log('234324',response);
+
+                Message.error(response.data.msg || response.data.message)
+                return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg || response.data.message}`)
             }
         } else {
             Message.error(`请求失败，服务端状态码：${response.status}`)
