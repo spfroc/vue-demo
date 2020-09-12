@@ -109,7 +109,7 @@
                             <el-input v-model="form.mobile"></el-input>
                         </el-form-item>
                         <el-form-item label="商家地址" prop="address">
-                            <el-input id="address" v-model="form.address"></el-input>
+                            <el-input id="address" @change="addressSearch" v-model="form.address"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <div id="container">
@@ -192,7 +192,9 @@
                     cover: '',
                     discount: '',
                     introduction: '',
-                    categoryId: 1
+                    categoryId: 1,
+                    lat: '',
+                    lng: '',
                 },
                 editing: false,
                 isUpdate: false,
@@ -369,16 +371,23 @@
                     });
                     AMap.event.addListener(auto, "select", this.select);//注册监听，当选中某条记录时会触发
                 });
-                let results = document.getElementsByClassName('amap-sug-result')
-                console.log(results);
+                // let results = document.getElementsByClassName('amap-sug-result')
+                // console.log(results[1].setAttribute('style', 'z-index: 3000 !important'));
 
             },
 
             select(e) {
-                console.log(e);
+                console.log('e', e);
+                this.form.lng = e.poi.location.lng;
+                this.form.lat = e.poi.location.lat;
                 this.placeSearch.setCity(e.poi.adcode);
                 this.placeSearch.search(e.poi.name);  //关键字查询查询
-            }
+            },
+
+            addressSearch() {
+                let results = document.getElementsByClassName('amap-sug-result')
+                console.log(results[1].setAttribute('style', 'z-index: 3000 !important'));
+            },
         },
 
         mounted() {
