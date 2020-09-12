@@ -266,7 +266,7 @@
             clickOldMan(data, node, self) {
                 console.log(data, node, self);
                 if(data.children == undefined) {
-
+                    // this.$http.get('')
                 } else if(data.children) {
 
                     this.search.villageId= data.id;

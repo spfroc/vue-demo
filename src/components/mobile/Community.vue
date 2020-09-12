@@ -12,7 +12,7 @@
                     <div >评价</div>
                 </el-col>
                 <el-col :span="17">&nbsp;</el-col>
-                <el-col :span="3"><button @click="replyShow">写评价</button></el-col>
+                <el-col :span="3"><button @click="replyShow(0)">写评价</button></el-col>
             </el-row>
             <section v-for="(comment, index) in comments" :key="index" :style="index > 0 ? paddingStyle: ''">
                 <el-row>
@@ -40,7 +40,7 @@
 
                     </el-col>
                     <el-col :span="3">
-                        <span><button @click="replyShow(comment)">回复</button></span>
+                        <span><button @click="replyShow(comment.id)">{{comment.replyNum}}回复</button></span>
                     </el-col>
                 </el-row>
                 <el-row v-if="comments.length == 0">
@@ -55,20 +55,7 @@
                     :close-on-click-modal=true
                     :destroy-on-close=true
                     >
-                    <el-form ref="form" :rules="rules" :model="form">
-                        <el-form-item label="评价" prop="content">
-                            <el-input type="textarea"></el-input>
-                        </el-form-item>
-                        <el-form-item v-show=false label="" prop="communityId">
-                            <el-input type="hidden"></el-input>
-                        </el-form-item>
-                        <el-form-item v-show=false  label="" prop="evaluateId">
-                            <el-input type="hidden"></el-input>
-                        </el-form-item>
-                        <el-form-item v-show=false  label="" prop="subEvaluateId">
-                            <el-input type="hidden"></el-input>
-                        </el-form-item>
-                    </el-form>
+                    <el-input v-model="form.content"></el-input>
                     <span slot="footer" class="dialog-footer">
                         <el-button type="primary" @click="reply">发 布</el-button>
                     </span>
@@ -251,12 +238,18 @@
         },
 
         methods: {
-            replyShow() {
+            replyShow(evaluateId = 0) {
                 this.dialogVisible = true;
+                this.form.content = '';
+                if(evaluateId != 0) {
+                    this.form.evaluateId = evaluateId;
+                }
             },
 
             reply() {
                 this.form.token = this.queryParams.token;
+                this.form.communityId = this.queryParams.id;
+                console.log(this.form);
                 this.$common.appTokenAxios().get('/app/community/evaluate', {
                     params: this.form
                 }).then(res => {
@@ -310,29 +303,34 @@
                         pageSize: this.page.pageSize
                     }
                 }).then(res => {
-                    this.comments.push([
-                        {
-                            id: '7',
-                            userName: "新",
-                            headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                            createTime: "2020-09-08",
-                            content: "好吃，量大",
-                            replyNum: '10',
-                            isMine: true,
-                            contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                        },
-                        {
-                            id: '7',
-                            userName: "新",
-                            headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                            createTime: "2020-09-08",
-                            content: "好吃，量大",
-                            replyNum: '10',
-                            isMine: true,
-                            contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                        },
-                    ]);
-                    this.page.pageNo = parseInt(res.data.data.pageNo) + 1
+                    if(res.data.data.list) {
+                        this.comments = this.comments.concat(res.data.data.list);
+                    }
+                    // this.comments = this.comments.concat([
+                    //     {
+                    //         id: '7',
+                    //         userName: "新",
+                    //         headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
+                    //         createTime: "2020-09-08",
+                    //         content: "好吃，量大~~~~",
+                    //         replyNum: '10',
+                    //         isMine: true,
+                    //         contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
+                    //     },
+                    //     {
+                    //         id: '7',
+                    //         userName: "新",
+                    //         headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
+                    //         createTime: "2020-09-08",
+                    //         content: "好吃，量大~~~~~",
+                    //         replyNum: '10',
+                    //         isMine: true,
+                    //         contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
+                    //     },
+                    // ]);
+                    if(res.data.data.pageNo) {
+                        this.page.pageNo = parseInt(res.data.data.pageNo) + 1
+                    }
                 });
             },
 
