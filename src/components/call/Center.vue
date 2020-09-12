@@ -56,7 +56,7 @@
                     <div v-for="o in firstTab.list" :key="o.title" class="text item">
                         <div class="card-title">{{o.text}}</div>
                         <div class="card-value"><span class="number-value">{{o.self}}</span><span class="number-unit">本人</span>/<span  class="number-value">{{o.total}}</span><span  class="number-unit">总计</span></div>
-                        <div class="bottom-text" v-if="o.title == 1">接单详情</div>
+                        <div class="bottom-text" v-if="o.title == 1">历史接单列表</div>
                         <div class="bottom-text" v-if="o.title == 3">历史工单列表</div>
                     </div>
                 </el-card>
