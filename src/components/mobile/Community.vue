@@ -6,7 +6,7 @@
         </div>
         <div class="text-container" v-html="detail.content"></div>
         <el-divider></el-divider>
-        <div class="comment-container">
+        <div class="comment-container" style="height: 100%; overflow-y:auto;">
             <el-row style="padding-bottom: 10px">
                 <el-col :span="4">
                     <div >评价</div>
