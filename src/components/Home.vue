@@ -40,6 +40,24 @@ export default {
 
       ]
     }
+  },
+
+  methods: {
+    getStatisticsData () {
+      this.$http.get('/apis/statistic/countForIndex').then(res => {
+        // {"dispNum":2,"wDispNum":134,"wCallNum":135,"mDispNum":159,"completedNum":0};
+        this.list[0].value = res.data.data.dispNum;//今日派单数量
+        this.list[1].value = res.data.data.completedNum;//今日完成服务数
+        this.list[2].value = res.data.data.wDispNum;//本周派单数
+        this.list[3].value = res.data.data.mDispNum;//本月派单数量
+        this.list[4].value = res.data.data.wCallNum;//本周呼叫数
+
+      });
+    }
+  },
+
+  mounted() {
+    this.getStatisticsData();
   }
 }
 </script>
