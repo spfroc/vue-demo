@@ -92,7 +92,7 @@
                     </el-table-column>
                     <el-table-column width="250" label="操作">
                         <template slot-scope="scope">
-                            <el-button v-if="activeName=='approval'" @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
+                            <el-button v-if="activeName=='approval'" @click="() => { showApprovalDetail(scope.row) }" type="info" size="mini">详情</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 1) }" type="success" size="mini">通过</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="danger" size="mini">不通过</el-button>
                             <el-button v-if="activeName=='children'" @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
@@ -199,6 +199,70 @@
                         </el-form-item>
                     </el-form>
                 </el-dialog>
+
+                <el-dialog :close-on-click-modal="false" title="详情" :visible.sync="approvalDetail" :append-to-body="true">
+                    <el-form ref="form" :rules="rules" :model="formApproval" label-width="100px">
+                        <el-form-item v-show="formApproval.id" label="ID" prop="id">
+                            <el-input :disabled="true" v-model="formApproval.id"></el-input>
+                        </el-form-item>
+                        <el-form-item label="姓名" prop="name">
+                            <el-input
+                                    :disabled="true"
+                                    v-model="formApproval.name" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="性别" prop="sex">
+                            <el-select v-model="formApproval.sex" placeholder="请选择">
+                                <el-option
+                                        v-for="item in genderOptions"
+                                        :key="item.value"
+                                        :disabled="true"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="手机号" prop="mobile">
+                            <el-input
+                                    :disabled="true"
+                                    v-model="formApproval.mobile"
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item label="身份证号" prop="idCardNumber">
+                            <el-input
+                                    :disabled="true"
+                                    v-model="formApproval.idCardNumber"
+                            ></el-input>
+                        </el-form-item>
+                        <el-form-item label="家庭住址" prop="homeAddress">
+                            <el-input
+                                    :disabled="true"
+                                    v-model="formApproval.homeAddress"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="老人姓名" prop="oldManName" v-if="!canInputEdit">
+                            <el-input
+
+                                    :disabled="true"
+                                    v-model="formApproval.oldManName"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="老人身份证号" prop="oldManIdCardNumber" v-if="!canInputEdit">
+                            <el-input
+
+                                    :disabled="true"
+                                    v-model="formApproval.oldManIdCardNumber"
+                            ></el-input>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(formApproval.id, 1)" class="el-button--success">通过</el-button>
+                            <el-button v-if="showApprovalButton" v-on:click="operation(formApproval.id, 2)" class="el-button--danger">不通过</el-button>
+                            <el-button v-on:click="cancelApproval" type="primary">取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-dialog>
             </div>
         </template>
     </div>
@@ -216,7 +280,7 @@
 
         computed : {
             showApprovalButton: function() {
-                if(this.editingRow.status == 1) {
+                if(this.formApproval.status == "0") {
                     return true;
                 } else {
                     return false;
@@ -246,6 +310,10 @@
         },
         data() {
             return {
+                formApproval: {
+
+                },
+                approvalDetail: false,
                 showRubbish: true,
                 bindOldMan: {
                     id: '',
@@ -254,11 +322,11 @@
                 genderOptions: [
                     {
                         label: '男',
-                        value: 1,
+                        value: "1",
                     },
                     {
                         label: '女',
-                        value: 2,
+                        value: "2",
                     },
                 ],
                 villageOptions: [
@@ -321,6 +389,11 @@
 
         },
         methods: {
+            showApprovalDetail(row) {
+                this.approvalDetail = true;
+                console.log(row);
+                this.formApproval = row;
+            },
             getVillageOptions () {
                 this.$http.get('/apis/village/selectList').then((res) => {
                     console.log(res.data.data);
@@ -445,6 +518,11 @@
                     idCardNumber:'',
                     bindOldMan: [],
                 }
+            },
+
+            cancelApproval() {
+                this.approvalDetail = false;
+                this.formApproval = {};
             },
 
 
