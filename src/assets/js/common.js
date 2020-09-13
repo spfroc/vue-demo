@@ -46,6 +46,11 @@ const richTextContentFormatter = (row, column, cellValue) => {
 
 }
 
+const defaultAvatar = () => {
+    let defaultImg = require('../img/default_user.png');
+    return defaultImg;
+}
+
 const appTokenAxios = () => {
     return axios.create({
         baseURL: '/',
@@ -57,6 +62,6 @@ const appTokenAxios = () => {
 export default function(Vue) {
     //添加全局API
     Vue.prototype.$common = {
-        format, searchParams, richTextContentFormatter,appTokenAxios
+        format, searchParams, richTextContentFormatter,appTokenAxios, defaultAvatar
     }
 }

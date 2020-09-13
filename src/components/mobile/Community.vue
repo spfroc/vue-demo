@@ -17,14 +17,16 @@
             <section v-for="(comment, index) in comments" :key="index" :style="index > 0 ? paddingStyle: ''">
                 <el-row>
                     <el-col :span="3">
-                        <el-avatar shape="square" :src="comment.headImg"></el-avatar>
+                        <el-avatar shape="square" :src="'/images'+comment.headImg">
+                            <img src="../../assets/img/default_user.png"/>
+                        </el-avatar>
                     </el-col>
                     <el-col :span="13">
                         <span>{{comment.userName}}</span>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col>{{comment.content}}{{comment.id}}</el-col>
+                    <el-col><div @click="toDetail(comment.id)">{{comment.content}}{{comment.id}}</div></el-col>
                 </el-row>
 
                 <el-row v-if="comment.contentImg">
@@ -32,7 +34,7 @@
                 </el-row>
                 <el-row>
                     <el-col :span="18">
-                        <span>{{comment.createTime}}</span>
+                        <span><div @click="toDetail(comment.id)">{{comment.createTime}}</div></span>
                     </el-col>
                     <el-col :span="3">
                         <span v-if="comment.isMine"><button @click="deleteComment(comment.id)">删除</button></span>
@@ -85,139 +87,7 @@
                     pageNo: 1,
                     pageSize: 20
                 },
-                comments: [
-                    {
-                        id: '1',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: false,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '2',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '3',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '4',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '5',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '6',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '8',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '9',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-
-                    {
-                        id: '10',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '11',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '12',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '13',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                ]
+                comments: []
             }
         },
 
@@ -238,6 +108,12 @@
         },
 
         methods: {
+
+            toDetail(id) {
+                console.log(id);
+
+                window.location.href = '/#/app/community-comment-detail?evaluateId='+id + '&communityId='+ this.queryParams.id +'&token='+this.queryParams.token;
+            },
             replyShow(evaluateId = 0) {
                 this.dialogVisible = true;
                 this.form.content = '';
@@ -249,11 +125,12 @@
             reply() {
                 this.form.token = this.queryParams.token;
                 this.form.communityId = this.queryParams.id;
-                console.log(this.form);
                 this.$common.appTokenAxios().get('/app/community/evaluate', {
                     params: this.form
                 }).then(res => {
                     console.log(res);
+
+                    this.dialogVisible = false;
                 })
             },
 
@@ -303,7 +180,7 @@
                         pageSize: this.page.pageSize
                     }
                 }).then(res => {
-                    if(res.data.data.list) {
+                    if(res.data.data.list.length > 0) {
                         this.comments = this.comments.concat(res.data.data.list);
                     }
                     // this.comments = this.comments.concat([

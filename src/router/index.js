@@ -43,6 +43,7 @@ import VolunteerDetail from "../components/mobile/VolunteerDetail";
 import HealthDetail from "../components/mobile/HealthDetail";
 import Merchant from "../components/mobile/Merchant";
 import Download from "../components/mobile/Download";
+import CommunityCommentDetail from "../components/mobile/CommunityCommentDetail";
 
 Vue.use(Router)
 
@@ -283,6 +284,10 @@ export default new Router({
       meta: {title: '下载'},
       component: Download
     },{
+          path: '/app/community-comment-detail',
+          meta: {title: '社区评价详情'},
+          component: CommunityCommentDetail
+      },{
     path: '/login',
     meta: {
       title: '登录'
