@@ -1,11 +1,11 @@
 <template>
   <div class="home-container" body-style="{width: '100%'}">
-    <el-card class="box-card">
-      <div v-for="o in list" :key="o.title" class="text item">
+    <el-row style="margin-bottom: 20px">
+      <el-col :span="4" v-for="o in list" :key="o.title" class="box">
         <div class="card-value"><strong>{{o.value}}</strong></div>
         <div class="card-title">{{o.title}}</div>
-      </div>
-    </el-card>
+      </el-col>
+    </el-row>
     <!--<img src="https://www.arizonachristian.edu/wp-content/uploads/2017/06/logo-placeholder.png" alt="" class="logo">-->
     <img class="pic" src="http://thumb.takefoto.cn/wp-content/uploads/2019/04/201904080619552096-680x448.jpg" alt="">
   </div>
@@ -53,22 +53,9 @@ export default {
   text-align: center;
 }
 
-.text {
-  font-size: 14px;
-}
-
-.item {
-  /*padding: 0 20px 0 20px;*/
-  margin: 0 20px;
-  float: left;
-  border: solid lightgray 1px;
-  height: 80px;
-  width: 150px;
-}
-
 .card-value {
   margin-top: 15px;
-  font-size: 30px;
+  font-size: 40px;
 }
 
 .card-title {
@@ -76,8 +63,13 @@ export default {
   color: gray;
 }
 
-.box-card {
-  width: 100%;
-  margin-bottom: 10px;
+.box {
+  border: solid lightgray 1px;
+  height: 100px;
 }
+
+.box:not(:first-child) {
+  margin-left: 50px;
+}
+
 </style>
