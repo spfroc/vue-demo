@@ -72,63 +72,67 @@
             </el-col>
             <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 20px;">
                 <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
-                <section style="width: 100%;height:400px;padding:20px 0px 20px 0px">
+                <section style="width: 100%;height:400px;padding:20px 0px 20px 0px;" id="statistic-container">
                     <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->
                     <!--<progress></progress>-->
-                    <section style="text-align: center; font-size: 18px; font-weight: bold; color: #3a3a3a;">数据统计</section>
-                    <custom-progress
-                            progress=25
-                            :value="processData.socialWorkerNum"
-                            background-color="#1E90FF"
-                            text="驿工"
-                            dot-color="#1E90FF"
-                    ></custom-progress>
+                        <div style="text-align: center; font-size: 18px; font-weight: bold; color: #3a3a3a;">数据统计</div>
+                        <div :style="dataStatistic" id="progress-container">
+                            <custom-progress
+                                    progress=25
+                                    :value="processData.socialWorkerNum"
+                                    background-color="#1E90FF"
+                                    text="驿工"
+                                    dot-color="#1E90FF"
+                            ></custom-progress>
 
-                    <custom-progress
-                            progress=75
-                            :value="processData.totalReceptionCallNum"
-                            background-color="#708090"
-                            text="总接待电话数"
-                            dot-color="#708090"
-                    ></custom-progress>
+                            <custom-progress
+                                    progress=75
+                                    :value="processData.totalReceptionCallNum"
+                                    background-color="#708090"
+                                    text="总接待电话数"
+                                    dot-color="#708090"
+                            ></custom-progress>
 
-                    <custom-progress
-                            progress=80
-                            :value="processData.oldManNum"
-                            background-color="#32CD32"
-                            text="老人"
-                            dot-color="#32CD32"
-                    ></custom-progress>
+                            <custom-progress
+                                    progress=80
+                                    :value="processData.oldManNum"
+                                    background-color="#32CD32"
+                                    text="老人"
+                                    dot-color="#32CD32"
+                            ></custom-progress>
 
-                    <custom-progress
-                            progress=33
-                            :value="processData.stationNum"
-                            background-color="#40E0D0"
-                            text="驿站数"
-                            dot-color="#40E0D0"
-                    ></custom-progress>
+                            <custom-progress
+                                    progress=33
+                                    :value="processData.stationNum"
+                                    background-color="#40E0D0"
+                                    text="驿站数"
+                                    dot-color="#40E0D0"
+                            ></custom-progress>
 
-                    <custom-progress
-                            progress=100
-                            background-color="#FF4500"
-                            text="医生"
-                            :value="processData.doctorNum"
-                            dot-color="#FF4500"
-                    ></custom-progress>
-                    <custom-progress
-                            progress=80
-                            :value="processData.childrenNum"
-                            background-color="#4169E1"
-                            text="子女用户数"
-                            dot-color="#4169E1"
-                    ></custom-progress>
-                    <custom-progress
-                            progress=40
-                            :value="processData.orderNum"
-                            background-color="#838B8B"
-                            text="总工单数"
-                            dot-color="#838B8B"
-                    ></custom-progress>
+                            <custom-progress
+                                    progress=100
+                                    background-color="#FF4500"
+                                    text="医生"
+                                    :value="processData.doctorNum"
+                                    dot-color="#FF4500"
+                            ></custom-progress>
+                            <custom-progress
+                                    progress=80
+                                    :value="processData.childrenNum"
+                                    background-color="#4169E1"
+                                    text="子女用户数"
+                                    dot-color="#4169E1"
+                            ></custom-progress>
+                            <custom-progress
+                                    progress=40
+                                    :value="processData.orderNum"
+                                    background-color="#838B8B"
+                                    text="总工单数"
+                                    dot-color="#838B8B"
+                            ></custom-progress>
+                        </div>
+
+
                 </section>
             </el-col>
         </el-row>
@@ -145,7 +149,6 @@
         components: {
             Echart, AMap, CustomProgress
         },
-
         data() {
             return {
                 chartSos: '',
@@ -157,7 +160,10 @@
                 monthlyTotalReception: '',
                 weeklyServiceSummary: '',
                 dataStatistics: '',
-
+                dataStatistic: {
+                    marginLeft: '20px',
+                    width: '100%'
+                },
                 callNumbers: {
                     pickUpPhoneNum: 123,
                     dispatchNum: 345,
@@ -903,6 +909,12 @@
             this.doctorAverage();
             this.workerAverage();
             this.getSummary();
+            // console.log('~~~', this.dataStatistic);
+
+            // let container = window.document.getElementById('statistic-container')
+            // let progressContainer = window.document.getElementById('progress-container')
+            // console.log(container.clientWidth, progressContainer.clientWidth);
+            // this.dataStatistic.marginLeft = (container.clientWidth-progressContainer.clientWidth)/2 + 'px'
 
         }
     }
