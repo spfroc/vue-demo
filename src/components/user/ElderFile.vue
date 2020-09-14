@@ -266,12 +266,11 @@
             clickOldMan(data, node, self) {
                 console.log(data, node, self);
                 if(data.children == undefined) {
-                    // this.$http.get('')
+                    this.search.oldManName = data.label;
                 } else if(data.children) {
-
                     this.search.villageId= data.id;
-                    this.fetchList(1)
                 }
+                this.fetchList(1)
             },
 
             querySearchAsync(queryString, cb) {
