@@ -269,7 +269,7 @@
                     // padding:30,
                     show : true,
                         orient: 'horizontal',
-                        itemSize: 30,
+                        itemSize: 25,
                         itemGap: 20,
                         width: 300,
                         feature: {
@@ -417,7 +417,11 @@
                             data: [
                                 {
                                     value: value,
-                                    name: title,
+                                    name: title+value,
+                                    label: {
+                                        // show: true,
+                                        // position: 'center'
+                                    }
                                 },
                             ],
                             emphasis: {
@@ -442,6 +446,7 @@
             getCallNumber() {
                 this.$http.get('/apis/statistic/countCallCenter').then((res) => {
                     this.callNumbers = res.data.data
+                    console.log('debug', this.callNumbers);
                     this.cumulativeNumberOfCallsReceivedInit();
                     this.cumulativeCallTimeInit();
                     this.cumulativeDispatchedOrderNumberInit();
