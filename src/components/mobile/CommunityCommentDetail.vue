@@ -113,7 +113,10 @@
                 this.$common.appTokenAxios().get('/app/community/evaluate', {
                     params: this.form
                 }).then(res => {
-                    console.log(res);
+                    this.$message({
+                        message: res.data.message || '评价成功！将在审核通过后显示',
+                        type: 'success'
+                    })
 
                     this.dialogVisible = false;
                 })

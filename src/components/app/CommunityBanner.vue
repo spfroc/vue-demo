@@ -174,7 +174,7 @@
                         id: id
                     }).then(res => {
                         this.$message({
-                            message: res.data.message,
+                            message: res.data.msg || '操作成功',
                             type: 'success'
                         })
                         this.fetchList(1)
@@ -199,7 +199,7 @@
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
-                        type: this.form.type
+                        type: 2
                     }, this.search)
                 }, {
                     params: this.search
@@ -217,7 +217,7 @@
                         this.form.roleId = this.form.roleName
                         this.$http.post('/apis/banner/addOrUpdate', this.form).then(res => {
                             this.$message({
-                                message: res.data.message,
+                                message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
                             this.form = {}

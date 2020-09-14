@@ -1,5 +1,5 @@
 <template>
-    <section id="a-map-container" style="width: 100%;height:400px;"></section>
+    <section id="a-map-container" style="width: 100%;height:376px;"></section>
 </template>
 <script>
 

@@ -1,6 +1,6 @@
 <template>
     <section class="progress-container">
-        <section style="width: 100%;height:300px;">
+        <section style="width: 80%;height:300px;">
             <div class="progress-container">
                 <div class="progress-text">{{value || 20}}</div>
 
@@ -61,7 +61,7 @@
         margin-top: 20px;
         float: left;
         width: 20px;
-        margin-left: 30px;
+        margin-left: 20px;
         height: 80%;
         border-radius: 10px;
     }
@@ -69,9 +69,9 @@
     .progress-circle {
         margin-top: 10px;
         float: left;
-        margin-left: 25px;
-        width: 30px;
-        height: 30px;
+        margin-left: 20px;
+        width: 20px;
+        height: 20px;
         border-radius: 20px;
         border: solid 1px gray;
         background-color: gray;
@@ -89,7 +89,7 @@
         text-align: center; /*让div内部文字居中*/
         background-color: #fff;
         border-radius: 20px;
-        width: 80px;
+        width: 60px;
         height: 100%;
     }
     .current-progress {
