@@ -45,7 +45,12 @@
                             align="center"
                             label="评论用户">
                     </el-table-column>
-
+                    <el-table-column
+                            prop="status"
+                            align="center"
+                            :formatter="statusFormatter"
+                            label="状态">
+                    </el-table-column>
                     <el-table-column
                             prop="createTime"
                             align="center"
@@ -163,6 +168,16 @@
 
         },
         methods: {
+            statusFormatter(row) {
+                console.log(row);
+                if(row.status == '0') {
+                    return '待审核'
+                } else if(row.status == '1') {
+                    return '通过'
+                } else {
+                    return '不通过'
+                }
+            },
             add () {
                 this.editing = true
                 this.isUpdate = false
