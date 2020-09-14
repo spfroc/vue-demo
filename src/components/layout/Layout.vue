@@ -316,6 +316,10 @@
                       {
                         index: '/comment/community',
                         title: '社区评价管理',
+                      },
+                      {
+                        index: '/comment/children',
+                        title: '子女评价管理',
                       }
                     ]
                   },
