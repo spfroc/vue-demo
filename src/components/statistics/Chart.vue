@@ -11,12 +11,12 @@
             </el-col>
 
         </el-row>
-        <el-row>
-            <el-col :span="12">
-                <section id="sos" style="width: 100%;height:400px;padding:20px 0px 20px 0px" class="box-card"></section>
+        <el-row style="margin-top:20px;">
+            <el-col :span="12" style="border: 1px solid lightgrey">
+                <section id="sos" style="width: 100%;height:400px;" class="box-card"></section>
             </el-col>
-            <el-col :span="8">
-                <section class="chart-title" >自2020-07-10来累计数据</section>
+            <el-col :span="8" style="border: 1px solid lightgrey;height: 402px;margin-left: 20px">
+                <section class="chart-title" style="font-size: 18px; font-weight: bold; color: #3a3a3a;">自2020-07-10来累计数据</section>
 
                 <el-row>
                     <el-col :span="12">
@@ -39,41 +39,41 @@
             </el-col>
         </el-row>
 
-        <el-row>
-            <el-col :span="12">
+        <el-row style="margin-top: 20px;">
+            <el-col :span="11" style="border: 1px solid lightgrey">
                 <section id="worker-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">驿工平均接单时间</section>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="11" style="border: 1px solid lightgrey;margin-left: 20px">
                 <section id="doctor-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生平均接单时间</section>
             </el-col>
         </el-row>
 
-        <el-row>
-            <el-col :span="12">
+        <el-row style="margin-top: 20px;">
+            <el-col :span="11" style="border: 1px solid lightgrey">
                 <section id="order-rate" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生工单 服务工单在总工单中占比</section>
             </el-col>
-            <el-col :span="12">
-                <section style="padding:20px 0px 20px 0px">魏善庄镇行政地图</section>
+            <el-col :span="11" style="border: 1px solid lightgrey; margin-left: 20px">
+                <section style="padding:20px 0px 20px 0px; font-size: 18px; font-weight: bold; color: #3a3a3a;">魏善庄镇行政地图</section>
                 <a-map
                         :width="100"
                         :lng="116.419461"
                         :lat="39.663952"
-                        :height="200"></a-map>
+                        :height="376"></a-map>
             </el-col>
         </el-row>
-        <el-row>
-            <el-col :span="7">
+        <el-row style="margin-top: 20px;">
+            <el-col :span="7" style="border: 1px solid lightgrey">
                 <section id="monthly-total-reception" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本月接待总计</section>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="7" style="border: 1px solid lightgrey;margin-left: 20px">
                 <section id="weekly-service-summary" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本周服务汇总</section>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 20px;">
                 <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
                 <section style="width: 100%;height:400px;padding:20px 0px 20px 0px">
                     <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->
                     <!--<progress></progress>-->
-                    <section style="text-align: center">数据统计</section>
+                    <section style="text-align: center; font-size: 18px; font-weight: bold; color: #3a3a3a;">数据统计</section>
                     <custom-progress
                             progress=25
                             :value="processData.socialWorkerNum"
@@ -208,7 +208,7 @@
 
                 sosData: {
                     title: {
-                        text: 'SOS报警接口变化图'
+                        text: 'SOS报警接听数变化图'
                     },
 
                     xAxis: {
@@ -269,7 +269,7 @@
                     // padding:30,
                     show : true,
                         orient: 'horizontal',
-                        itemSize: 40,
+                        itemSize: 30,
                         itemGap: 20,
                         width: 300,
                         feature: {
@@ -415,7 +415,10 @@
                                 padding: [-60, 0, 0, 0]
                             },
                             data: [
-                                {value: value, name: title},
+                                {
+                                    value: value,
+                                    name: title,
+                                },
                             ],
                             emphasis: {
                                 itemStyle: {
@@ -476,7 +479,7 @@
                 let value = []
                 this.$http.get('/apis/statistic/countReception').then(res => {
                     total = res.data.data.totalNum;
-                    data = res.data.data.data;
+                    data = res.data.data.date;
                     value = res.data.data.value;
                     let option = {
                         title: {
@@ -490,7 +493,9 @@
                             data: data
                         },
                         yAxis: {
-                            type: 'value'
+                            type: 'value',
+                            name: '接待次数(人次)',
+
                         },
                         series: [{
                             data: value,
@@ -511,7 +516,6 @@
                 let totalNum = 332;
                 let value = [820, 932, 901, 934, 1290, 1330, 1320];
                 this.$http.get('/apis/statistic/countWorkOrderForWeek').then(res => {
-                    console.log('statistics weekly:', res);
                     totalNum = res.data.data.totalNum;
                     value = res.data.data.value;
                     let option = {
@@ -525,7 +529,8 @@
                             data: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日']
                         },
                         yAxis: {
-                            type: 'value'
+                            type: 'value',
+                            name: '服务次数(次)',
                         },
                         series: [
                             {
@@ -655,10 +660,10 @@
                             formatter: {name},
                             data: [
                                 {
-                                    name: '医生工单',
+                                    name: '医生工单' + doctorOrderNum + '个',
                                 },
                                 {
-                                    name: '服务工单',
+                                    name: '服务工单' + serviceOrderNum + '个',
                                 },
                             ],
                             // itemGap: 20
@@ -681,8 +686,8 @@
                                     padding: [-40, 0, 0, 0]
                                 },
                                 data: [
-                                    {value: doctorOrderNum, name: '医生工单'},
-                                    {value: serviceOrderNum, name: '服务工单'},
+                                    {value: doctorOrderNum, name: '医生工单'  + doctorOrderNum + '个'},
+                                    {value: serviceOrderNum, name: '服务工单' + serviceOrderNum + '个'},
                                 ],
                                 emphasis: {
                                     itemStyle: {
@@ -721,7 +726,8 @@
                             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                         },
                         yAxis: {
-                            type: 'value'
+                            type: 'value',
+                            name: '接单时间(小时)',
                         },
                         series: [
                             {
@@ -783,7 +789,8 @@
                             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
                         },
                         yAxis: {
-                            type: 'value'
+                            type: 'value',
+                            name: '接单时间(小时)',
                         },
                         series: [
                             {
@@ -851,7 +858,9 @@
                     // this.sos(this.sosData.xAxisWeek, this.sosData.seriesWeek)
                     this.chartSos.setOption({
                         xAxis: this.sosData.xAxis,
-                        yAxis: {},
+                        yAxis: {
+                            name: '报警接听数(次)',
+                        },
                         series: this.sosData.series,
                     });
                 });
@@ -929,7 +938,7 @@
     .box-card {
         width: 100%;
         /*margin-bottom: 10px;*/
-        padding-bottom: 20px;
+        /*padding-bottom: 20px;*/
     }
 
 

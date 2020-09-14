@@ -202,7 +202,7 @@
                     params: Object.assign({
                         pageSize: 10,
                         pageNum: 1,
-                        type: this.form.type
+                        type: 1
                     }, this.search)
                 }, {
                     params: this.search

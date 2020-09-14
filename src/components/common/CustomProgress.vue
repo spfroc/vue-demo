@@ -1,6 +1,6 @@
 <template>
     <section class="progress-container">
-        <section style="width: 100%;height:300px;">
+        <section style="width: 80%;height:300px;">
             <div class="progress-container">
                 <div class="progress-text">{{value || 20}}</div>
 
@@ -89,7 +89,7 @@
         text-align: center; /*让div内部文字居中*/
         background-color: #fff;
         border-radius: 20px;
-        width: 80px;
+        width: 70px;
         height: 100%;
     }
     .current-progress {
