@@ -267,8 +267,10 @@
                 console.log(data, node, self);
                 if(data.children == undefined) {
                     this.search.oldManName = data.label;
+                    delete this.search.villageId
                 } else if(data.children) {
                     this.search.villageId= data.id;
+                    delete this.search.oldManName;
                 }
                 this.fetchList(1)
             },
