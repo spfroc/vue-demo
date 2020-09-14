@@ -4,8 +4,10 @@
             <el-col :span="24">
                 <el-card class="box-card home-container">
                     <div v-for="o in summary" :key="o.title" class="item">
-                        <div class="text card-value"><strong>{{o.value}}{{o.unit}}</strong></div>
-                        <div class="text card-title">{{o.title}}</div>
+                        <div class="text card-value">
+                            <strong>{{o.value}}</strong><span style="font-size: 30px;">{{o.unit}}</span>
+                            <div class="text card-title">{{o.title}}</div>
+                        </div>
                     </div>
                 </el-card>
             </el-col>
@@ -446,7 +448,6 @@
             getCallNumber() {
                 this.$http.get('/apis/statistic/countCallCenter').then((res) => {
                     this.callNumbers = res.data.data
-                    console.log('debug', this.callNumbers);
                     this.cumulativeNumberOfCallsReceivedInit();
                     this.cumulativeCallTimeInit();
                     this.cumulativeDispatchedOrderNumberInit();
@@ -926,18 +927,23 @@
         margin: 0 20px;
         float: left;
         border: solid lightgray 1px;
-        height: 80px;
-        width: 150px;
+        height: 100px;
+        width: 200px;
+        color: white;
+        background-color: #4a7fec;
+        box-shadow: #4a7fec 0px 2px 6px 0px
     }
 
     .card-value {
         margin-top: 15px;
-        font-size: 30px;
+        font-size: 50px;
     }
 
     .card-title {
         font-size: 8px;
-        color: gray;
+        color: white;
+        /*text-align: left;*/
+        /*margin-left: 50px;*/
     }
 
     .box-card {
