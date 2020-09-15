@@ -78,8 +78,26 @@
                             <el-input v-model="form.phone3"></el-input>
                         </el-form-item>
 
-                        <el-form-item label="电话白名单" prop="whitePhones" aria-placeholder="23432">
-                            <el-input v-model="form.whitePhones" placeholder='多个手机号使用英文格式逗号 "," 分割'></el-input>
+                        <el-form-item  label="电话白名单" prop="whitePhones" aria-placeholder="23432">
+                            <el-input v-show="false" v-model="form.whitePhones" placeholder='多个手机号使用英文格式逗号 "," 分割'></el-input>
+                            <el-row>
+                                <el-col :span="12" v-if="whiteList.length > 0" >
+                                    <el-tag
+                                            class="el-tag-style"
+                                            v-for="(tag, index) in whiteList"
+                                            v-if="tag"
+                                            :key="index"
+                                            closable
+                                            @close="removePhone(index)"
+                                    >
+                                        {{tag}}
+                                    </el-tag>
+                                </el-col>
+                                <el-col :span="12">
+                                    <el-button @click="addPhone()" type="primary">添加</el-button>
+                                </el-col>
+
+                            </el-row>
                         </el-form-item>
                         <!--<el-form-item label="设备统一定位上报时间" label-width="180px" prop="oldManMobile">-->
                             <!--<el-select v-model="form.oldManMobile" placeholder="请选择">-->
@@ -91,6 +109,13 @@
                                 <!--</el-option>-->
                             <!--</el-select>-->
                         <!--</el-form-item>-->
+
+                        <section v-if="whiteList.length > 0">
+                            <el-form-item v-for="(item, index) in whiteList" :key="index">
+                                <el-input v-model="whiteList[index]" style="width: 30%"></el-input>
+                                <el-button @click="removePhone(index)" type="warning">删除</el-button>
+                            </el-form-item>
+                        </section>
 
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -130,6 +155,8 @@
                     whitePhones: '',
 
                 },
+
+                whiteList: [],
                 pushSettingOptions: [
                     {
                         value: 1,
@@ -150,18 +177,29 @@
 
         methods: {
 
+            addPhone() {
+                this.whiteList.push('');
+            },
+            removePhone(index) {
+                console.log(index);
+                this.whiteList.splice(index, 1)
+            },
+
             statusFormatter (row) {
                 return row.status && row.status ? '正常' : '离线';
             },
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {};
+                this.whiteList = []
+
             },
             edit (row) {
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
+                this.whiteList = row.whitePhones.split(',');
                 this.form = Object.assign({}, row)
             },
             remove (id) {
@@ -203,6 +241,13 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
+                        this.form.whitePhones = '';
+                        this.whiteList.forEach((item, index) => {
+                            if(index > 0) {
+                                this.form.whitePhones += ','
+                            }
+                            this.form.whitePhones += item
+                        })
                         this.$http.post('/apis/badge/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',
@@ -227,5 +272,7 @@
 </script>
 
 <style scoped>
-
+    .el-tag-style:not(:first-child) {
+        margin-left: 5px;
+    }
 </style>
