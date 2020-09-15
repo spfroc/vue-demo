@@ -110,6 +110,7 @@
                         </el-form-item>
                         <el-form-item label="商家地址" prop="address">
                             <el-input id="address" @change="addressSearch" v-model="form.address"></el-input>
+                            <div id="results" style="display:none;position:absolute"></div>
                         </el-form-item>
                         <el-form-item>
                             <div id="container">
@@ -192,9 +193,9 @@
                     cover: '',
                     discount: '',
                     introduction: '',
-                    categoryId: 1,
-                    lat: '',
-                    lng: '',
+                    categoryId: '',
+                    lng: 117.11,
+                    lat: 36.67,
                 },
                 editing: false,
                 isUpdate: false,
@@ -233,7 +234,10 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.form = {}
+                this.form = {
+                    lng: 117.11,
+                    lat: 36.67,
+                }
                 this.introductionFileList = [];
                 this.fileListContainer = [];
                 this.mapInit();
@@ -354,22 +358,33 @@
                     v: '1.4.4'
                 });
                 lazyAMapApiLoaderInstance.load().then(() => {
-                    console.log(AMap);
                     this.map = new AMap.Map('container', {
-                        center: new AMap.LngLat(117.11, 36.67),
+                        center: new AMap.LngLat(this.form.lng, this.form.lat),
                         zoom: 15,
                         resizeEnable: true,
                     });
+
+                    let marker = new AMap.Marker({
+                        position:[this.form.lng, this.form.lat]//位置
+                    })
+                    console.log('marker', marker);
+                    this.map.add(marker);//添加到地图
                     // 输入提示
                     let autoOptions = {
                         input: "address",
-                        zIndex: 2002
+                        output: 'results'
                     };
                     let auto = new AMap.Autocomplete(autoOptions);
                     this.placeSearch = new AMap.PlaceSearch({
                         map: this.map
                     });
-                    AMap.event.addListener(auto, "select", this.select);//注册监听，当选中某条记录时会触发
+                    AMap.event.addListener(auto, "select", (e) => {
+                        console.log('e~~', e);
+                        this.form.lng = e.poi.location.R;
+                        this.form.lat = e.poi.location.Q;
+                        this.placeSearch.setCity(e.poi.adcode);
+                        this.placeSearch.search(e.poi.name);  //关键字查询查询
+                    });//注册监听，当选中某条记录时会触发
                 });
                 // let results = document.getElementsByClassName('amap-sug-result')
                 // console.log(results[1].setAttribute('style', 'z-index: 3000 !important'));
@@ -382,11 +397,17 @@
                 this.form.lat = e.poi.location.Q;
                 this.placeSearch.setCity(e.poi.adcode);
                 this.placeSearch.search(e.poi.name);  //关键字查询查询
+                this.placeSearch.clear();
+                let markers = VueAMap.Marker({
+                    position: [this.form.lng, this.form.lat]
+                })
+                this.map.add(markers);
             },
 
             addressSearch() {
-                let results = document.getElementsByClassName('amap-sug-result')
-                console.log(results[1].setAttribute('style', 'z-index: 3000 !important'));
+                // let results = document.getElementsByClassName('amap-sug-result')
+                // console.log(results);
+                // results[1].setAttribute('style', 'z-index: 4000 !important');
             },
         },
 
