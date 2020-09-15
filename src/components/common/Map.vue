@@ -24,7 +24,7 @@
 
             mapInit () {
                 Amap.initAMapApiLoader({
-                    key: 'e026d6af144d5a75ed717f7c18f10fff',
+                    key: 'bf8e162c12d4797e0310c699ff45b3c2',
                     plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.CircleMarker', 'AMap.Marker'],
                     v: '1.4.4'
                 });
