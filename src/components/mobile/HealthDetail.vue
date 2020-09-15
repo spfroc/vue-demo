@@ -31,7 +31,7 @@
 
         methods: {
             getDetail() {
-                this.$http.get('/app/index/healthDetail', {
+                this.$common.appTokenAxios().get('/app/index/healthDetail', {
                     params: this.queryParams
                 }).then((res) => {
                     console.log(res);
@@ -42,7 +42,6 @@
 
         mounted() {
             this.queryParams = this.$route.query;
-            console.log(this.queryParams);
             this.getDetail();
         }
     }

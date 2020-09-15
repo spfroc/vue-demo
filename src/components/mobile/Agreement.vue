@@ -437,10 +437,10 @@
             <p>
                 本协议任一条款被视为废止、无效或不可执行，该条应视为可分的且并不影响本协议其余条款的有效性及可执行性。
             </p>
-            <div class="btn">
-                <el-button @click="agree" type="primary">同意</el-button>
-                <el-button @click="reject">拒绝</el-button>
-            </div>
+            <!--<div class="btn">-->
+                <!--<el-button @click="agree" type="primary">同意</el-button>-->
+                <!--<el-button @click="reject">拒绝</el-button>-->
+            <!--</div>-->
         </div>
 
     </div>

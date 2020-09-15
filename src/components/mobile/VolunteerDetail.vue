@@ -25,7 +25,6 @@
 
         mounted() {
             this.queryParams = this.$route.query;
-            console.log(this.queryParams);
             this.getDetail();
         }
     }

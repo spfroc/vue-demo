@@ -289,7 +289,7 @@
         },
         methods: {
             getDetail() {
-                this.$http.get('/app/merchant/detail', {
+                this.$common.appTokenAxios().get('/app/merchant/detail', {
                     params: this.queryParams
                 }).then((res) => {
                     this.detail = res.data.data;
@@ -297,10 +297,11 @@
             },
 
             getComments() {
-                this.$http.get('/app/merchant/evaluateList', {
+                this.$common.appTokenAxios().get('/app/merchant/evaluateList', {
                     params: {
                         merchantId: this.queryParams.id,
                         pageNo: this.commentPage.pageNum,
+                        toke: this.queryParams.token,
                         pageSize: 500
                     }
                 }).then(res => {
