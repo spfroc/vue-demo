@@ -41,7 +41,7 @@
                             label="评论内容">
                     </el-table-column>
                     <el-table-column
-                            prop="childrenName"
+                            prop="childName"
                             align="center"
                             label="评论用户">
                     </el-table-column>
@@ -87,8 +87,8 @@
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="评价用户" prop="childrenName">
-                            <el-input v-model="form.childrenName" :disabled=true></el-input>
+                        <el-form-item label="评价用户" prop="childName">
+                            <el-input v-model="form.childName" :disabled=true></el-input>
                         </el-form-item>
                         <el-form-item label="服务者" prop="name">
                             <el-input v-model="form.name" :disabled=true></el-input>
@@ -149,7 +149,7 @@
                 introductionFileList: [],
                 form: {
                     id: '',
-                    childrenName: '',
+                    childName: '',
                     name: '',
                     star: '',
                     content: '',
