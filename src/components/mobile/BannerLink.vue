@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <h4>{{detail.name}}</h4>
 
         <div class="text-container" v-html="detail.text"></div>
