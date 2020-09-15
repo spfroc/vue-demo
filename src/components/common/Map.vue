@@ -84,7 +84,7 @@
         mounted() {
             // console.log(this.width, this.height);
             if(!this.zoom) {
-                this.zoom = 14
+                this.zoom = 15
             }
             this.mapInit();
 

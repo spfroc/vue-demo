@@ -357,7 +357,7 @@
                     console.log(AMap);
                     this.map = new AMap.Map('container', {
                         center: new AMap.LngLat(117.11, 36.67),
-                        zoom: 14,
+                        zoom: 15,
                         resizeEnable: true,
                     });
                     // 输入提示
@@ -378,8 +378,8 @@
 
             select(e) {
                 console.log('e', e);
-                this.form.lng = e.poi.location.lng;
-                this.form.lat = e.poi.location.lat;
+                this.form.lng = e.poi.location.R;
+                this.form.lat = e.poi.location.Q;
                 this.placeSearch.setCity(e.poi.adcode);
                 this.placeSearch.search(e.poi.name);  //关键字查询查询
             },

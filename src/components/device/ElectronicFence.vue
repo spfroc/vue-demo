@@ -189,7 +189,7 @@
                 lazyAMapApiLoaderInstance.load().then(() => {
                     this.mapInstance = new AMap.Map('a-map-container', {
                         center: new AMap.LngLat(this.map.lng, this.map.lat),
-                        zoom: 14,
+                        zoom: 15,
                     });
                     this.mapInstance.on('mapmove', this.centerChanged)
                     if(this.markers && this.markers.length > 0) {

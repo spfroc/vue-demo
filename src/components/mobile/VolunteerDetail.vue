@@ -40,7 +40,7 @@
 
         mounted() {
             this.queryParams = this.$route.query;
-            // this.getDetail();
+            this.getDetail();
         }
     }
 </script>

@@ -170,10 +170,9 @@
                 });
 
                 lazyAMapApiLoaderInstance.load().then(() => {
-                    // your code ...
                     this.map = new AMap.Map('container', {
-                        center: new AMap.LngLat(117.11, 36.67),
-                        zoom: 14,
+                        center: new AMap.LngLat(116.550540, 40.112990),
+                        zoom: 15,
                     });
                     this.map.on('mapmove', this.centerChanged)
 
@@ -198,8 +197,8 @@
             },
 
             centerChanged() {
-                this.form.lat = this.map.getCenter().lat
-                this.form.lng = this.map.getCenter().lng
+                this.form.lat = this.map.getCenter().Q
+                this.form.lng = this.map.getCenter().R
                 this.clearMarker();
                 this.addMarker();
                 this.addCircle();
@@ -340,6 +339,7 @@
         },
 
         mounted() {
+
             this.fetchList();
         }
 
