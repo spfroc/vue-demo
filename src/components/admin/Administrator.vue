@@ -50,6 +50,9 @@
             <el-form-item label="用户名" prop="userName">
               <el-input v-model="form.userName"></el-input>
             </el-form-item>
+            <el-form-item v-if="!isUpdate" label="密码" prop="password">
+              <el-input type="password" :show-password="false" placeholder="请输入密码" v-model="form.password"></el-input>
+            </el-form-item>
             <el-form-item v-if="isUpdate">
               <el-switch
                 v-model="form.isUpdateAdminPwd"
@@ -57,8 +60,12 @@
                 inactive-text="">
               </el-switch>
             </el-form-item>
-            <el-form-item v-if="!isUpdate || form.isUpdateAdminPwd" label="密码" prop="password">
-              <el-input type="password" :show-password="true" placeholder="请输入密码" v-model="form.password"></el-input>
+            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="旧密码" prop="oldPassword">
+              <el-input type="password" :show-password="false" placeholder="请输入旧密码" v-model="form.oldPassword"></el-input>
+            </el-form-item>
+
+            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="新密码" prop="newPassword">
+              <el-input type="password" :show-password="false" placeholder="请输入新密码" v-model="form.newPassword"></el-input>
             </el-form-item>
             <el-form-item label="角色" prop="roleId">
               <el-select v-model="form.roleId" :clearable="true" placeholder="请选择">
@@ -95,8 +102,10 @@
         form: {
           id: '',
           userName: '',
-            roleId: 1,
+          roleId: 1,
           password: '',
+          newPassword: '',
+          oldPassword: '',
           isUpdateAdminPwd: null
         },
         search: {},
@@ -183,7 +192,15 @@
           }
         })
       },
-
+      // passwordSameValidate(rule, value, callback) {
+      //   if (value === '') {
+      //     callback(new Error('请再次输入密码'));
+      //   } else if (value !== this.form.oldPassword) {
+      //     callback(new Error('两次输入密码不一致!'));
+      //   } else {
+      //     callback();
+      //   }
+      // },
       getRoleList() {
         this.$http.get('/apis/manager/roleList').then(res => {
           this.roleOptions = res.data.data.list;
@@ -195,22 +212,38 @@
     },
     computed: {
       'rules' () {
-        let adminPwd = [
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
-        ]
 
-        if (!this.isUpdate || this.form.isUpdateAdminPwd) {
-          adminPwd.push({ required: true, message: '请输入密码', trigger: 'blur' })
-        }
-
-        return {
+        let ruleObjects = {
           userName: [
             { required: true, message: '请输入管理员名称', trigger: 'blur' },
             { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
           ],
+        };
+        let adminPwd = [];
+        if(this.isUpdate) {
 
-          password: adminPwd
+          if(this.form.isUpdateAdminPwd) {
+            ruleObjects.oldPassword = [
+              { min: 6, message: '密码最少6位', trigger: 'blur' },
+              { required: true, message: '请输入旧密码', trigger: 'blur' }
+            ];
+
+            ruleObjects.newPassword = [
+              { min: 6, message: '密码最少6位', trigger: 'blur' },
+              { required: true, message: '请输入新密码', trigger: 'blur' }
+            ];
+          }
+
+        } else {
+          adminPwd = [
+            { min: 6, message: '密码最少6位', trigger: 'blur' },
+            { required: true, message: '请输入密码', trigger: 'blur' }
+          ]
+
+          ruleObjects.password = adminPwd;
         }
+        console.log(ruleObjects);
+        return ruleObjects;
       }
     },
     mounted () {
