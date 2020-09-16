@@ -78,10 +78,9 @@
                             <el-input v-model="form.phone3"></el-input>
                         </el-form-item>
 
-                        <el-form-item  label="电话白名单" prop="whitePhones" aria-placeholder="23432">
-                            <el-input v-show="false" v-model="form.whitePhones" placeholder='多个手机号使用英文格式逗号 "," 分割'></el-input>
-                            <el-row>
-                                <el-col :span="12" v-if="whiteList.length > 0" >
+                        <el-form-item  label="电话白名单" prop="whitePhones" aria-placeholder="">
+                            <el-row v-if="whiteList.length > 0" style="margin-bottom: 20px;">
+                                <el-col :span="20" v-if="whiteList.length > 0" >
                                     <el-tag
                                             class="el-tag-style"
                                             v-for="(tag, index) in whiteList"
@@ -93,10 +92,17 @@
                                         {{tag}}
                                     </el-tag>
                                 </el-col>
-                                <el-col :span="12">
-                                    <el-button @click="addPhone()" type="primary">添加</el-button>
-                                </el-col>
+                            </el-row>
+                            <el-input v-show="false" v-model="form.whitePhones" placeholder='多个手机号使用英文格式逗号 "," 分割'></el-input>
+                            <el-form-item prop="phoneNumber">
+                                <el-input @focus="clearError" v-model="form.phoneNumber" placeholder="单行输入" style="width:20%;"></el-input>
+                                <span v-if="showError" style="color: red">{{errorText}}</span>
+                            </el-form-item>
 
+                            <el-row style="margin-top: 20px">
+                                <el-col :span="12">
+                                    <el-button @click="addPhone()" type="">添加</el-button>
+                                </el-col>
                             </el-row>
                         </el-form-item>
                         <!--<el-form-item label="设备统一定位上报时间" label-width="180px" prop="oldManMobile">-->
@@ -109,14 +115,6 @@
                                 <!--</el-option>-->
                             <!--</el-select>-->
                         <!--</el-form-item>-->
-
-                        <section v-if="whiteList.length > 0">
-                            <el-form-item v-for="(item, index) in whiteList" :key="index">
-                                <el-input v-model="whiteList[index]" style="width: 30%"></el-input>
-                                <el-button @click="removePhone(index)" type="warning">删除</el-button>
-                            </el-form-item>
-                        </section>
-
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
@@ -129,6 +127,8 @@
 </template>
 
 <script>
+    import { isValidPhone } from '../../util/validate'
+
     export default {
         name: "ChestCard",
 
@@ -138,7 +138,7 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-                    imei: {required: true, message: '请输入imei号'}
+                    imei: {required: true, message: '请输入imei号', trigger: 'blur'},
                 },
                 page: {},
                 search: {},
@@ -153,9 +153,9 @@
                     phone2: '',
                     phone3: '',
                     whitePhones: '',
+                    phoneNumber: '',
 
                 },
-
                 whiteList: [],
                 pushSettingOptions: [
                     {
@@ -172,13 +172,32 @@
                         label: '六十分钟',
                     },
                 ],
+                showError: false,
+                errorText: '',
             }
         },
 
         methods: {
-
+            clearError() {
+                this.showError = false;
+            },
             addPhone() {
-                this.whiteList.push('');
+                let reg = /1[0-9]{10}|\(?\d{0,4}\)?-?\s?\d{8}/
+                if(this.whiteList.length == 15) {
+                    this.showError = true;
+                    this.errorText = '白名单不超过15个';
+
+                    return;
+                }
+                if(this.form.phoneNumber && reg.test(this.form.phoneNumber)) {
+                    this.whiteList.push(this.form.phoneNumber);
+                    this.form.phoneNumber = '';
+
+                } else {
+                    this.showError = true;
+                    this.errorText = '手机号格式不正确';
+                    return;
+                }
             },
             removePhone(index) {
                 console.log(index);
@@ -193,6 +212,7 @@
                 this.isUpdate = false
                 this.form = {};
                 this.whiteList = []
+                this.clearError();
 
             },
             edit (row) {
@@ -201,6 +221,7 @@
                 this.editingRow = row
                 this.whiteList = row.whitePhones.split(',');
                 this.form = Object.assign({}, row)
+                this.clearError()
             },
             remove (id) {
                 this.$confirm('确定删除此胸牌吗？', '提示', {
