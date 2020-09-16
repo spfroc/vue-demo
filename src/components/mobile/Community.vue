@@ -186,31 +186,12 @@
                     if(res.data.data.list.length > 0) {
                         this.comments = this.comments.concat(res.data.data.list);
                     }
-                    // this.comments = this.comments.concat([
-                    //     {
-                    //         id: '7',
-                    //         userName: "新",
-                    //         headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                    //         createTime: "2020-09-08",
-                    //         content: "好吃，量大~~~~",
-                    //         replyNum: '10',
-                    //         isMine: true,
-                    //         contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    //     },
-                    //     {
-                    //         id: '7',
-                    //         userName: "新",
-                    //         headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                    //         createTime: "2020-09-08",
-                    //         content: "好吃，量大~~~~~",
-                    //         replyNum: '10',
-                    //         isMine: true,
-                    //         contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    //     },
-                    // ]);
+                    console.log('page',this.page.pageNo, 'page response:', res.data.data.pageNo);
                     if(res.data.data.pageNo) {
                         this.page.pageNo = parseInt(res.data.data.pageNo) + 1
                     }
+                    console.log('page',this.page.pageNo);
+
                 });
             },
 

@@ -1,8 +1,10 @@
 <template>
-    <div>
+    <div style="height: 100%;overflow-y:auto;" ref="container">
         <div class="top">
-            <div class="orange-part"></div>
-            <div class="white-part"></div>
+            <div class="orange-part">
+                <div class="white-part"></div>
+            </div>
+
             <div :style="floatDivStyle">
                 <el-row>
                     <el-col :span="16">
@@ -14,8 +16,8 @@
                         <el-row>
                             <el-col :span="24">
                                 <div class="coupon">
-                                    <span>优惠:</span>
-                                    <el-tag v-for="(item,i) in discountArr" :key="i" type="danger">{{item}}</el-tag>
+                                    <span>优惠信息</span>
+                                    <el-tag class="tags" v-for="(item,i) in discountArr" :key="i" type="danger">{{item}}</el-tag>
                                 </div>
                             </el-col>
                         </el-row>
@@ -33,7 +35,7 @@
         </div>
         <div class="bottom">
             <el-tabs :style="tabStyle" v-model="activeName" @tab-click="tagClick">
-                <el-tab-pane label="商家" name="merchant">
+                <el-tab-pane label="商家简介" name="merchant">
                     <el-row>
                         <el-col :span="20">
                             <div><b>{{detail.name}}</b></div>
@@ -47,7 +49,7 @@
                     </el-row>
                     <el-row>
                         <el-col>
-                            <el-image :src="detail.coverImg" :preview-src-list="previewSrcList"></el-image>
+                            <el-image style="width: 100%" :src="'/images'+detail.coverImg" :preview-src-list="previewSrcList"></el-image>
                         </el-col>
                     </el-row>
                     <el-row>
@@ -66,8 +68,8 @@
                         <el-col :span="10">{{detail.businessHours}}</el-col>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane label="评论" name="comment" style="height: 800px;overflow-y:auto;">
-                    <section v-for="(comment, index) in comments" :key="index">
+                <el-tab-pane label="评论" name="comment" style="padding-bottom: 20px">
+                    <section v-for="(comment, index) in comments" :key="index" class="comment-container">
                         <el-row>
                             <el-col :span="3">
                                 <el-avatar shape="square" :src="'/images'+comment.headImg"></el-avatar>
@@ -77,19 +79,33 @@
 
                             </el-col>
                             <el-col :span="8">
-                                <span>{{comment.createTime}}</span>
+                                <span>{{comment.createTime.substr(0,10)}}</span>
                             </el-col>
                         </el-row>
-                        <el-row>
+                        <el-row style="margin-top: 10px;">
                             <el-col>{{comment.content}}</el-col>
                         </el-row>
-                        <el-row v-if="comment.contentImg">
+                        <el-row style="margin-top: 10px" v-if="comment.contentImg">
                             <el-col :span="12"><el-image :src="'/images'+comment.contentImg"></el-image></el-col>
                         </el-row>
                     </section>
                 </el-tab-pane>
             </el-tabs>
         </div>
+        <el-button v-if="activeName=='comment'" style="position: absolute;bottom: 20px; right: 10px;background-color: orange" @click="replyShow(0)">写评价</el-button>
+        <el-dialog
+                title="评价"
+                :visible.sync="dialogVisible"
+                width="100%"
+                top="65vh"
+                :close-on-click-modal=true
+                :destroy-on-close=true
+        >
+            <el-input v-model="form.content"></el-input>
+            <span slot="footer" class="dialog-footer">
+                        <el-button type="primary" @click="reply">发 布</el-button>
+                    </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -102,143 +118,10 @@
         data() {
             return {
                 previewSrcList: ['https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg'],
-                commentPage: {
-                    pageNum: 1,
-                    totalPage: 10
+                page: {
+                    pageNo: 1,
                 },
-                comments: [
-                    {
-                        id: '1',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '2',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '3',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '4',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '5',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '6',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                    {
-                        id: '7',
-                        userName: "xxx",
-                        headImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg",
-                        createTime: "2020-09-08",
-                        content: "好吃，量大",
-                        replyNum: '10',
-                        isMine: true,
-                        contentImg: "https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg"
-                    },
-                ],
+                comments: [],
                 activeName: 'merchant',
                 detail: {
                     name: '东鑫小吃',
@@ -251,6 +134,11 @@
                     categoryName: '餐饮',
                 },
                 queryParams: {},
+                dialogVisible:false,
+                form: {
+                    content: '',
+                }
+
             }
         },
 
@@ -264,8 +152,8 @@
                     height: '120px',
                     width: '90%',
                     backgroundColor: 'white',
-                    position: 'absolute',
-                    top: '60px',
+                    position: 'relative',
+                    top: '-70px',
                     borderRadius: '10px',
                     boxShadow: '#666 0px 0px 10px',
 
@@ -288,6 +176,27 @@
             },
         },
         methods: {
+            reply() {
+                this.form.token = this.queryParams.token;
+                this.form.merchantId = this.queryParams.id;
+                this.$common.appTokenAxios().get('/app/merchant/evaluate', {
+                    params: this.form
+                }).then(res => {
+                    console.log(res);
+                    this.$message({
+                        message: res.data.message || '评价成功！将在审核通过后显示',
+                        type: 'success'
+                    })
+                    this.dialogVisible = false;
+                })
+            },
+            replyShow(evaluateId = 0) {
+                this.dialogVisible = true;
+                this.form.content = '';
+                if(evaluateId != 0) {
+                    this.form.evaluateId = evaluateId;
+                }
+            },
             getDetail() {
                 this.$common.appTokenAxios().get('/app/merchant/detail', {
                     params: this.queryParams
@@ -300,14 +209,19 @@
                 this.$common.appTokenAxios().get('/app/merchant/evaluateList', {
                     params: {
                         merchantId: this.queryParams.id,
-                        pageNo: this.commentPage.pageNum,
-                        toke: this.queryParams.token,
+                        pageNo: this.page.pageNo,
+                        token: this.queryParams.token,
                         pageSize: 500
                     }
                 }).then(res => {
-
-                    console.log(res);
-                    // this.comments = res.data.data.list;
+                    if(res.data.data.list.length > 0) {
+                        this.comments = this.comments.concat(res.data.data.list);
+                    }
+                    console.log('page',this.page.pageNo, 'page response:', res.data.data.pageNo);
+                    if(res.data.data.pageNo) {
+                        this.page.pageNo = parseInt(res.data.data.pageNo) + 1
+                    }
+                    console.log('page',this.page.pageNo);
                 });
             },
 
@@ -315,6 +229,16 @@
                 if(this.activeName == 'comment') {
                     this.getComments();
                 }
+            },
+            handleScroll() {
+                let container = this.$refs.container;
+                if(container) {
+                    // console.log('scrollTop:',container.scrollHeight, 'scrollHeight:',container.scrollTop, 'scrollTop-scrollHeight:', container.scrollHeight - container.scrollTop);
+                    if (container.scrollHeight - container.scrollTop < 800) {
+                        this.getComments();
+                    }
+                }
+
             }
         },
 
@@ -322,7 +246,7 @@
             this.queryParams = this.$route.query;
             // console.log(this.queryParams);
             this.getDetail();
-            console.log('width:',document.documentElement.clientWidth);;
+            window.addEventListener('scroll', this.handleScroll, true)
 
         }
     }
@@ -337,7 +261,9 @@
 
 .white-part {
     height: 120px;
-    width: 100%
+    width: 80%;
+    position: relative !important;
+    top: 60px;
 }
 
 h3 {
@@ -353,10 +279,17 @@ h3 {
     font-weight: 600;
 }
 
+.tags:not(:first-child) {
+    margin-left: 5px;
+}
+
 .icon-wrap {
     font-size: 30px;
     border-left: 1px solid lightgrey;
     text-align: center;
-    font-color: orange;
+}
+
+.comment-container:not(:first-child) {
+    margin-top: 10px;
 }
 </style>
