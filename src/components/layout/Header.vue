@@ -7,7 +7,7 @@
     </div>
     <div class="logo-container">
       <div class="logo"><img src="../../assets/logo.png" width="35px" alt=""></div>
-      <span>魏善庄养老后台</span>
+      <span>首善养老管理后台</span>
     </div>
     <div class="header-right">
       <div class="header-user-con">

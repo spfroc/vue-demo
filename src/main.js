@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 
 // 使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | 魏善庄智慧养老院`;
+  document.title = `${to.meta.title} | 首善养老管理后台`;
   const role = localStorage.getItem('auth-user-info');
   console.log(to.path.match('/app/'));
   if(to.path.match('/app')) {
