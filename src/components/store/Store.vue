@@ -212,7 +212,7 @@
                     address: { required: true, message: '请输入商家地址', trigger: 'blur' },
                     businessHours: { required: true, message: '请输入商家营业时间', trigger: 'blur' },
                     avatar: { required: true, message: '请上传商家头像', trigger: 'blur' },
-                    discount: { required: true, message: '请输入商家优惠信息', trigger: 'blur' },
+                    // discount: { required: true, message: '请输入商家优惠信息', trigger: 'blur' },
                     introduction: { required: true, message: '请上传商家简介图片', trigger: 'blur' },
 
                 },
