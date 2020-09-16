@@ -171,10 +171,11 @@
 
                 lazyAMapApiLoaderInstance.load().then(() => {
                     this.map = new AMap.Map('container', {
-                        center: new AMap.LngLat(116.550540, 40.112990),
+                        center: new AMap.LngLat(this.form.lng, this.form.lat),
                         zoom: 15,
                     });
-                    this.map.on('mapmove', this.centerChanged)
+
+                    this.map.on('click', this.selectPoint)
 
                     this.addMarker();
                     this.addCircle();
@@ -187,16 +188,21 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                // this.form = {
-                //     railRadius: 500,
-                // }
-
                 this.mapInit();
+            },
 
-
+            selectPoint(e) {
+                console.log(e);
+                this.form.lat = e.lnglat.Q
+                this.form.lng = e.lnglat.R
+                this.clearMarker();
+                this.addMarker();
+                this.addCircle();
+                this.map.add(this.circle);
             },
 
             centerChanged() {
+                console.log('move');
                 this.form.lat = this.map.getCenter().Q
                 this.form.lng = this.map.getCenter().R
                 this.clearMarker();
@@ -217,7 +223,7 @@
             addMarker() {
                 let marker = new AMap.CircleMarker({
                     map: this.map,
-                    center:this.map.getCenter(),
+                    center:[this.form.lng, this.form.lat],
                     radius: '5px',
                     fillColor: '#561a12',
                     fillOpacity: '0.5',
@@ -236,7 +242,7 @@
                 this.clearCircle();
 
                 this.circle = new AMap.Circle({
-                    center: new AMap.LngLat(this.map.getCenter().lng, this.map.getCenter().lat), // 圆心位置
+                    center: new AMap.LngLat(this.form.lng, this.form.lat), // 圆心位置
                     radius: this.form.railRadius,  //半径
                     strokeColor: "#F33",  //线颜色
                     strokeOpacity: 1,  //线透明度
