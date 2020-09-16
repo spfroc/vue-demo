@@ -172,7 +172,7 @@
                 lazyAMapApiLoaderInstance.load().then(() => {
                     this.map = new AMap.Map('container', {
                         center: new AMap.LngLat(this.form.lng, this.form.lat),
-                        zoom: 15,
+                        zoom: 16,
                     });
 
                     this.map.on('click', this.selectPoint)
