@@ -110,7 +110,7 @@
                         </el-form-item>
                         <el-form-item label="商家地址" prop="address">
                             <el-input id="address" @change="addressSearch" v-model="form.address"></el-input>
-                            <div id="results" style="display:none;position:absolute"></div>
+                            <div id="results" style="display:none;position:absolute;z-index: 3000;background-color: white"></div>
                         </el-form-item>
                         <el-form-item>
                             <div id="container">
@@ -376,7 +376,8 @@
                     };
                     let auto = new AMap.Autocomplete(autoOptions);
                     this.placeSearch = new AMap.PlaceSearch({
-                        map: this.map
+                        map: this.map,
+                        pageSize: 2
                     });
                     AMap.event.addListener(auto, "select", (e) => {
                         console.log('e~~', e);
