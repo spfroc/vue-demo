@@ -58,7 +58,7 @@ axios.interceptors.response.use(
                     message: '登录超时，请重新登录',
                     duration: 1500,
                     onClose () {
-                        location.href = '/'
+                        location.href = '/login'
                     }
                 })
                 localStorage.removeItem('auth-token')
