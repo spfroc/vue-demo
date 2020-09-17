@@ -60,12 +60,12 @@
                 inactive-text="">
               </el-switch>
             </el-form-item>
-            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="旧密码" prop="oldPassword">
-              <el-input type="password" :show-password="false" placeholder="请输入旧密码" v-model="form.oldPassword"></el-input>
+            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="密码" prop="newPassword">
+              <el-input type="password" :show-password="false" placeholder="请输入旧密码" v-model="form.newPassword"></el-input>
             </el-form-item>
 
-            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="新密码" prop="newPassword">
-              <el-input type="password" :show-password="false" placeholder="请输入新密码" v-model="form.newPassword"></el-input>
+            <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="确认密码" prop="confirmPassword">
+              <el-input type="password" :show-password="false" placeholder="请输入新密码" v-model="form.confirmPassword"></el-input>
             </el-form-item>
             <el-form-item label="角色" prop="roleId">
               <el-select v-model="form.roleId" :clearable="true" placeholder="请选择">
@@ -105,7 +105,7 @@
           roleId: 1,
           password: '',
           newPassword: '',
-          oldPassword: '',
+          confirmPassword: '',
           isUpdateAdminPwd: null
         },
         search: {},
@@ -177,6 +177,9 @@
       onSubmit () {
         this.$refs['form'].validate((valid) => {
           if (valid) {
+            if(this.form.newPassword) {
+              this.form.password = this.form.newPassword;
+            }
             this.$http.post('/apis/manager/addOrUpdate', this.form).then(res => {
               this.$message({
                 message: res.data.msg || '操作成功',
@@ -192,15 +195,15 @@
           }
         })
       },
-      // passwordSameValidate(rule, value, callback) {
-      //   if (value === '') {
-      //     callback(new Error('请再次输入密码'));
-      //   } else if (value !== this.form.oldPassword) {
-      //     callback(new Error('两次输入密码不一致!'));
-      //   } else {
-      //     callback();
-      //   }
-      // },
+      passwordSameValidate(rule, value, callback) {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.form.newPassword) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      },
       getRoleList() {
         this.$http.get('/apis/manager/roleList').then(res => {
           this.roleOptions = res.data.data.list;
@@ -223,14 +226,14 @@
         if(this.isUpdate) {
 
           if(this.form.isUpdateAdminPwd) {
-            ruleObjects.oldPassword = [
-              { min: 6, message: '密码最少6位', trigger: 'blur' },
-              { required: true, message: '请输入旧密码', trigger: 'blur' }
-            ];
-
             ruleObjects.newPassword = [
               { min: 6, message: '密码最少6位', trigger: 'blur' },
-              { required: true, message: '请输入新密码', trigger: 'blur' }
+              { required: true, message: '请输入密码', trigger: 'blur' }
+            ];
+
+            ruleObjects.confirmPassword = [
+              { min: 6, message: '密码最少6位', trigger: 'blur' },
+              { required: true, validator: this.passwordSameValidate, trigger: 'blur' }
             ];
           }
 
