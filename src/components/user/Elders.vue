@@ -173,19 +173,20 @@
                         </el-form-item>
                         <el-form-item label="已绑定子女" prop="">
                             <section
-                                    v-if="form.children && form.children.length > 0 && form.children[0].name">
-                                <el-tag v-for="child in form.children"
+                                    v-if="bindChildren && bindChildren.length > 0 && bindChildren[0].name">
+                                <el-tag v-for="(child,i) in bindChildren"
                                         :closable=true
+                                        v-if="child.name"
                                         @close="removeChild(child)"
-                                        v-bind:key="child.id">{{child.name}}</el-tag>
+                                        v-bind:key="i">{{child.name}}</el-tag>
                             </section>
                             <el-button @click="bindButton" size="small" type="primary">添加绑定</el-button>
                         </el-form-item>
 
                         <section
-                                v-if="form.children.length > 0"
-                                v-for="(item, index) in form.children"
-                                :key="item.id"
+                                v-if="bindChildren.length > 0"
+                                v-for="(item, index) in bindChildren"
+                                :key="item.index"
                                 :label="item.name"
                                 :value="item.id">
                             <el-form-item label="子女" label-width="100px">
@@ -199,17 +200,17 @@
                                         <!--key="id"-->
                                         <!--:style="{width:'20%'}"-->
                                 <!--&gt;</el-autocomplete>-->
-                                <el-select v-model="form.children[index].id" placeholder="请选择">
+                                <el-select v-model="bindChildren[index].id" placeholder="请选择">
                                     <el-option
-                                            v-for="item in childrenOptions"
-                                            :key="item.name"
+                                            v-for="(item,i) in childrenOptions"
+                                            :key="i"
                                             :label="item.mobile"
                                             :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="关系">
-                                <el-input :style="{width:'20%'}" v-model="form.children[index].relation"></el-input>
+                                <el-input :style="{width:'20%'}" v-model="bindChildren[index].relation"></el-input>
                             </el-form-item>
                         </section>
                         <el-form-item>
@@ -259,9 +260,8 @@
                         value: "2",
                     },
                 ],
-                childMobile: '',
-                childRelation: '父子',
-                bindCount: 0,
+
+                bindChildren: [],
                 tableData: [],
                 page: {
                     pageSize: 10
@@ -370,8 +370,6 @@
                         zIndex: 55,
                     })
                 });
-                let newCenter = this.mapInstance.setFitView();
-                // console.log(newCenter);
                 let polyline = new AMap.Polyline({
                     path: path,
                     strokeColor: '#EEC900',
@@ -466,12 +464,13 @@
                     }
                 }).then(res => {
                     this.form = Object.assign({}, res.data.data)
+                    this.bindChildren = this.form.children;
                 });
 
             },
 
             bindButton () {
-                this.form.children.push({
+                this.bindChildren.push({
                     id: '',
                     name: '',
                     relation: ''
@@ -538,7 +537,7 @@
             },
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
-                    this.form.children = JSON.stringify(this.form.children);
+                    this.form.children = JSON.stringify(this.bindChildren);
                     if(this.form.id == '') {
                         delete this.form.id;
                     }
@@ -552,22 +551,11 @@
                             this.fetchList(1)
                             this.editing = false
                         }).catch(error => {
-                            this.form.children = JSON.parse(this.form.children);
+                            //this.form.children = JSON.parse(this.form.children);
+                            console.log(error);
                         })
                     } else {
                         console.log('error submit!!')
-                        if(this.isUpdate) {
-                            this.$http.get('/apis/oldMan/detail', {
-                                params: {
-                                    id: this.form.id
-                                }
-                            }).then(res => {
-                                console.log(res.data.data);
-                                this.form.children = res.data.data.children || [];
-                            });
-                        } else {
-                            this.form.children = [];
-                        }
                         return false
                     }
                 })
