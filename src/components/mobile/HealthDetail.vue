@@ -1,10 +1,13 @@
 <template>
-    <div class="global">
+    <div class="container" style="height: 100%; overflow-y:auto;">
         <h4 class="all-center">{{detail.title}}</h4>
-        <div class="all-center">
+        <div class="all-center" style="margin-top: 10px;color: gray;">
             <span>2020-09-07</span>
         </div>
-        <div class="text-container all-center" v-html="detail.content"></div>
+        <div class="all-center" style="margin-top: 10px;color: gray;">
+            <el-image :src="'/images'+detail.img"></el-image>
+        </div>
+        <div class="text-container all-center" style="padding-bottom: 20px;" v-html="detail.content"></div>
     </div>
 </template>
 
@@ -55,11 +58,6 @@
         /*margin：0 auto;*/
 
 
-    }
-
-    .all-center {
-        margin: 0px auto;
-        width: 96%;
     }
 
 </style>
