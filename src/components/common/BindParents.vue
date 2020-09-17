@@ -53,8 +53,9 @@
                     },
 
                 }).then((res) => {
-                    this.oldManOptions = res.data.data.list;
 
+                    this.oldManOptions = res.data.data.list;
+                    console.log(this.oldManOptions);
                 })
             },
 

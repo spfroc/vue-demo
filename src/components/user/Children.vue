@@ -168,8 +168,8 @@
 
                         <el-form-item label="绑定老人">
                             <section
-                                v-if="form.bindOldMan && form.bindOldMan.length && form.bindOldMan[0].oldManId > 0">
-                                <el-tag v-for="oldMan in form.bindOldMan"
+                                v-if="bindOldManUi && bindOldManUi.length && bindOldManUi[0].oldManId > 0">
+                                <el-tag v-for="oldMan in bindOldManUi"
                                         :closable=true
                                         @close="removeOldMan(oldMan)"
                                         v-bind:key="oldMan.oldManId">{{oldMan.oldManId}}
@@ -180,8 +180,8 @@
 
                         <section
                             v-show="showRubbish"
-                            v-if="form.bindOldMan.length > 0 && activeName == 'children'"
-                            v-for="(oldMan, index) in form.bindOldMan"
+                            v-if="bindOldManUi.length > 0 && activeName == 'children'"
+                            v-for="(oldMan, index) in bindOldManUi"
                             :key="index"
                             :label="index"
                             :value="oldMan.oldManId"
@@ -189,7 +189,7 @@
                             <bind-parents
                                     :village-options="villageOptions"
                                     :index="index"
-                                    :bind-old-man="form.bindOldMan"></bind-parents>
+                                    :bind-old-man="bindOldManUi"></bind-parents>
                         </section>
                         <el-form-item>
                             <el-button v-if="activeName=='children'" type="primary" @click="onSubmit">确定</el-button>
@@ -352,6 +352,7 @@
                 page: {
                     pageSize: 10
                 },
+                bindOldManUi: [],
                 editingRow: {},
                 introductionFileList: [],
                 form: {
@@ -466,10 +467,9 @@
                         id: row.id
                     }
                 }).then(res => {
-
                     this.form = Object.assign({}, res.data.data)
                     // this.form.bindOldMan = res.data.data.bindOldManList;
-
+                    this.bindOldManUi = this.form.bindOldMan;
                 });
                 // this.form = Object.assign({}, row)
                 this.form.userType = 1;
@@ -568,7 +568,7 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     console.log(this.form.bindOldMan);
-                    this.form.bindOldManListStr = JSON.stringify(this.form.bindOldMan);
+                    this.form.bindOldManListStr = JSON.stringify(this.bindOldManUi);
                     this.form.bindOldMan = this.form.bindOldManListStr;
                     if(this.form.id == '') {
                         delete this.form.id;
@@ -586,21 +586,10 @@
                             this.editing = false
                             // console.log(this.form);
                         }).catch(error => {
-                            this.form.bindOldMan = JSON.parse(this.form.bindOldMan);
+                            console.log(error);
+                            // this.form.bindOldMan = JSON.parse(this.form.bindOldMan);
                         })
                     } else {
-                        if(this.isUpdate) {
-                            this.$http.get('/apis/user/detailForChild', {
-                                params: {
-                                    id: this.form.id
-                                }
-                            }).then(res => {
-                                console.log(res.data.data);
-                                this.form.bindOldMan = res.data.data.bindOldMan || [];
-                            });
-                        } else {
-                            this.form.bindOldMan = [];
-                        }
                         return false
                     }
                 })
