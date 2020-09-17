@@ -1,88 +1,90 @@
 <template>
     <div style="height: 100%;overflow-y:auto;" ref="container">
-        <div class="top">
+        <div class="top-part" style="height: 200px;">
             <div class="orange-part">
-                <div class="white-part"></div>
-            </div>
-
-            <div :style="floatDivStyle">
-                <el-row>
-                    <el-col :span="16">
-                        <el-row>
-                            <el-col :span="24">
-                                <h3>{{detail.name}}</h3>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="24">
-                                <div class="coupon">
-                                    <span>优惠信息</span>
-                                    <el-tag class="tags" v-for="(item,i) in discountArr" :key="i" type="danger">{{item}}</el-tag>
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-image
-                                fit="contain"
-                                width="100px"
-                                :src="'/images'+detail.headImg"
-                        ></el-image>
-                    </el-col>
-                </el-row>
-
-            </div>
-        </div>
-        <div class="bottom">
-            <el-tabs :style="tabStyle" v-model="activeName" @tab-click="tagClick">
-                <el-tab-pane label="商家简介" name="merchant">
+                <div :style="floatDivStyle">
                     <el-row>
+                        <el-col :span="16">
+                            <el-row style="margin-top: 20px;">
+                                <el-col :span="24">
+                                    <span style="font-size: 25px;margin: 20px 20px;font-weight: bold">{{detail.name}}</span>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="24">
+                                    <div class="coupon">
+                                        <span>优惠:</span>
+                                        <el-tag class="tags" v-for="(item,i) in discountArr" :key="i" type="danger">{{item}}</el-tag>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </el-col>
+                        <el-col :span="2">&nbsp;</el-col>
+                        <el-col :span="6">
+                            <el-image
+                                    style="margin-right: 10px; margin-top: 20px;"
+                                    fit="contain"
+                                    width="50px"
+                                    :src="'/images'+detail.headImg"
+                            ></el-image>
+                        </el-col>
+                    </el-row>
+
+                </div>
+            </div>
+
+
+        </div>
+        <!--<div class="bottom">-->
+            <el-tabs :style="tabStyle" v-model="activeName" @tab-click="tagClick">
+                <el-tab-pane class="tab-pane-custom" label="商家" name="merchant">
+                    <el-row style="margin-top: 30px;">
                         <el-col :span="20">
                             <div><b>{{detail.name}}</b></div>
-                            <div style="font-size: 14px;">{{detail.address}}</div>
+                            <div style="font-size: 14px;color: gray;">{{detail.address}}</div>
                         </el-col>
                         <el-col :span="4">
                             <div class="icon-wrap">
-                                <a :href="phone"><i class="el-icon-phone" style="color: orange;"></i></a>
+                                <a :href="phone"><i class="el-icon-phone" style="color: #fd7f04;"></i></a>
                             </div>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <el-row style="margin-top: 30px;">
                         <el-col>
-                            <el-image style="width: 100%" :src="'/images'+detail.coverImg" :preview-src-list="previewSrcList"></el-image>
+                            <el-image style="width: 40%" :src="'/images'+detail.coverImg" :preview-src-list="previewSrcList"></el-image>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <el-row style="margin-top: 20px;">
                         <el-col>
                             <b>商家信息</b>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <el-row style="line-height: 40px;color: gray">
                         <el-col :span="5">商家分类:</el-col>
                         <el-col :span="5">{{detail.categoryName}}</el-col>
 
                     </el-row>
-                    <el-row>
+                    <el-row style="line-height: 40px;color: gray">
                         <el-col :span="5">营业时间:</el-col>
 
                         <el-col :span="10">{{detail.businessHours}}</el-col>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane label="评论" name="comment" style="padding-bottom: 20px">
+                <el-tab-pane class="tab-pane-custom" label="评价" name="comment" style="padding-bottom: 20px;color: gray;">
                     <section v-for="(comment, index) in comments" :key="index" class="comment-container">
                         <el-row>
                             <el-col :span="3">
-                                <el-avatar shape="square" :src="'/images'+comment.headImg"></el-avatar>
+                                <el-avatar shape="square" :src="'/images'+comment.headImg"><img src="../../assets/img/default_user.png" alt=""></el-avatar>
                             </el-col>
                             <el-col :span="13">
-                                <span>{{comment.userName}}</span>
+                                <span>{{comment.userName || 'null'}}</span>
 
                             </el-col>
                             <el-col :span="8">
-                                <span>{{comment.createTime.substr(0,10)}}</span>
+                                <span style="font-size: 14px;line-height: 27px;">{{comment.createTime.substr(0,10)}}</span>
                             </el-col>
                         </el-row>
-                        <el-row style="margin-top: 10px;">
+                        <el-row style="margin-top: 10px; font-size: 14px;">
                             <el-col>{{comment.content}}</el-col>
                         </el-row>
                         <el-row style="margin-top: 10px" v-if="comment.contentImg">
@@ -91,35 +93,56 @@
                     </section>
                 </el-tab-pane>
             </el-tabs>
-        </div>
-        <el-button v-if="activeName=='comment'" style="position: absolute;bottom: 20px; right: 10px;background-color: orange" @click="replyShow(0)">写评价</el-button>
+        <!--</div>-->
+        <el-button v-if="activeName=='comment'" style="position: absolute;bottom: 0px; right: 0px;background-color: #fd7f04" @click="replyShow(0)">评价</el-button>
         <el-dialog
                 title="评价"
                 :visible.sync="dialogVisible"
                 width="100%"
-                top="65vh"
+                top="49vh"
+                :modal="false"
                 :close-on-click-modal=true
                 :destroy-on-close=true
         >
-            <el-input v-model="form.content"></el-input>
+            <el-form :model="form" :rules="rules" ref="form">
+                <el-form-item prop="content">
+                    <el-input v-model="form.content" placeholder="请输入评价内容"></el-input>
+                </el-form-item>
+                <el-upload
+                        class="avatar-uploader"
+                        :action="'/app/upload/files?token='+this.queryParams.token"
+                        :show-file-list="false"
+                        v-model="form.contentImg"
+                        name="files"
+                        :on-success="handleAvatarSuccess">
+                    <img v-if="form.contentImg" :src="'/images'+form.contentImg" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+            </el-form>
             <span slot="footer" class="dialog-footer">
-                        <el-button type="primary" @click="reply">发 布</el-button>
-                    </span>
+                <el-button style="background-color: #fd7f04" type="primary" @click="reply">发 布</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
+    import MultipleImageUpload from "../common/MultipleImageUpload"
+
     export default {
         name: "Merchant",
 
         components: {
+            MultipleImageUpload
         },
         data() {
             return {
                 previewSrcList: ['https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg'],
                 page: {
                     pageNo: 1,
+                },
+                rules: {
+                    content: {required: true, message: '请输入评论内容', trigger: 'blur'}
                 },
                 comments: [],
                 activeName: 'merchant',
@@ -133,10 +156,12 @@
                     businessHours: '8:30~21:30',
                     categoryName: '餐饮',
                 },
+                images: [],
                 queryParams: {},
                 dialogVisible:false,
                 form: {
                     content: '',
+                    contentImg: '',
                 }
 
             }
@@ -149,11 +174,11 @@
             },
             floatDivStyle () {
                 return {
-                    height: '120px',
+                    height: '160px',
                     width: '90%',
                     backgroundColor: 'white',
                     position: 'relative',
-                    top: '-70px',
+                    top: '20px',
                     borderRadius: '10px',
                     boxShadow: '#666 0px 0px 10px',
 
@@ -176,19 +201,30 @@
             },
         },
         methods: {
+            handleAvatarSuccess(res, file) {
+                // console.log(res.data.filesName, file);
+                this.form.contentImg = res.data.filesName;
+            },
             reply() {
-                this.form.token = this.queryParams.token;
-                this.form.merchantId = this.queryParams.id;
-                this.$common.appTokenAxios().get('/app/merchant/evaluate', {
-                    params: this.form
-                }).then(res => {
-                    console.log(res);
-                    this.$message({
-                        message: res.data.message || '评价成功！将在审核通过后显示',
-                        type: 'success'
-                    })
-                    this.dialogVisible = false;
+                this.$refs['form'].validate((valid) => {
+                    console.log(valid);
+                    if(valid) {
+                        this.form.token = this.queryParams.token;
+                        this.form.merchantId = this.queryParams.id;
+                        this.$common.appTokenAxios().get('/app/merchant/evaluate', {
+                            params: this.form
+                        }).then(res => {
+                            console.log(res);
+                            this.$message({
+                                message: res.data.message || '评价成功！将在审核通过后显示',
+                                type: 'success'
+                            })
+                            this.dialogVisible = false;
+                        })
+                    }
+
                 })
+
             },
             replyShow(evaluateId = 0) {
                 this.dialogVisible = true;
@@ -217,11 +253,9 @@
                     if(res.data.data.list.length > 0) {
                         this.comments = this.comments.concat(res.data.data.list);
                     }
-                    console.log('page',this.page.pageNo, 'page response:', res.data.data.pageNo);
                     if(res.data.data.pageNo) {
                         this.page.pageNo = parseInt(res.data.data.pageNo) + 1
                     }
-                    console.log('page',this.page.pageNo);
                 });
             },
 
@@ -252,7 +286,7 @@
     }
 </script>
 
-<style scoped>
+<style>
 .orange-part {
     background-color: darkorange;
     height: 120px;
@@ -260,10 +294,10 @@
 }
 
 .white-part {
-    height: 120px;
+    height: 180px;
     width: 80%;
     position: relative !important;
-    top: 60px;
+    top: 90px;
 }
 
 h3 {
@@ -271,12 +305,29 @@ h3 {
 }
 
 .coupon {
-    margin: 10px 10px;
+    margin: 20px 20px;
 }
 
-.el-tabs__item.is-active {
-    color: black;
-    font-weight: 600;
+.el-tabs__item {
+    font-size: 18px !important;
+    /*padding: 10px 0 50px !important;*/
+    width: 80px !important;
+    text-align: center;
+}
+
+.el-tabs__active-bar {
+    width: 25px !important;
+    background-color: #fd7f04;
+    height: 10px;
+    left: 17px;
+    bottom: 5px;
+    opacity: 0.7;
+}
+
+.is-active {
+    width: 80px !important;
+    font-weight: bold;
+    color: black !important;
 }
 
 .tags:not(:first-child) {
@@ -292,4 +343,40 @@ h3 {
 .comment-container:not(:first-child) {
     margin-top: 10px;
 }
+
+.el-tabs__nav-wrap::after {
+    background-color: white !important;
+}
+.el-dialog__wrapper {
+    overflow: visible;
+}
+
+.avatar-uploader .el-upload {
+    /*border: 1px dashed #d9d9d9;*/
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 130px;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: white;
+    background-color: lightgrey;
+    width: 130px;
+    height: 130px;
+    line-height: 130px;
+    text-align: center;
+}
+.avatar {
+    width: 130px;
+    height: 130px;
+    display: block;
+}
+/*.top-part {*/
+    /*height: 160px;*/
+/*}*/
 </style>
