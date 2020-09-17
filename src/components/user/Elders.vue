@@ -346,7 +346,6 @@
                         // center: new AMap.LngLat(this.map.lng, this.map.lat),
                         zoom: 14,
                     });
-                    this.mapInstance.on('mapmove', this.centerChanged)
                     if(this.markers && this.markers.length > 0) {
                         this.markersInit(AMap);
                         // console.log(newCenter);
@@ -358,29 +357,35 @@
             markersInit(AMap) {
                 let path = []
                 console.log('marker:', this.markers);
+
                 this.markers.forEach(marker => {
-                    // console.log(marker);
-                    path.push(new AMap.LngLat(marker.lng, marker.lat));
-                    new AMap.CircleMarker({
-                        map: this.mapInstance,
-                        center: new AMap.LngLat(marker.lng, marker.lat),
-                        radius: 10,
-                        strokeColor: '#4169E1',
-                        fillColor: '#4169E1',
-                        zIndex: 55,
-                    })
+                    AMap.convertFrom([marker.lng, marker.lat], 'gps', (status, result) => {
+                        path.push(new AMap.LngLat(result.locations[0].R, result.locations[0].Q))
+                        new AMap.CircleMarker({
+                            map: this.mapInstance,
+                            center: new AMap.LngLat(result.locations[0].R, result.locations[0].Q),
+                            radius: 10,
+                            strokeColor: '#4169E1',
+                            fillColor: '#4169E1',
+                            zIndex: 55,
+                        })
+                    });
                 });
-                let polyline = new AMap.Polyline({
-                    path: path,
-                    strokeColor: '#EEC900',
-                    fillColor: '#EEC900',
-                    lineCap: 'round',
-                    lineJoin: 'round',
-                    showDir: true,
-                    strokeWeight: 5
-                });
-                // console.log(polyline);
-                this.mapInstance.add([polyline]);
+
+                setTimeout(() => {
+                    let polyline = new AMap.Polyline({
+                        path: path,
+                        strokeColor: '#EEC900',
+                        fillColor: '#EEC900',
+                        lineCap: 'round',
+                        lineJoin: 'round',
+                        showDir: true,
+                        strokeWeight: 5
+                    });
+                    this.mapInstance.add([polyline]);
+                    this.mapInstance.setFitView();
+                }, 500)
+
             },
 
             getMarkers(oldManId) {
