@@ -356,8 +356,7 @@
 
             markersInit(AMap) {
                 let path = []
-                console.log('marker:', this.markers);
-
+                this.mapInstance.clearMap();
                 this.markers.forEach(marker => {
                     AMap.convertFrom([marker.lng, marker.lat], 'gps', (status, result) => {
                         path.push(new AMap.LngLat(result.locations[0].R, result.locations[0].Q))
