@@ -6,7 +6,7 @@
       <i v-else class="el-icon-s-unfold"></i>
     </div>
     <div class="logo-container">
-      <div class="logo"><img src="../../assets/logo.png" width="35px" alt=""></div>
+      <div class="logo"><img src="../../assets/new_logo.png" width="35px" alt=""></div>
       <span>首善养老管理后台</span>
     </div>
     <div class="header-right">
