@@ -1,18 +1,17 @@
 <template>
     <div class="container" style="height: 100%; overflow-y:auto;" ref="container">
         <h4>{{detail.title}}</h4>
-        <div>
+        <div style="margin-top: 10px;color: gray;">
             <span>{{dateTimeToDate}}</span>
         </div>
         <div class="text-container" v-html="detail.content"></div>
-        <el-divider></el-divider>
-        <div class="comment-container" style="height: 100%; overflow-y:auto;">
+        <div class="comment-container" style="margin-top: 20px">
             <el-row style="padding-bottom: 10px">
                 <el-col :span="4">
-                    <div >评价</div>
+                    <div style="font-weight: bold;">评论</div>
                 </el-col>
-                <el-col :span="17">&nbsp;</el-col>
-                <el-col :span="3"><button @click="replyShow(0)">写评价</button></el-col>
+                <el-col :span="16">&nbsp;</el-col>
+                <el-col :span="4"><span @click="replyShow(0)" style="color: #fd7f04;">写评价</span></el-col>
             </el-row>
             <section v-for="(comment, index) in comments" :key="index" :style="index > 0 ? paddingStyle: ''">
                 <el-row>
@@ -22,45 +21,62 @@
                         </el-avatar>
                     </el-col>
                     <el-col :span="13">
-                        <span>{{comment.userName}}</span>
+                        <span style="font-weight: bold;">{{comment.userName || 'null'}}</span>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col><div @click="toDetail(comment.id)">{{comment.content}}{{comment.id}}</div></el-col>
+                    <el-col><div @click="toDetail(comment.id)">{{comment.content}}</div></el-col>
                 </el-row>
 
                 <el-row v-if="comment.contentImg">
                     <el-col :span="12"><el-image :src="'/images'+comment.contentImg"></el-image></el-col>
                 </el-row>
-                <el-row>
-                    <el-col :span="18">
-                        <span><div @click="toDetail(comment.id)">{{comment.createTime}}</div></span>
+                <el-row style="margin-top: 10px;line-height: 20px;">
+                    <el-col :span="8">
+                        <span><div @click="toDetail(comment.id)" style="color: gray;">{{comment.createTime.substr(5, 11)}}</div></span>
                     </el-col>
-                    <el-col :span="3">
-                        <span v-if="comment.isMine"><button @click="deleteComment(comment.id)">删除</button></span>
-                        <span v-if="!comment.isMine">&nbsp;</span>
 
+                    <el-col :span="13">
+                        <span><span @click="replyShow(comment.id)">{{comment.replyNum}}回复<i class="el-icon-arrow-right"></i></span></span>
                     </el-col>
                     <el-col :span="3">
-                        <span><button @click="replyShow(comment.id)">{{comment.replyNum}}回复</button></span>
+                        <span v-if="comment.isMine"><span style="color: red;" @click="deleteComment(comment.id)">删除</span></span>
                     </el-col>
+
                 </el-row>
                 <el-row v-if="comments.length == 0">
                     <el-col>没有更多</el-col>
                 </el-row>
             </section>
             <el-dialog
-                    title="评价"
                     :visible.sync="dialogVisible"
                     width="100%"
-                    top="65vh"
+                    top="82vh"
+                    :modal="false"
+                    :show-close="false"
                     :close-on-click-modal=true
                     :destroy-on-close=true
                     >
-                    <el-input v-model="form.content"></el-input>
+                    <el-row>
+                        <el-col :span="20">
+                            <el-form :model="form" :rules="rules" ref="form">
+                                <el-form-item prop="content">
+                                    <el-input style="width: 100%;"
+                                              type="textarea"
+                                              placeholder="评价内容"
+                                              :autosize="{ minRows: 2, maxRows: 5}"
+                                              v-model="form.content"></el-input>
+                                </el-form-item>
+                            </el-form>
+
+                        </el-col>
+                        <el-col :span="4">
+                            <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;" @click="reply">发布</span>
+                        </el-col>
+                    </el-row>
                     <span slot="footer" class="dialog-footer">
-                        <el-button type="primary" @click="reply">发 布</el-button>
                     </span>
+
             </el-dialog>
         </div>
     </div>
@@ -77,6 +93,7 @@
                 form: {
                     content: ''
                 },
+
                 dialogVisible: false,
                 detail: {},
                 queryParams: {},
@@ -123,17 +140,22 @@
             },
 
             reply() {
-                this.form.token = this.queryParams.token;
-                this.form.communityId = this.queryParams.id;
-                this.$common.appTokenAxios().get('/app/community/evaluate', {
-                    params: this.form
-                }).then(res => {
-                    console.log(res);
-                    this.$message({
-                        message: res.data.message || '评价成功！将在审核通过后显示',
-                        type: 'success'
-                    })
-                    this.dialogVisible = false;
+                this.$refs['form'].validate((valid) => {
+                    if(valid) {
+                        this.form.token = this.queryParams.token;
+                        this.form.communityId = this.queryParams.id;
+                        this.$common.appTokenAxios().get('/app/community/evaluate', {
+                            params: this.form
+                        }).then(res => {
+                            console.log(res);
+                            this.$message({
+                                message: res.data.message || '评价成功！将在审核通过后显示',
+                                type: 'success'
+                            })
+                            this.dialogVisible = false;
+                        })
+                    }
+
                 })
             },
 
@@ -186,11 +208,9 @@
                     if(res.data.data.list.length > 0) {
                         this.comments = this.comments.concat(res.data.data.list);
                     }
-                    console.log('page',this.page.pageNo, 'page response:', res.data.data.pageNo);
                     if(res.data.data.pageNo) {
                         this.page.pageNo = parseInt(res.data.data.pageNo) + 1
                     }
-                    console.log('page',this.page.pageNo);
 
                 });
             },
@@ -217,8 +237,28 @@
     }
 </script>
 
-<style scoped>
+<style>
 .text-container {
-    padding-top: 10px;
+    /*padding-top: 10px;*/
+}
+.el-dialog__header {
+    display: none;
+}
+.el-dialog__footer {
+    display: none;
+}
+.el-dialog__body {
+    padding: 0 0;
+}
+
+textarea {
+    min-height: 54px;
+    height: 148px;
+}
+.el-textarea__inner {
+    padding: 0px 0px 0px 20px;
+}
+.el-dialog__wrapper {
+    overflow: visible;
 }
 </style>
