@@ -6,6 +6,7 @@
     :headers="headers"
     :data="data"
     accept="image/*"
+    :on-preview="handlePictureCardPreview"
     :on-success="handleAvatarSuccess"
     :on-error="handleAvatarError"
     :before-upload="beforeAvatarUpload">
@@ -14,6 +15,9 @@
       <el-image fit="contain" v-if="imageUrl" :src="imageData || `/images${imageUrl}`" class="avatar"></el-image>
       <i v-else class="el-icon-plus single-image-uploader-icon"></i>
     </section>
+    <el-dialog :visible.sync="dialogVisible">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
     <!--<div class="upload-tips" slot="tip">{{tips || '只能上传jpg/jpeg/png/gif文件，且不超过1M。'}}</div>-->
   </el-upload>
 </template>
@@ -28,6 +32,8 @@ export default {
   },
   data () {
     return {
+      dialogImageUrl: '',
+      dialogVisible: false,
       headers: {
         token: localStorage.getItem('auth-token')
       },
@@ -56,6 +62,11 @@ export default {
       // this.imageUrl = res.data
       console.log(res);
       this.$emit('change', res.data, file)
+    },
+
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
     },
     handleAvatarError (res, file) {
         this.$message.error(`图片上传失败，服务端返回码：${res.status}`)
