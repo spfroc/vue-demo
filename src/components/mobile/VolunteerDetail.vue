@@ -1,13 +1,11 @@
 <template>
     <div class="container" style="height: 100%; overflow-y:auto; padding-bottom: 20px;">
         <h4>{{detail.title}}</h4>
-        <div style="margin-top: 10px">{{detail.createTime}}</div>
+        <div style="margin-top: 10px;color: gray;">{{detail.createTime.substr(0, 10)}}</div>
         <el-image :src="'/images' + detail.img" style="margin-top: 10px;">
             <img src="../../assets/img/default_user.png"/>
         </el-image>
-        <el-divider></el-divider>
         <div class="text-container" v-html="detail.content"></div>
-
     </div>
 </template>
 
