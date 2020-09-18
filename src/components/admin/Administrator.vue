@@ -61,11 +61,11 @@
               </el-switch>
             </el-form-item>
             <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="密码" prop="newPassword">
-              <el-input type="password" :show-password="false" placeholder="请输入旧密码" v-model="form.newPassword"></el-input>
+              <el-input type="password" :show-password="false" placeholder="请输入新密码" v-model="form.newPassword"></el-input>
             </el-form-item>
 
             <el-form-item v-if="isUpdate && form.isUpdateAdminPwd" label="确认密码" prop="confirmPassword">
-              <el-input type="password" :show-password="false" placeholder="请输入新密码" v-model="form.confirmPassword"></el-input>
+              <el-input type="password" :show-password="false" placeholder="请确认密码" v-model="form.confirmPassword"></el-input>
             </el-form-item>
             <el-form-item label="角色" prop="roleId">
               <el-select v-model="form.roleId" :clearable="true" placeholder="请选择">
