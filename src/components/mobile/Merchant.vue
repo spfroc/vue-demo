@@ -286,7 +286,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 .orange-part {
     background-color: darkorange;
     height: 120px;
