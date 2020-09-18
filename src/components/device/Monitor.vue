@@ -7,10 +7,12 @@
             </section>
             <el-tree
                     class="filter-tree"
+                    :highlight-current="true"
                     :data="oldManInVillage"
+                    node-key="index"
                     :props="defaultProps"
+                    :default-expanded-keys="defaultExpandedKeys"
                     @node-click="nodeSelected"
-                    :default-expand-all="true"
                     ref="tree">
             </el-tree>
         </el-col>
@@ -170,7 +172,7 @@
                 editorOption: {
                     placeholder: ''
                 },
-
+                defaultExpandedKeys: [0],
                 devices: [
                     {
                         channel: '3',
@@ -230,13 +232,33 @@
         },
         methods: {
 
-            nodeSelected(data) {
-                console.log(data);
+            nodeSelected(data,node, self) {
+                console.log(data, node, self);
                 if(data.cameraHdUrl) {
                     this.HDUrl = data.cameraHdUrl;
                     this.HDTitle = data.name;
                     this.showHD();
                 } else {
+                    console.log('展开:', node.expanded);
+                    // this.defaultCameraList.index = data.index;
+                    // this.defaultCameraList = this.oldManInVillage[];
+                    self.$parent.$children.forEach((item, i) => {
+                        // console.log('foreach:', i, item);
+                        if(i != data.index) {
+                            item.expanded = false;
+                        } else {
+                            item.expanded = true;
+                        }
+                    })
+                    if(this.defaultCameraList.index != data.index) {
+                        this.defaultCameraList.index = data.index;
+
+                        this.defaultExpandedKeys = [data.index]
+                        let start = this.getStartIndex();
+                        this.defaultCameraList.list = this.oldManInVillage[data.index].cameraList.slice(start, start+this.defaultCameraList.pageSize);
+                        this.defaultCameraList.total = this.oldManInVillage[data.index].cameraList.length;
+                        this.defaultCameraList.title = this.oldManInVillage[data.index].name;
+                    }
 
                 }
 
@@ -264,8 +286,8 @@
                     this.oldManInVillage = res.data.data.list;
                     if(this.oldManInVillage.length > 0) {
                         let start = this.getStartIndex();
-                        console.log('page: ', this.defaultCameraList.page);
-                        console.log('start:',start);
+                        // console.log('page: ', this.defaultCameraList.page);
+                        // console.log('start:',start);
 
                         this.defaultCameraList.list = this.oldManInVillage[this.defaultCameraList.index].cameraList.slice(start, start+this.defaultCameraList.pageSize);
                         this.defaultCameraList.total = this.oldManInVillage[this.defaultCameraList.index].cameraList.length;

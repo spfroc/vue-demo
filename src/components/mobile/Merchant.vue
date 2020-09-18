@@ -308,14 +308,14 @@ h3 {
     margin: 20px 20px;
 }
 
-.el-tabs__item {
+.el-tabs .el-tabs__item {
     font-size: 18px !important;
     /*padding: 10px 0 50px !important;*/
     width: 80px !important;
     text-align: center;
 }
 
-.el-tabs__active-bar {
+.el-tabs .el-tabs__active-bar {
     width: 25px !important;
     background-color: #fd7f04;
     height: 10px;
@@ -324,7 +324,7 @@ h3 {
     opacity: 0.7;
 }
 
-.is-active {
+.el-tabs .is-active {
     width: 80px !important;
     font-weight: bold;
     color: black !important;
