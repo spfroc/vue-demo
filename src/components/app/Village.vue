@@ -7,23 +7,25 @@
             <div>
                 <el-table
                         :data="tableData">
-                    <el-table-column type="index" align="center" width="80" label="序号">
+                    <el-table-column type="index" align="center" width="50" label="序号">
                     </el-table-column>
                     <el-table-column
                             prop="name"
+                            align="center"
                             label="村庄">
                     </el-table-column>
 
                     <el-table-column
                             :formatter="railRadiusFormatter"
                             prop="isSetRailRadius"
+                            align="center"
                             label="电子围栏">
                     </el-table-column>
-                    <el-table-column prop="createTime" label="创建时间">
+                    <el-table-column align="center" prop="createTime" label="创建时间">
                     </el-table-column>
-                    <el-table-column prop="updateTime" label="修改时间">
+                    <el-table-column align="center" prop="updateTime" label="修改时间">
                     </el-table-column>
-                    <el-table-column width="250" label="操作">
+                    <el-table-column align="center" width="250" label="操作">
                         <template slot-scope="scope">
                             <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
                             <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
