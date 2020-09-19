@@ -63,6 +63,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="mobile"
+                            min-width="110"
                             align="center"
                             label="手机号">
                     </el-table-column>

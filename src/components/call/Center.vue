@@ -94,11 +94,13 @@
                     </el-table-column>
                     <el-table-column
                             prop="mobile"
+                            min-width="110"
                             align="center"
                             label="手机号">
                     </el-table-column>
                     <el-table-column
                             prop="idCardNumber"
+                            min-width="160"
                             align="center"
                             label="身份证号">
                     </el-table-column>
@@ -213,11 +215,13 @@
                 </el-table-column>
                 <el-table-column
                         prop="mobile"
+                        min-width="110"
                         align="center"
                         label="手机号">
                 </el-table-column>
                 <el-table-column
                         prop="idCardNumber"
+                        min-width="160"
                         align="center"
                         label="身份证号">
                 </el-table-column>
@@ -294,11 +298,13 @@
                 </el-table-column>
                 <el-table-column
                         prop="mobile"
+                        min-width="110"
                         align="center"
                         label="手机号">
                 </el-table-column>
                 <el-table-column
                         prop="idCardNumber"
+                        min-width="160"
                         align="center"
                         label="身份证号">
                 </el-table-column>
@@ -421,6 +427,7 @@
                         </el-table-column>
                         <el-table-column
                                 prop="mobile"
+                                min-width="110"
                                 label="手机号"
                                 align="center"
                                 width="180">
