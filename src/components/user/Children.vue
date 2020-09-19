@@ -64,7 +64,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="idCardNumber"
-                            min-width="160"
+                            min-width="165"
                             align="center"
                             label="身份证号">
                     </el-table-column>
