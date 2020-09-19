@@ -29,8 +29,7 @@ axios.interceptors.request.use(
             }else if(config.method=='get'){
                 config.params = {
                     ...config.params,
-                    token: localStorage.getItem('auth-token'),
-
+                    // token: localStorage.getItem('auth-token'),
                 }
             }
         }

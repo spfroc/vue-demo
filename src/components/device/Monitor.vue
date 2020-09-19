@@ -106,7 +106,7 @@
                     layout="total, prev, pager, next"
                     :page-size="defaultCameraList.pageSize"
                     :total="defaultCameraList.total"
-                    :current-page="defaultCameraList.pageNum"
+                    :current-page="defaultCameraList.page"
                     @current-change="fetchList"
             >
             </el-pagination>
@@ -252,12 +252,13 @@
                     })
                     if(this.defaultCameraList.index != data.index) {
                         this.defaultCameraList.index = data.index;
-
+                        // this.defaultCameraList.pageNum = 1;
                         this.defaultExpandedKeys = [data.index]
                         let start = this.getStartIndex();
                         this.defaultCameraList.list = this.oldManInVillage[data.index].cameraList.slice(start, start+this.defaultCameraList.pageSize);
                         this.defaultCameraList.total = this.oldManInVillage[data.index].cameraList.length;
                         this.defaultCameraList.title = this.oldManInVillage[data.index].name;
+                        this.fetchList(1)
                     }
 
                 }
@@ -286,8 +287,8 @@
                     this.oldManInVillage = res.data.data.list;
                     if(this.oldManInVillage.length > 0) {
                         let start = this.getStartIndex();
-                        // console.log('page: ', this.defaultCameraList.page);
-                        // console.log('start:',start);
+                        console.log('page: ', this.defaultCameraList.page);
+                        console.log('start:',start);
 
                         this.defaultCameraList.list = this.oldManInVillage[this.defaultCameraList.index].cameraList.slice(start, start+this.defaultCameraList.pageSize);
                         this.defaultCameraList.total = this.oldManInVillage[this.defaultCameraList.index].cameraList.length;
