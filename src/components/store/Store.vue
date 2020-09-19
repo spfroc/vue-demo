@@ -2,7 +2,7 @@
     <div>
         <section class="header-bar">
             <el-form :inline="true" :model="search" size="mini" class="">
-                <el-form-item label="创建时间" prop="createTime">
+                <el-form-item label="" prop="createTime">
                     <el-date-picker
                         v-model="search.createTime"
                         type="daterange"
@@ -13,7 +13,7 @@
                     </el-date-picker>
                 </el-form-item>
 
-                <el-form-item label="商家名称" prop="name">
+                <el-form-item label="" prop="name">
                     <el-input v-model="search.name"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -33,7 +33,7 @@
                     <el-table-column
                             prop="name"
                             align="center"
-
+                            :show-overflow-tooltip="false"
                             label="商家名称">
                     </el-table-column>
                     <el-table-column
