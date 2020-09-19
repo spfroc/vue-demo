@@ -36,7 +36,7 @@
 
         </div>
         <!--<div class="bottom">-->
-            <el-tabs :style="tabStyle" v-model="activeName" @tab-click="tagClick">
+            <el-tabs :style="tabStyle" v-model="activeName" @tab-click="tagClick" ref="merchant-tabs">
                 <el-tab-pane class="tab-pane-custom" label="商家" name="merchant">
                     <el-row style="margin-top: 30px;">
                         <el-col :span="20">
@@ -260,8 +260,17 @@
             },
 
             tagClick(tab, event) {
+                this.tabSwitchStyle();
+                let currentTab = window.document.getElementById('tab-'+this.activeName);
+                let otherTabName = 'tab-'+(this.activeName == 'comment' ? 'comment' : 'merchant')
+                console.log('current tab name: ', this.activeName, 'other tab name: ', otherTabName);
+                let otherTab = window.document.getElementById(otherTabName)
+                currentTab.style.fontWeight = 'bold'
+                otherTab.style.fontWeight = 'normal';
                 if(this.activeName == 'comment') {
                     this.getComments();
+                } else {
+
                 }
             },
             handleScroll() {
@@ -273,7 +282,41 @@
                     }
                 }
 
+            },
+
+            tabBarStyle() {
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.width='25px';
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.backgroundColor='#fd7f04';
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.height='10px';
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.left='17px';
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.bottom='5px';
+                this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.opacity='0.7';
+            },
+            initTabStyle() {
+                this.tabBarStyle();
+                setTimeout(() => {
+                    let merchantTab = window.document.getElementById('tab-merchant');
+                    let commentTab = window.document.getElementById('tab-comment');
+                    merchantTab.style.fontSize = '18px'
+                    merchantTab.style.width = '80px'
+                    merchantTab.style.textAlign = 'center'
+                    merchantTab.style.color = 'black'
+                    merchantTab.style.fontWeight = 'bold'
+                    commentTab.style.fontSize = '18px'
+                    commentTab.style.width = '80px'
+                    commentTab.style.textAlign = 'center'
+                    commentTab.style.color = 'black'
+
+                }, 300)
+            },
+
+            tabSwitchStyle() {
+                this.tabBarStyle()
             }
+        },
+
+        created() {
+
         },
 
         mounted() {
@@ -281,6 +324,8 @@
             // console.log(this.queryParams);
             this.getDetail();
             window.addEventListener('scroll', this.handleScroll, true)
+            this.initTabStyle();
+
 
         }
     }
@@ -324,6 +369,10 @@ h3 {
     opacity: 0.7;
 }
 
+.active-bar-custom {
+
+}
+
 .el-tabs .is-active {
     width: 80px !important;
     font-weight: bold;
@@ -357,7 +406,7 @@ h3 {
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    height: 130px;
+    height: 130px !important;
 }
 .avatar-uploader .el-upload:hover {
     border-color: #409EFF;
