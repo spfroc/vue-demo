@@ -3,7 +3,7 @@
         <section class="header-bar">
             <el-form :inline="true" :model="search" size="mini" class="">
                 <el-form-item label="" prop="name">
-                    <el-input v-model="search.mobile" placeholder="按标用户手机号搜索"></el-input>
+                    <el-input v-model="search.mobile" placeholder="按手机号搜索"></el-input>
                 </el-form-item>
                 <el-form-item label="" prop="createTime">
                     <el-date-picker

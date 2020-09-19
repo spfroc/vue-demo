@@ -51,6 +51,26 @@ const defaultAvatar = () => {
     return defaultImg;
 }
 
+const copyLink = (element) => {
+    let text = document.getElementById(element);
+    if (document.body.createTextRange) {
+        //createTextRange是用在IE中的
+        let range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        let selection = window.getSelection();
+        let range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("Copy")
+    } else {
+        alert("none");
+    }
+
+}
+
 const appTokenAxios = () => {
     return axios.create({
         baseURL: '/',
@@ -62,6 +82,6 @@ const appTokenAxios = () => {
 export default function(Vue) {
     //添加全局API
     Vue.prototype.$common = {
-        format, searchParams, richTextContentFormatter,appTokenAxios, defaultAvatar
+        format, searchParams, richTextContentFormatter,appTokenAxios, defaultAvatar, copyLink
     }
 }
