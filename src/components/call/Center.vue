@@ -11,12 +11,13 @@
                 </div>
             </el-col>
         </el-row>
-        <el-row v-if="activeName != 'customerService'">
+        <section class="header-bar" v-if="activeName != 'customerService'">
             <el-form :model="searchForm" :inline="true">
-                <el-input v-model="searchForm.mobile" style="width: 15%" placeholder="老人手机号"></el-input>
-                <el-input v-model="searchForm.name" style="width: 15%" placeholder="老人姓名"></el-input>
+                <el-input v-model="searchForm.mobile" style="width: 15%" size="mini" placeholder="老人手机号"></el-input>
+                <el-input v-model="searchForm.name" style="width: 15%" size="mini" placeholder="老人姓名"></el-input>
                 <el-date-picker
                         v-model="searchForm.createTime"
+                        size="mini"
                         type="daterange"
                         format="yyyy-MM-dd"
                         value-format="yyyy-MM-dd HH:mm:ss"
@@ -25,16 +26,18 @@
                         end-placeholder="结束日期">
                 </el-date-picker>
 
-                <el-button type="primary" @click="searchList">搜索</el-button>
+                <el-button type="primary" @click="searchList" size="mini">搜索</el-button>
             </el-form>
-        </el-row>
-        <el-row v-if="activeName=='customerService'">
+        </section>
+        <section class="header-bar" v-if="activeName=='customerService'">
             <el-row>
                 <el-col :span="12">
                     <el-form>
                         <el-date-picker
                                 v-model="firstTab.searchDate"
                                 type="date"
+                                size="mini"
+                                id="datePicker"
                                 value-format="yyyy-MM-dd HH:mm:ss"
                                 @change="statisticsByDate"
                                 placeholder="选择日期">
@@ -43,9 +46,9 @@
                 </el-col>
                 <el-col :span="12">
                     <div>
-                        <el-button @click="statistics(1)" :type="buttonType(1)">本日</el-button>
-                        <el-button @click="statistics(2)" :type="buttonType(2)">本周</el-button>
-                        <el-button @click="statistics(3)" :type="buttonType(3)">本月</el-button>
+                        <el-button @click="statistics(1)" size="mini" :type="buttonType(1)">本日</el-button>
+                        <el-button @click="statistics(2)" size="mini" :type="buttonType(2)">本周</el-button>
+                        <el-button @click="statistics(3)" size="mini" :type="buttonType(3)">本月</el-button>
                     </div>
                 </el-col>
 
@@ -186,7 +189,7 @@
 
 
             </el-row>
-        </el-row>
+        </section>
         <el-row v-if="activeName=='historyWorkOrder'">
             <el-table
                     :data="secondTab.historyWorkOrderList"
@@ -979,6 +982,7 @@
             this.statistics();
             this.getServiceWorkers();
             this.getDoctorOptions();
+            console.log(document.getElementById('datePicker').style.width='180px');
         }
     }
 </script>
