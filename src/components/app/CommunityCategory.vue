@@ -14,9 +14,9 @@
                             align="center"
                             label="分类">
                     </el-table-column>
-                    <el-table-column align="center" prop="createTime" label="创建时间">
+                    <el-table-column align="center" min-width="150" prop="createTime" label="创建时间">
                     </el-table-column>
-                    <el-table-column align="center" prop="updateTime" label="修改时间">
+                    <el-table-column align="center" min-width="150" prop="updateTime" label="修改时间">
                     </el-table-column>
                     <el-table-column width="250" align="center" label="操作">
                         <template slot-scope="scope">

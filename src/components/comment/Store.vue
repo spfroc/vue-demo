@@ -56,11 +56,14 @@
                     <el-table-column
                             prop="createTime"
                             align="center"
+                            overHidden=true
+                            min-width="150"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
                             align="center"
+                            min-width="150"
                             label="修改时间">
                     </el-table-column>
                     <el-table-column width="250" label="操作">

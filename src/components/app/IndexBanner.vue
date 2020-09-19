@@ -38,9 +38,9 @@
                             :formatter="$common.richTextContentFormatter"
                             label="文本">
                     </el-table-column>
-                    <el-table-column prop="createTime" align="center" label="创建时间">
+                    <el-table-column prop="createTime" min-width="150" align="center" label="创建时间">
                     </el-table-column>
-                    <el-table-column align="center" prop="updateTime" label="修改时间">
+                    <el-table-column align="center" min-width="150" prop="updateTime" label="修改时间">
                     </el-table-column>
                     <el-table-column align="center" width="250" label="操作">
                         <template slot-scope="scope">

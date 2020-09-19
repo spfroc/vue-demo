@@ -136,12 +136,14 @@
                     <el-table-column type="index" width="150"  label="工单号"></el-table-column>
                     <el-table-column
                             prop="createTime"
+                            min-width="150"
                             label="下单时间"
                             align="center"
                             width="180">
                     </el-table-column>
                     <el-table-column
                             prop="endTime"
+                            min-width="150"
                             label="结单时间"
                             align="center"
                             width="180">
@@ -227,6 +229,7 @@
 
                 <el-table-column
                         prop="createTime"
+                        min-width="150"
                         align="center"
                         label="创建时间">
                 </el-table-column>
@@ -307,6 +310,7 @@
 
                 <el-table-column
                         prop="createTime"
+                        min-width="150"
                         align="center"
                         label="创建时间">
                 </el-table-column>

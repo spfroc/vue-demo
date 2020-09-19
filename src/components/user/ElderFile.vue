@@ -74,9 +74,9 @@
                                     :formatter="typeFormatter"
                                     label="类型">
                             </el-table-column>
-                            <el-table-column align="center" prop="createTime" label="创建时间">
+                            <el-table-column align="center" min-width="150" prop="createTime" label="创建时间">
                             </el-table-column>
-                            <el-table-column prop="updateTime" label="修改时间">
+                            <el-table-column align="center" prop="updateTime" min-width="150" label="修改时间">
                             </el-table-column>
                             <el-table-column
                                     width="250"

@@ -53,11 +53,13 @@
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
+                            min-width="150"
                             align="center"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
                             prop="updateTime"
+                            min-width="150"
                             align="center"
                             label="修改时间">
                     </el-table-column>
