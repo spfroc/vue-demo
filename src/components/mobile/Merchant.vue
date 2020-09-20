@@ -110,10 +110,12 @@
                 </el-form-item>
                 <el-upload
                         class="avatar-uploader"
-                        :action="'/app/upload/files?token='+this.queryParams.token"
+                        :action="fileUploadUrl"
                         :show-file-list="false"
                         v-model="form.contentImg"
-                        name="files"
+                        name="file"
+                        id="mobileUpload"
+                        ref="mobileUpload"
                         :on-success="handleAvatarSuccess">
                     <img v-if="form.contentImg" :src="'/images'+form.contentImg" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -162,7 +164,9 @@
                 form: {
                     content: '',
                     contentImg: '',
-                }
+                },
+
+                fileUploadUrl: '/apis/upload/file?token='+localStorage.getItem('auth-token')
 
             }
         },
@@ -202,8 +206,7 @@
         },
         methods: {
             handleAvatarSuccess(res, file) {
-                // console.log(res.data.filesName, file);
-                this.form.contentImg = res.data.filesName;
+                this.form.contentImg = res.data.pic;
             },
             reply() {
                 this.$refs['form'].validate((valid) => {
@@ -214,7 +217,6 @@
                         this.$common.appTokenAxios().get('/app/merchant/evaluate', {
                             params: this.form
                         }).then(res => {
-                            console.log(res);
                             this.$message({
                                 message: res.data.message || '评价成功！将在审核通过后显示',
                                 type: 'success'
@@ -228,6 +230,9 @@
             },
             replyShow(evaluateId = 0) {
                 this.dialogVisible = true;
+                setTimeout(() => {
+                    this.$refs.mobileUpload.$children[0].$el.style.height= '130px'
+                }, 200)
                 this.form.content = '';
                 if(evaluateId != 0) {
                     this.form.evaluateId = evaluateId;
@@ -285,12 +290,14 @@
             },
 
             tabBarStyle() {
+                console.log(111);
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.width='25px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.backgroundColor='#fd7f04';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.height='10px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.left='17px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.bottom='5px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.opacity='0.7';
+                console.log(222);
             },
             initTabStyle() {
                 this.tabBarStyle();
@@ -325,7 +332,9 @@
             this.getDetail();
             window.addEventListener('scroll', this.handleScroll, true)
             this.initTabStyle();
-
+            setTimeout(() => {
+                console.log(this.$refs.mobileUpload);
+            }, 1000)
 
         }
     }
