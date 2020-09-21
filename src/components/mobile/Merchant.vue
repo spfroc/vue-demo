@@ -91,6 +91,7 @@
                             <el-col :span="12"><el-image :src="'/images'+comment.contentImg"></el-image></el-col>
                         </el-row>
                     </section>
+                    <section style="color: gray;text-align: center;" v-if="showNoMoreText"><span>没有更多</span></section>
                 </el-tab-pane>
             </el-tabs>
         <!--</div>-->
@@ -142,7 +143,9 @@
                 previewSrcList: ['https://img.php.cn/upload/article/000/000/006/5d8993ab63a1b491.jpg'],
                 page: {
                     pageNo: 1,
+                    totalPage: 1,
                 },
+                showNoMoreText: false,
                 rules: {
                     content: {required: true, message: '请输入评论内容', trigger: 'blur'}
                 },
@@ -247,28 +250,38 @@
             },
 
             getComments() {
-                this.$common.appTokenAxios().get('/app/merchant/evaluateList', {
-                    params: {
-                        merchantId: this.queryParams.id,
-                        pageNo: this.page.pageNo,
-                        token: this.queryParams.token,
-                        pageSize: 500
-                    }
-                }).then(res => {
-                    if(res.data.data.list.length > 0) {
-                        this.comments = this.comments.concat(res.data.data.list);
-                    }
-                    if(res.data.data.pageNo) {
-                        this.page.pageNo = parseInt(res.data.data.pageNo) + 1
-                    }
-                });
+                console.log(this.page.pageNo, this.page.totalPage);
+                if(this.page.pageNo < this.page.totalPage + 1) {
+                    this.$common.appTokenAxios().get('/app/merchant/evaluateList', {
+                        params: {
+                            merchantId: this.queryParams.id,
+                            pageNo: this.page.pageNo,
+                            token: this.queryParams.token,
+                            pageSize: 20
+                        }
+                    }).then(res => {
+                        if(res.data.data.list.length > 0) {
+                            this.comments = this.comments.concat(res.data.data.list);
+                            this.page.totalPage = res.data.data.totalPage;
+                        }
+                    });
+                } else {
+                    console.log('最后一页'+this.page.pageNo);
+                    this.showNoMoreText = true;
+                    this.page.pageNo --;
+                    console.log(this.page.pageNo);
+                    setTimeout(() => {
+                        this.showNoMoreText = false;
+                    }, 1000)
+                }
+
             },
 
             tagClick(tab, event) {
                 this.tabSwitchStyle();
                 let currentTab = window.document.getElementById('tab-'+this.activeName);
                 let otherTabName = 'tab-'+(this.activeName == 'comment' ? 'comment' : 'merchant')
-                console.log('current tab name: ', this.activeName, 'other tab name: ', otherTabName);
+                // console.log('current tab name: ', this.activeName, 'other tab name: ', otherTabName);
                 let otherTab = window.document.getElementById(otherTabName)
                 currentTab.style.fontWeight = 'bold'
                 otherTab.style.fontWeight = 'normal';
@@ -281,8 +294,9 @@
             handleScroll() {
                 let container = this.$refs.container;
                 if(container) {
-                    // console.log('scrollTop:',container.scrollHeight, 'scrollHeight:',container.scrollTop, 'scrollTop-scrollHeight:', container.scrollHeight - container.scrollTop);
+                    console.log('scroll:',this.page.pageNo);
                     if (container.scrollHeight - container.scrollTop < 800) {
+                        this.page.pageNo ++;
                         this.getComments();
                     }
                 }
@@ -290,14 +304,12 @@
             },
 
             tabBarStyle() {
-                console.log(111);
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.width='25px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.backgroundColor='#fd7f04';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.height='10px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.left='17px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.bottom='5px';
                 this.$refs['merchant-tabs'].$children[0].$children[0].$el.style.opacity='0.7';
-                console.log(222);
             },
             initTabStyle() {
                 this.tabBarStyle();
