@@ -20,7 +20,7 @@
                     <el-table-column
                             prop="imei"
                             align="center"
-                            label="设置imei号">
+                            label="设备imei号">
                     </el-table-column>
 
                     <el-table-column
