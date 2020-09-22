@@ -63,7 +63,16 @@
                             label="手机号">
                     </el-table-column>
                     <el-table-column
+                            v-if="activeName == 'children' ? true : false"
                             prop="idCardNumber"
+                            min-width="165"
+                            align="center"
+                            label="身份证号">
+                    </el-table-column>
+
+                    <el-table-column
+                            v-if="activeName == 'approval' ? true : false"
+                            prop="oldManIdCardNumber"
                             min-width="165"
                             align="center"
                             label="身份证号">
