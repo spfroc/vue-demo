@@ -50,6 +50,9 @@
                             align="center"
                             :formatter="statusFormatter"
                             label="状态">
+                        <template slot-scope="scope">
+                            <span :style="statusStyle(scope.row.status)">{{statusText(scope.row.status)}}</span>
+                    　　 </template>
                     </el-table-column>
                     <el-table-column
                             prop="createTime"
@@ -65,7 +68,7 @@
                     </el-table-column>
                     <el-table-column width="250" label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="() => { edit(scope.row) }" type="info" size="mini">详情</el-button>
+                            <el-button @click="() => { edit(scope.row) }" type="" size="mini">详情</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 1) }" type="success" size="mini">通过</el-button>
                             <el-button v-if="showOperationButton(scope.row.status)" @click="() => { operation(scope.row.id, 2) }" type="danger" size="mini">不通过</el-button>
 
@@ -170,6 +173,35 @@
 
         },
         methods: {
+
+            statusStyle(status) {
+                let color = 'blue';
+                if(status == 0) {
+                    color = 'blue'
+                } else if(status == 1) {
+                    color = 'green'
+                } else if(status == 2) {
+                    color = 'red'
+                };
+                let style = {
+                    color: color,
+                    textAlign: 'center'
+                }
+
+                return style;
+            },
+            statusText(status) {
+                let text = '待审核';
+                if(status == 0) {
+                    text = '待审核'
+                } else if(status == 1) {
+                    text = '通过'
+                } else if(status == 2) {
+                    text = '不通过'
+                };
+
+                return text;
+            },
             statusFormatter(row) {
                 console.log(row);
                 if(row.status == '0') {
