@@ -51,31 +51,37 @@
                 >
                 </el-pagination>
 
-                <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
+                <el-dialog :close-on-click-modal="false" :title="(isUpdate ? '修改' : '添加') + '胸牌'" :visible.sync="editing" :append-to-body="true">
+
                     <el-form ref="form" :rules="rules" :model="form" label-width="90px">
+                        <el-form-item>
+                            <section style="color: red; font-size: 18px;"><strong>温馨提示:</strong>绑定胸卡必须保证胸卡中已放置移动卡并处于开机状态</section>
+                        </el-form-item>
                         <el-form-item v-show="form.id" label="ID" prop="id">
                             <el-input :disabled="true" v-model="form.id"></el-input>
                         </el-form-item>
                         <el-form-item label="imei号" prop="imei">
-                            <el-input v-model="form.imei"></el-input>
+                            <el-input v-model="form.imei" style="width: 70%;" @focus="clearCheckUsableError"></el-input>
+
+                            <el-button @click="clickValidateUsability" type="primary" style="margin-left: 20px">检测</el-button>
                         </el-form-item>
                         <el-form-item label="老人姓名" prop="oldManName">
-                            <el-input v-model="form.oldManName"></el-input>
+                            <el-input v-model="form.oldManName" style="width: 70%;"></el-input>
                         </el-form-item>
                         <el-form-item label="老人手机号" prop="oldManMobile">
-                            <el-input v-model="form.oldManMobile"></el-input>
+                            <el-input v-model="form.oldManMobile" style="width: 70%;"></el-input>
                         </el-form-item>
 
                         <el-form-item label="亲情号1" prop="phone1">
-                            <el-input v-model="form.phone1"></el-input>
+                            <el-input v-model="form.phone1" style="width: 70%;"></el-input>
                         </el-form-item>
 
                         <el-form-item label="亲情号2" prop="phone2">
-                            <el-input v-model="form.phone2"></el-input>
+                            <el-input v-model="form.phone2" style="width: 70%;"></el-input>
                         </el-form-item>
 
                         <el-form-item label="亲情号3" prop="phone3">
-                            <el-input v-model="form.phone3"></el-input>
+                            <el-input v-model="form.phone3" style="width: 70%;"></el-input>
                         </el-form-item>
 
                         <el-form-item  label="电话白名单" prop="whitePhones" aria-placeholder="">
@@ -116,7 +122,7 @@
                             <!--</el-select>-->
                         <!--</el-form-item>-->
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">确定</el-button>
+                            <el-button type="primary" :disabled="usability" @click="onSubmit">确定</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
                         </el-form-item>
                     </el-form>
@@ -138,7 +144,10 @@
                 editing: false,
                 isUpdate: false,
                 rules: {
-                    imei: {required: true, message: '请输入imei号', trigger: 'blur'},
+                    imei: [
+
+                        {validator: this.usabilityValidator, trigger: 'blur'},
+                    ],
                 },
                 page: {},
                 search: {},
@@ -174,10 +183,69 @@
                 ],
                 showError: false,
                 errorText: '',
+                usability: false,
+                showUsabilityError: false,
             }
         },
 
         methods: {
+            clickValidateUsability() {
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            usabilityValidator(rule, value, callback) {
+                if(!value) {
+                    return callback(new Error('请输入imei号'))
+                }
+
+                this.$http.get('/apis/badge/activatable', {
+                    params: {
+                        imei: this.form.imei
+                    },
+
+                }).then(res => {
+                    // console.log(res.data.data.result);
+                    if(res.data.data.result == false) {
+                        return callback(new Error('未在服务器中查询到此胸卡，请将胸卡重新开机，等待五分钟后重新检测'));
+                    } else {
+                        return true;
+                    }
+
+                });
+
+            },
+
+            clearCheckUsableError() {
+                this.showUsabilityError = false;
+            },
+            //检测可用性
+            checkUsability() {
+                this.$http.get('/apis/badge/list').then(res => {
+                    console.log(res);
+                    // if(true) {
+                    //     this.available();
+                    // } else {
+                        this.notAvailable();
+                    // }
+                });
+            },
+
+            available() {
+                this.showUsabilityError = false;
+                this.usability = true;
+            },
+
+            notAvailable() {
+                this.showUsabilityError = true;
+                this.usability = false;
+            },
+
             clearError() {
                 this.showError = false;
             },
@@ -260,6 +328,11 @@
             },
 
             onSubmit () {
+
+                if(!this.usability) {
+                    this.showUsabilityError = true;
+                    return false;
+                }
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.whitePhones = '';
