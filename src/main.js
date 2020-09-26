@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from './http'
-
+import store from './store'
 
 Vue.prototype.$http = axios
 import ElementUI from 'element-ui'
@@ -49,5 +49,6 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  store
 })

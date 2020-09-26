@@ -63,42 +63,24 @@
 
             </el-row>
         </section>
-        <el-dialog
-                :visible.sync="dialogVisible"
-                width="100%"
-                top="82vh"
-                :modal="false"
-                :show-close="false"
-                :close-on-click-modal=true
-                :destroy-on-close=true
-        >
-            <el-row>
-                <el-col :span="20">
-                    <el-form :model="form" :rules="rules" ref="form">
-                        <el-form-item prop="content">
-                            <el-input style="width: 100%;"
-                                      type="textarea"
-                                      placeholder="评价内容"
-                                      :autosize="{ minRows: 2, maxRows: 5}"
-                                      v-model="form.content"></el-input>
-                        </el-form-item>
-                    </el-form>
+        <community-comment-detail-dialog v-if="dialogVisible"
+                                         :query-params="queryParams"
+                                         :evaluate-id="evaluateId"
+                                         :hide-dialog="hideDialog"
+        ></community-comment-detail-dialog>
+        <div class="mask" @click="() => {this.dialogVisible = false;}" v-if="dialogVisible"></div>
 
-                </el-col>
-                <el-col :span="4">
-                    <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;" @click="reply">发布</span>
-                </el-col>
-            </el-row>
-            <span slot="footer" class="dialog-footer">
-            </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
+    import CommunityCommentDetailDialog from './CommunityCommentDetailDialog'
+
     export default {
         name: "CommunityCommentDetail",
-
+        components: {
+            CommunityCommentDetailDialog
+        },
         data() {
             return {
                 queryParams: {},
@@ -115,11 +97,14 @@
 
         methods: {
             replyShow(evaluateId = 0) {
-                this.dialogVisible = true;
-                this.form.content = '';
                 if(evaluateId != 0) {
                     this.form.evaluateId = evaluateId;
+                    this.evaluateId = evaluateId;
                 }
+                this.dialogVisible = true;
+                this.form.content = '';
+                console.log(this.evaluateId);
+
             },
 
             reply() {
@@ -181,6 +166,10 @@
                 window.location.href = '/#/app/community-comment-detail?evaluateId='+id + '&communityId='+ this.queryParams.communityId +'&token='+this.queryParams.token;
                 window.location.reload()
             },
+
+            hideDialog() {
+                this.dialogVisible = false;
+            },
         },
 
         mounted() {
@@ -211,5 +200,23 @@
     }
     .el-dialog__wrapper {
         overflow: visible;
+    }
+
+
+    .comment-dialog {
+        position: fixed;
+        bottom: 0px;
+        background-color: white;
+        width: 94%;
+        height: 120px;
+        z-index: 3000;
+    }
+    .mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 2999;
+        top: 0px;
+        left: 0px;
     }
 </style>

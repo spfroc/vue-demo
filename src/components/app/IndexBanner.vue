@@ -244,6 +244,8 @@
 
         mounted() {
             this.fetchList(1);
+            console.log('store: ', this.$store.getters.token);
+            console.log('local storage: ', localStorage);
         }
     }
 </script>

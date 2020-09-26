@@ -59,6 +59,7 @@
               localStorage.setItem('auth-token', res.data.data.token);
               localStorage.setItem('auth-username', res.data.data.userName)
               localStorage.setItem('roleId', res.data.data.roleId)
+              this.$store.commit('setToken', res.data.data.token)
               console.log(res.data.data);
               this.$router.push('/');
             }).catch(reason => {

@@ -48,43 +48,25 @@
                     <el-col>没有更多</el-col>
                 </el-row>
             </section>
-            <el-dialog
-                    :visible.sync="dialogVisible"
-                    width="100%"
-                    top="82vh"
-                    :modal="false"
-                    :show-close="false"
-                    :close-on-click-modal=true
-                    :destroy-on-close=true
-                    >
-                    <el-row>
-                        <el-col :span="20">
-                            <el-form :model="form" :rules="rules" ref="form">
-                                <el-form-item prop="content">
-                                    <el-input style="width: 100%;"
-                                              type="textarea"
-                                              placeholder="评价内容"
-                                              :autosize="{ minRows: 2, maxRows: 5}"
-                                              v-model="form.content"></el-input>
-                                </el-form-item>
-                            </el-form>
-
-                        </el-col>
-                        <el-col :span="4">
-                            <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;" @click="reply">发布</span>
-                        </el-col>
-                    </el-row>
-                    <span slot="footer" class="dialog-footer">
-                    </span>
-
-            </el-dialog>
+            <!--<comment-dialog v-if="dialogVisible" :form="form" :hide-dialog="hideDialog" :submit="reply" :token="queryParams.token"></comment-dialog>-->
+            <community-comment-detail-dialog v-if="dialogVisible"
+                                             :query-params="queryParams"
+                                             :hide-dialog="hideDialog"
+                                             :evaluate-id="evaluateId"
+                                             ></community-comment-detail-dialog>
         </div>
+        <div class="mask" @click="() => {this.dialogVisible = false;}" v-if="dialogVisible"></div>
+
     </div>
 </template>
 
 <script>
+    import CommunityCommentDetailDialog from './CommunityCommentDetailDialog'
     export default {
         name: "Community",
+        components: {
+            CommunityCommentDetailDialog
+        },
         data() {
             return {
                 rules: {
@@ -104,7 +86,8 @@
                     pageNo: 1,
                     pageSize: 20
                 },
-                comments: []
+                comments: [],
+                evaluateId: 0
             }
         },
 
@@ -125,18 +108,19 @@
         },
 
         methods: {
-
+            hideDialog() {
+                this.dialogVisible = false;
+            },
             toDetail(id) {
                 console.log(id);
 
                 window.location.href = '/#/app/community-comment-detail?evaluateId='+id + '&communityId='+ this.queryParams.id +'&token='+this.queryParams.token;
             },
             replyShow(evaluateId = 0) {
-                this.dialogVisible = true;
-                this.form.content = '';
                 if(evaluateId != 0) {
-                    this.form.evaluateId = evaluateId;
+                    this.evaluateId = evaluateId;
                 }
+                this.dialogVisible = true;
             },
 
             reply() {
@@ -215,24 +199,12 @@
                 });
             },
 
-            handleScroll() {
-                let container = this.$refs.container;
-                if(container) {
-                    console.log('scrollTop:',container.scrollHeight, 'scrollHeight:',container.scrollTop, 'scrollTop-scrollHeight:', container.scrollHeight - container.scrollTop);
-                    if (container.scrollHeight - container.scrollTop < 800) {
-                        this.getComments();
-                    }
-                }
-
-            }
         },
 
         mounted() {
             this.queryParams = this.$route.query;
             this.getDetail();
             this.getComments();
-
-            window.addEventListener('scroll', this.handleScroll, true)
         }
     }
 </script>
@@ -260,5 +232,14 @@ textarea {
 }
 .el-dialog__wrapper {
     overflow: visible;
+}
+
+.mask{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2999;
+    top: 0px;
+    left: 0px;
 }
 </style>

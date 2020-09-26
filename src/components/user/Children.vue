@@ -21,6 +21,7 @@
                                     type="daterange"
                                     value-format="yyyy-MM-dd HH:mm:ss"
                                     range-separator="至"
+                                    @change="datePickerChange"
                                     start-placeholder="开始日期"
                                     end-placeholder="结束日期">
                             </el-date-picker>
@@ -32,7 +33,10 @@
                 </div>
             </el-col>
             <el-col :span="4">
-                <div class="grid-content bg-purple">
+                
+                <div class="grid-content bg-purple" style="float: left;">
+                    <!--<el-button type="" size="mini" icon="el-icon-download" @click="exportExcel">导出</el-button>-->
+                    <export-excel v-if="activeName=='children'" url="/export/children" :params="search"></export-excel>
                     <el-button v-if="activeName=='children'" type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
                 </div>
             </el-col>
@@ -128,7 +132,7 @@
                         layout="total, prev, pager, next"
                         :page-size="this.page.pageSize"
                         :total="this.page.total"
-                        :current-page="this.search.pageNum"
+                        :current-page="this.page.pageNum"
                         @current-change="fetchList"
                 >
                 </el-pagination>
@@ -293,10 +297,11 @@
     import Editor from "../common/Editor"
     import { isValidPhone } from '../../util/validate'
     import BindParents from '../common/BindParents'
+    import ExportExcel from '../common/ExportExcel'
     export default {
         name: "Children",
         components: {
-            Editor, BindParents
+            Editor, BindParents, ExportExcel
         },
 
         computed : {
@@ -371,7 +376,8 @@
                 tableData: [],
                 categoryOptions: [],
                 page: {
-                    pageSize: 10
+                    pageSize: 10,
+                    pageNum: 1,
                 },
                 bindOldManUi: [],
                 editingRow: {},
@@ -411,6 +417,14 @@
 
         },
         methods: {
+
+            datePickerChange(value) {
+                console.log(value);
+                this.search.timeStart = value[0]
+                this.search.timeEnd = value[1]
+                console.log(this.search);
+            },
+
             statusStyle(status) {
                 let color = 'blue';
                 if(status == 0) {
@@ -577,7 +591,7 @@
 
 
             fetchList (currentPage) {
-                this.search.pageNum = currentPage || this.search.pageNum
+                this.page.pageNum = currentPage || this.page.pageNum
 
                 this.search = this.$common.searchParams(this.search);
                 console.log('old',this.search);
@@ -586,11 +600,11 @@
                 this.$http.get(this.currentListApi, {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: this.search.pageNum,
+                        pageNum: this.page.pageNum,
                     }, this.search)
                 }).then(res => {
                     this.page.total = res.data.data.total
-                    this.search.pageNum = parseInt(res.data.data.pageNum)
+                    this.page.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
                     if(this.search.timeStart && this.search.timeEnd) {
                         this.search.createTime = [];
@@ -615,6 +629,7 @@
                 this.editing = false
                 // this.form = {}
             },
+
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     console.log(this.form.bindOldMan);
@@ -632,7 +647,7 @@
                                 message: res.data.msg || '操作成功',
                                 type: 'success'
                             })
-                            this.fetchList(this.search.pageNum)
+                            this.fetchList(this.page.pageNum)
                             this.editing = false
                             // console.log(this.form);
                         }).catch(error => {
