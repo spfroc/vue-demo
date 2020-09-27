@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100%;overflow-y:auto;" ref="container">
+    <div style="height: 100%;overflow-y:auto;" v-infinite-scroll="getComments" ref="container">
         <div class="top-part" style="height: 200px;">
             <div class="orange-part">
                 <div :style="floatDivStyle">
@@ -81,7 +81,7 @@
                     <el-col :span="10">{{detail.businessHours}}</el-col>
                 </el-row>
             </div>
-            <div class="comment-tab tab-content" v-infinite-scroll="getComments" infinite-scroll-distance=50 infinite-scroll-delay=200 style="overflow:auto" v-if="activeName == 'comment'">
+            <div class="comment-tab tab-content" v-if="activeName == 'comment'">
                 <section v-for="(comment, index) in comments" :key="index" class="comment-container">
                     <el-row>
                         <el-col :span="3">
@@ -102,7 +102,7 @@
                         <el-col :span="12"><el-image :src="'/images'+comment.contentImg"></el-image></el-col>
                     </el-row>
                 </section>
-                <section style="color: gray;text-align: center;" v-if="showNoMoreText"><span>没有更多</span></section>
+                <section style="color: gray;text-align: center;" v-if="page.totalPage <= page.pageNo"><span>没有更多</span></section>
             </div>
 
         </div>
@@ -132,8 +132,8 @@
                 page: {
                     pageNo: 1,
                     totalPage: 10,
+                    pageSize: 10
                 },
-                showNoMoreText: false,
                 rules: {
                     content: {required: true, message: '请输入评论内容', trigger: 'blur'}
                 },
@@ -199,7 +199,9 @@
                 console.log(tab);
                 $(tab).addClass('active-tab')
                 if(name == 'comment') {
-                    this.getComments();
+                    this.comments = [];
+                    this.page.pageNo = 1
+                    // this.getComments();
                 }
             },
 
@@ -242,22 +244,24 @@
                 });
             },
 
-            getComments() {
-                console.log(this.page.pageNo, this.page.totalPage);
-                if(this.page.pageNo < this.page.totalPage) {
+            getComments(currentPage) {
+                if(currentPage) {
+                    this.page.pageNo = currentPage;
+                }
+                console.log(this.page.pageNo, this.page.totalPage, this.page.pageNo < this.page.totalPage);
+                if(this.page.pageNo <= this.page.totalPage) {
                     this.$common.appTokenAxios().get('/app/merchant/evaluateList', {
                         params: {
                             merchantId: this.queryParams.id,
                             pageNo: this.page.pageNo,
                             token: this.queryParams.token,
-                            pageSize: 20
+                            pageSize: this.page.pageSize
                         }
                     }).then(res => {
-                        if(res.data.data.list.length > 0) {
-                            this.comments = this.comments.concat(res.data.data.list);
-                            this.page.totalPage = res.data.data.totalPage;
-                            this.page.pageNo ++;
-                        }
+                        this.comments = this.comments.concat(res.data.data.list);
+                        this.page.totalPage = res.data.data.totalPage;
+                        this.page.pageNo ++;
+
                     });
                 }
 

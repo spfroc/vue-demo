@@ -161,8 +161,6 @@
             },
 
             toDetail(id) {
-                console.log(id);
-
                 window.location.href = '/#/app/community-comment-detail?evaluateId='+id + '&communityId='+ this.queryParams.communityId +'&token='+this.queryParams.token;
                 window.location.reload()
             },

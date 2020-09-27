@@ -1,5 +1,5 @@
 <template>
-    <div class="container" style="height: 100%; overflow-y:auto;" ref="container">
+    <div class="container" style="height: 100%; overflow-y:auto;" v-infinite-scroll="getComments" ref="container">
         <h4>{{detail.title}}</h4>
         <div style="margin-top: 10px;color: gray;">
             <span>{{dateTimeToDate}}</span>
@@ -44,10 +44,10 @@
                     </el-col>
 
                 </el-row>
-                <el-row v-if="comments.length == 0">
-                    <el-col>没有更多</el-col>
-                </el-row>
+
             </section>
+            <section style="color: gray;text-align: center;" v-if="page.totalPage <= page.pageNo"><span>没有更多</span></section>
+
             <!--<comment-dialog v-if="dialogVisible" :form="form" :hide-dialog="hideDialog" :submit="reply" :token="queryParams.token"></comment-dialog>-->
             <community-comment-detail-dialog v-if="dialogVisible"
                                              :query-params="queryParams"
@@ -55,6 +55,8 @@
                                              :evaluate-id="evaluateId"
                                              ></community-comment-detail-dialog>
         </div>
+        <section style="color: gray;text-align: center;" v-if="page.totalPage <= page.pageNo"><span>没有更多</span></section>
+
         <div class="mask" @click="() => {this.dialogVisible = false;}" v-if="dialogVisible"></div>
 
     </div>
@@ -84,7 +86,8 @@
                 },
                 page:{
                     pageNo: 1,
-                    pageSize: 20
+                    pageSize: 10,
+                    totalPage: 10
                 },
                 comments: [],
                 evaluateId: 0
@@ -112,8 +115,6 @@
                 this.dialogVisible = false;
             },
             toDetail(id) {
-                console.log(id);
-
                 window.location.href = '/#/app/community-comment-detail?evaluateId='+id + '&communityId='+ this.queryParams.id +'&token='+this.queryParams.token;
             },
             replyShow(evaluateId = 0) {
@@ -179,24 +180,27 @@
                 });
             },
 
-            getComments() {
-                this.$common.appTokenAxios().get('/app/community/evaluateList', {
-                    params: {
-                        token: this.queryParams.token,
-                        communityId: this.queryParams.id,
-                        // merchantId: 1,
-                        pageNo: this.page.pageNo,
-                        pageSize: this.page.pageSize
-                    }
-                }).then(res => {
-                    if(res.data.data.list.length > 0) {
-                        this.comments = this.comments.concat(res.data.data.list);
-                    }
-                    if(res.data.data.pageNo) {
-                        this.page.pageNo = parseInt(res.data.data.pageNo) + 1
-                    }
+            getComments(currentPage) {
+                if(currentPage) {
+                    this.page.pageNo = currentPage;
+                }
+                console.log(this.page.pageNo, this.page.totalPage, this.page.pageNo <= this.page.totalPage);
 
-                });
+                if(this.page.pageNo <= this.page.totalPage) {
+                    this.$common.appTokenAxios().get('/app/community/evaluateList', {
+                        params: {
+                            token: this.queryParams.token,
+                            communityId: this.queryParams.id,
+                            pageNo: this.page.pageNo,
+                            pageSize: this.page.pageSize
+                        }
+                    }).then(res => {
+                        this.comments = this.comments.concat(res.data.data.list);
+                        this.page.totalPage = res.data.data.totalPage;
+                        this.page.pageNo ++;
+                    });
+                }
+
             },
 
         },
@@ -204,7 +208,7 @@
         mounted() {
             this.queryParams = this.$route.query;
             this.getDetail();
-            this.getComments();
+            // this.getComments(1);
         }
     }
 </script>
