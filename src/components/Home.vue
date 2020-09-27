@@ -2,12 +2,12 @@
   <div class="home-container" body-style="{width: '100%'}">
     <el-row style="margin-bottom: 20px">
       <el-col :span="4" v-for="o in list" :key="o.title" class="box">
-        <div class="card-value"><strong>{{o.value}}</strong></div>
         <div class="card-title">{{o.title}}</div>
+        <div class="card-value"><strong>{{o.value}}</strong>{{o.unit}}</div>
       </el-col>
     </el-row>
     <!--<img src="https://www.arizonachristian.edu/wp-content/uploads/2017/06/logo-placeholder.png" alt="" class="logo">-->
-    <img class="pic" src="http://thumb.takefoto.cn/wp-content/uploads/2019/04/201904080619552096-680x448.jpg" alt="">
+    <img class="pic" src="../assets/img/index/index_bg.png" alt="">
   </div>
 </template>
 
@@ -20,22 +20,27 @@ export default {
         {
           title: '今日派单数',
           value: 50,
+          unit: '单',
         },
         {
-          title: '今日完成服务数',
+          title: '今日完成单数',
           value: 50,
+          unit: '单',
         },
         {
           title: '本周派单数',
           value: 200,
+          unit: '单',
         },
         {
           title: '本月派单数',
           value: 800,
+          unit: '单',
         },
         {
-          title: '本周呼叫数',
+          title: '本周SOS呼叫数',
           value: 300,
+          unit: '次',
         }
 
       ]
@@ -73,17 +78,24 @@ export default {
 
 .card-value {
   margin-top: 15px;
-  font-size: 40px;
+  font-size: 32px;
+  color: white;
 }
 
 .card-title {
-  font-size: 8px;
-  color: gray;
+  color: white;
+  position: relative;
+  top: 9px;
+  font-size: 15px;
+  left: -61px;
 }
 
 .box {
-  border: solid lightgray 1px;
   height: 100px;
+  background-image: url('../assets/img/index/index_item_yellow.png');
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-position: center 0;
 }
 
 .box:not(:first-child) {
