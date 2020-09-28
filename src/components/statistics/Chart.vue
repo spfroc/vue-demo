@@ -1,39 +1,65 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="24">
-                <el-card class="box-card home-container">
-                    <div v-for="o in summary" :key="o.title" class="item">
-                        <div class="text card-value">
-                            <strong>{{o.value}}</strong><span style="font-size: 30px;">{{o.unit}}</span>
-                            <div class="text card-title">{{o.title}}</div>
-                        </div>
-                    </div>
-                </el-card>
+            <el-col :span="4" v-for="o in summary" :key="o.title" :class="'item '+ o.bg">
+                <div class="card-title">{{o.title}}</div>
+                <div class="text card-value">
+                    <strong>{{o.value}}</strong><span style="font-size: 22px;">{{o.unit}}</span>
+                </div>
             </el-col>
 
         </el-row>
         <el-row style="margin-top:20px;">
-            <el-col :span="12" style="border: 1px solid lightgrey">
-                <section id="sos" style="width: 100%;height:400px;" class="box-card"></section>
+            <el-col :span="14" style="border: 1px solid lightgrey">
+                <section id="sos" style="width: 100%;height:300px;" class="box-card"></section>
             </el-col>
-            <el-col :span="8" style="border: 1px solid lightgrey;height: 402px;margin-left: 20px">
-                <section class="chart-title" style="font-size: 18px; font-weight: bold; color: #3a3a3a;">自2020-07-10来累计数据</section>
+            <el-col :span="8" style="border: 1px solid lightgrey;height: 302px;margin-left: 20px">
+                <section class="chart-title" style="font-size: 18px; font-weight: bold; color: #3a3a3a;">自2020-09-26来累计数据</section>
 
                 <el-row>
                     <el-col :span="12">
-                        <section id="cumulative-number-of-calls-received" style="width: 100%;height:200px;">累计接听电话数</section>
+                        <!--<section id="cumulative-number-of-calls-received" style="width: 100%;height:200px;">累计接听电话数</section>-->
+                        <section style="width: 100%;height:150px;">
+                            <div class="changed">
+                                <div style="color: #fda047;font-size: 25px;font-weight: bold;">{{callNumbers.phoneTime || 191}}</div>
+                                <div style="font-size: 12px;color: gray;">累计接听电话数</div>
+                            </div>
+                        </section>
                     </el-col>
                     <el-col :span="12">
-                        <section id="cumulative-call-time" style="width: 100%;height:200px;">累计接听电话时长</section>
+                        <!--<section id="cumulative-call-time" style="width: 100%;height:200px;">累计接听电话时长</section>-->
+                        <section style="width: 100%;height:150px;">
+                            <div class="changed">
+                                <div style="color: #fc56b8;font-size: 25px;font-weight: bold;">{{callNumbers.dispatchNum || 191}}</div>
+                                <div style="font-size: 12px;color: gray;">累计派单数</div>
+                            </div>
+
+                        </section>
+
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12">
-                        <section id="cumulative-dispatched-order-number" style="width: 100%;height:200px;">累计派单数</section>
+                        <!--<section id="cumulative-dispatched-order-number" style="width: 100%;height:200px;">累计派单数</section>-->
+                        <section style="width: 100%;height:150px;">
+                            <div class="changed">
+                                <div style="color: #46b7ff;font-size: 25px;font-weight: bold;">{{callNumbers.workOrderNum || 191}}</div>
+                                <div style="font-size: 12px;color: gray;">累计完成工单数</div>
+                            </div>
+
+                        </section>
+
                     </el-col>
                     <el-col :span="12">
-                        <section id="cumulative-number-of-completed-work" style="width: 100%;height:200px;">累计完成工单数</section>
+                        <!--<section id="cumulative-number-of-completed-work" style="width: 100%;height:200px;">累计完成工单数</section>-->
+                        <section style="width: 100%;height:150px;">
+                            <div class="changed">
+                                <div style="color: #c447ff;font-size: 25px;font-weight: bold;">{{callNumbers.pickUpPhoneNum || 191}}</div>
+                                <div style="font-size: 12px;color: gray;">累计接待数</div>
+                            </div>
+
+                        </section>
+
                     </el-col>
                 </el-row>
                 <!--<section id="summary" style="width: 600px;height:400px;"></section>-->
@@ -43,18 +69,26 @@
 
         <el-row style="margin-top: 20px;">
             <el-col :span="11" style="border: 1px solid lightgrey">
-                <section id="worker-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">驿工平均接单时间</section>
+                <section id="worker-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px">驿工平均接单时间</section>
             </el-col>
             <el-col :span="11" style="border: 1px solid lightgrey;margin-left: 20px">
-                <section id="doctor-average" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生平均接单时间</section>
+                <section id="doctor-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px">医生平均接单时间</section>
             </el-col>
         </el-row>
 
         <el-row style="margin-top: 20px;">
-            <el-col :span="11" style="border: 1px solid lightgrey">
-                <section id="order-rate" style="width: 600px;height:400px;padding:20px 0px 20px 0px">医生工单 服务工单在总工单中占比</section>
+            <el-col :span="7" style="border: 1px solid lightgrey">
+                <section id="order-rate" style="width: 100%;height:300px;padding:20px 0px 20px 0px">工单占比</section>
             </el-col>
-            <el-col :span="11" style="border: 1px solid lightgrey; margin-left: 20px">
+            <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 10px">
+                <section id="monthly-total-reception" style="width: 100%;height:300px;padding:20px 0px 20px 0px">本月接待总计</section>
+            </el-col>
+            <el-col :span="7" style="border: 1px solid lightgrey;margin-left: 10px">
+                <section id="weekly-service-summary" style="width: 100%;height:300px;padding:20px 0px 20px 0px">本周服务汇总</section>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 20px;">
+            <el-col :span="14" style="border: 1px solid lightgrey">
                 <section style="padding:20px 0px 20px 0px; font-size: 18px; font-weight: bold; color: #3a3a3a;">魏善庄镇行政地图</section>
                 <a-map
                         :width="100"
@@ -62,75 +96,77 @@
                         :lat="39.663952"
                         :height="376"></a-map>
             </el-col>
-        </el-row>
-        <el-row style="margin-top: 20px;">
-            <el-col :span="7" style="border: 1px solid lightgrey">
-                <section id="monthly-total-reception" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本月接待总计</section>
-            </el-col>
-            <el-col :span="7" style="border: 1px solid lightgrey;margin-left: 20px">
-                <section id="weekly-service-summary" style="width: 100%;height:400px;padding:20px 0px 20px 0px">本周服务汇总</section>
-            </el-col>
             <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 20px;">
                 <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
                 <section style="width: 100%;height:400px;padding:20px 0px 20px 0px;" id="statistic-container">
                     <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->
                     <!--<progress></progress>-->
                         <div style="text-align: center; font-size: 18px; font-weight: bold; color: #3a3a3a;">数据统计</div>
-                        <div :style="dataStatistic" id="progress-container">
-                            <custom-progress
-                                    progress=25
-                                    :value="processData.socialWorkerNum"
-                                    background-color="#1E90FF"
-                                    text="驿工"
-                                    dot-color="#1E90FF"
-                            ></custom-progress>
-
-                            <custom-progress
-                                    progress=75
-                                    :value="processData.totalReceptionCallNum"
-                                    background-color="#708090"
-                                    text="总接待电话数"
-                                    dot-color="#708090"
-                            ></custom-progress>
-
-                            <custom-progress
-                                    progress=80
-                                    :value="processData.oldManNum"
-                                    background-color="#32CD32"
-                                    text="老人"
-                                    dot-color="#32CD32"
-                            ></custom-progress>
-
-                            <custom-progress
-                                    progress=33
-                                    :value="processData.stationNum"
-                                    background-color="#40E0D0"
-                                    text="驿站数"
-                                    dot-color="#40E0D0"
-                            ></custom-progress>
-
-                            <custom-progress
-                                    progress=100
-                                    background-color="#FF4500"
-                                    text="医生"
-                                    :value="processData.doctorNum"
-                                    dot-color="#FF4500"
-                            ></custom-progress>
-                            <custom-progress
-                                    progress=80
-                                    :value="processData.childrenNum"
-                                    background-color="#4169E1"
-                                    text="子女用户数"
-                                    dot-color="#4169E1"
-                            ></custom-progress>
-                            <custom-progress
-                                    progress=40
-                                    :value="processData.orderNum"
-                                    background-color="#838B8B"
-                                    text="总工单数"
-                                    dot-color="#838B8B"
-                            ></custom-progress>
-                        </div>
+                        <el-row :style="dataStatistic">
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=25
+                                        :value="processData.socialWorkerNum"
+                                        background-color="#ff5f3f"
+                                        text="社工"
+                                        dot-color="#ff5f3f"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=75
+                                        :value="processData.totalReceptionCallNum"
+                                        background-color="#ff9e3f"
+                                        text="总接待电话数"
+                                        dot-color="#ff9e3f"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=80
+                                        :value="processData.oldManNum"
+                                        background-color="#4ecd6a"
+                                        text="老人"
+                                        dot-color="#4ecd6a"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=33
+                                        :value="processData.stationNum"
+                                        background-color="#3fb4ff"
+                                        text="驿站"
+                                        dot-color="#3fb4ff"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=100
+                                        background-color="#c43aff"
+                                        text="医生"
+                                        :value="processData.doctorNum"
+                                        dot-color="#c43aff"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=80
+                                        :value="processData.childrenNum"
+                                        background-color="#fc54b7"
+                                        text="子女"
+                                        dot-color="#fc54b7"
+                                ></custom-progress>
+                            </el-col>
+                            <el-col :span="3">
+                                <custom-progress
+                                        progress=40
+                                        :value="processData.orderNum"
+                                        background-color="#3f4dff"
+                                        text="总工单"
+                                        dot-color="#3f4dff"
+                                ></custom-progress>
+                            </el-col>
+                        </el-row>
 
 
                 </section>
@@ -144,10 +180,11 @@
     import Echart from 'echarts'
     import AMap from '../common/Map'
     import CustomProgress from '../common/CustomProgress'
+    import HighCharts from 'highcharts'
     export default {
         name: "Chart",
         components: {
-            Echart, AMap, CustomProgress
+            Echart, AMap, CustomProgress, HighCharts
         },
         data() {
             return {
@@ -186,31 +223,42 @@
                         title: '老人数量',
                         value: 0,
                         unit: '人',
+                        bg: 'orange'
                     },
                     {
-                        title: '医生数量',
+                        title: '医生人数',
                         value: 0,
                         unit: '人',
+                        bg: 'yellow'
+
                     },
                     {
-                        title: '驿工数量',
+                        title: '社工人数',
                         value: 0,
                         unit: '人',
+                        bg: 'green'
+
                     },
                     {
-                        title: '总注册子女用户数',
+                        title: '已注册子女数',
                         value: 0,
                         unit: '人',
+                        bg: 'blue'
+
                     },
                     {
                         title: '覆盖村庄数',
                         value: 0,
                         unit: '个',
+                        bg: 'purple'
+
                     },
                     {
                         title: '驿站数量',
                         value: 0,
                         unit: '个',
+                        bg: 'pink'
+
                     }
                 ],
 
@@ -236,25 +284,33 @@
                     },
                     series: [{
                         name: '报警数',
-                        type: 'bar',
+                        type: 'line',
+                        smooth: 'true',
+                        color: '#fd850f',
                         data: [5, 20, 36, 10, 10, 20, 15, 41, 33]
                     }],
 
                     seriesDay: [{
                         name: '报警数',
-                        type: 'bar',
+                        type: 'line',
+                        smooth: 'true',
+                        color: '#fd850f',
                         data: [5, 20, 36, 10, 10, 20, 15, 41, 33]
                     }],
 
                     seriesWeek: [{
                         name: '报警数',
-                        type: 'bar',
+                        type: 'line',
+                        smooth: 'true',
+                        color: '#fd850f',
                         data: [25, 20, 36, 10, 15, 41, 33]
                     }],
 
                     seriesMonth: [{
                         name: '销量',
-                        type: 'bar',
+                        type: 'line',
+                        smooth: 'true',
+                        color: '#fd850f',
                         data: [11,22,13,24,15,26,37,28,19,40,31,22,13,34,45,26,17,28,39,20,31,12,23,34,15,56,17,28,49,30]
                     }],
 
@@ -280,6 +336,7 @@
                         xAxis: xAxis,
                         yAxis: {},
                         series: this.sosData.series,
+                        // series: [],
                         toolbox: {
                             // padding:30,
                             show : true,
@@ -463,10 +520,10 @@
             getCallNumber() {
                 this.$http.get('/apis/statistic/countCallCenter').then((res) => {
                     this.callNumbers = res.data.data
-                    this.cumulativeNumberOfCallsReceivedInit();
-                    this.cumulativeCallTimeInit();
-                    this.cumulativeDispatchedOrderNumberInit();
-                    this.cumulativeNumberOfCompletedWorkInit();
+                    // this.cumulativeNumberOfCallsReceivedInit();
+                    // this.cumulativeCallTimeInit();
+                    // this.cumulativeDispatchedOrderNumberInit();
+                    // this.cumulativeNumberOfCompletedWorkInit();
                 });
             },
 
@@ -496,18 +553,19 @@
                 this.monthlyTotalReception = Echart.init(document.getElementById('monthly-total-reception'));
                 this.monthlyTotalReception.hideLoading();
                 let total = 234;
-                let data = [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-                let value = []
+                // let data = [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+                let data = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+                let value = [2,5,3,9,4,7,11]
                 this.$http.get('/apis/statistic/countReception').then(res => {
                     total = res.data.data.totalNum;
                     data = res.data.data.date;
                     value = res.data.data.value;
                     let option = {
                         title: {
-                            text: '本月累计接待总计',
+                            text: '本周累计接待总计',
                             left: "center",
                             // top: "center",
-                            subtext: '共计'+total+'人次',
+                            // subtext: '共计'+total+'人次',
                         },
                         xAxis: {
                             type: 'category',
@@ -520,7 +578,13 @@
                         },
                         series: [{
                             data: value,
-                            type: 'line'
+                            type: 'bar',
+                            color: '#fd7f04',
+                            label: {
+                                show: true,
+                                position: 'outside',
+                                color: 'purple'
+                            },
                         }]
                     };
 
@@ -551,16 +615,18 @@
                         },
                         yAxis: {
                             type: 'value',
-                            name: '服务次数(次)',
+                            name: '服务次数(人次)',
                         },
                         series: [
+                            // {
+                            //     data: value,
+                            //     type: 'bar'
+                            // },
                             {
                                 data: value,
-                                type: 'bar'
-                            },
-                            {
-                                data: value,
-                                type: 'line'
+                                type: 'line',
+                                smooth: true,
+                                color: '#fd7f04'
                             },
                         ]
                     };
@@ -658,68 +724,87 @@
 
 
             orderRateInit() {
-                this.orderRate = Echart.init(document.getElementById('order-rate'));
-                this.orderRate.hideLoading();
+
                 let doctorOrderNum = 124;
                 let serviceOrderNum = 987;
                 this.$http.get('/apis/statistic/countWorkOrder').then(res => {
                     serviceOrderNum = res.data.data.serviceOrderNum;
                     doctorOrderNum = res.data.data.doctorOrderNum;
-                    this.processData.orderNum = serviceOrderNum + doctorOrderNum;
-                    let option = {
-                        title: {
-                            text: '医生工单 服务工单在总工单中占比'
+                    let chart = HighCharts.chart({
+                        chart: {
+                            renderTo: 'order-rate',
+                            title: 'test',
+                            type: 'pie',
+                            options3d: {
+                                enabled: true,
+                                alpha: 15,
+                                beta: 15,
+                                depth: 50,
+                                viewDistance: 25
+                            }
                         },
-                        legend: {
-                            orient: 'vertical',
-                            bottom: 'bottom',
-                            itemGap: 20,
-                            // formatter: function (name) {
-                            //     return name + '  占比';
-                            // },
-                            formatter: {name},
-                            data: [
-                                {
-                                    name: '医生工单' + doctorOrderNum + '个',
-                                },
-                                {
-                                    name: '服务工单' + serviceOrderNum + '个',
-                                },
-                            ],
-                            // itemGap: 20
+                        title: {
+                            text: '工单占比',
+                            align: 'center',
+                            style: { color: "#333333", fontSize: "18px",  fontWeight: 'bold'},
+                        },
+                        credits: {
+                            enabled: false//不显示LOGO
                         },
                         tooltip: {
-                            trigger: 'item',
-                            formatter: '{a} <br/>{b} : {c} ({d}%)'
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
                         },
-                        series: [
-                            {
-                                name: '工单',
-                                type: 'pie',
-                                radius: '60%',
-                                center: ['50%', '50%'],
-                                label: {
-                                    position: 'inner',
-                                    verticalAlign: 'top',
-                                    offset: [10, 50],
-                                    fontSize: 10,
-                                    padding: [-40, 0, 0, 0]
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: false,
+                                // cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false
                                 },
-                                data: [
-                                    {value: doctorOrderNum, name: '医生工单'  + doctorOrderNum + '个'},
-                                    {value: serviceOrderNum, name: '服务工单' + serviceOrderNum + '个'},
-                                ],
-                                emphasis: {
-                                    itemStyle: {
-                                        shadowBlur: 10,
-                                        shadowOffsetX: 0,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
-                                }
+                                depth: 35,
+                                showInLegend: true,
+
+                                animation: false,
                             }
-                        ]
-                    };
-                    this.orderRate.setOption(option);
+                        },
+
+                        legend: {
+                            enabled: true,
+                            itemDistance: 30,
+                            align: 'left',
+                            layout: 'vertical',
+                            itemMarginBottom: 20,
+                            symbolRadius: 30,
+                            symbolWidth: 50,
+                            verticalAlign: 'middle',
+                            y: 30,
+                            symbolPadding: 1,
+                            labelFormatter: function () {
+                                return '<p style="margin-bottom: 10px">' + this.name + '</P>' + '<br />' + '数量: ' + this.y + '<br />' + '占比: ' + this.percentage.toFixed(1) + '%';
+
+                            }
+                        },
+
+                        series: [{
+                            name: '工单占比',
+                            colorByPoint: true,
+                            borderWidth: 0,
+                            center: [110,100],
+                            data: [
+                                {
+                                    name: '社工工单',
+                                    color: '#fda047',
+                                    y: serviceOrderNum,
+                                },
+                                {
+                                    name: '医生工单',
+                                    y: doctorOrderNum,
+                                    color: '#c43aff',
+                                }
+                            ],
+
+                        }]
+                    })
                 });
 
 
@@ -743,17 +828,18 @@
                         },
                         xAxis: {
                             type: 'category',
-                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
                         },
                         yAxis: {
                             type: 'value',
-                            name: '接单时间(小时)',
+                            name: '接单时间(分)',
                         },
                         series: [
                             {
                                 data: data,
                                 type: 'line',
-                                smooth: true,
+                                smooth: false,
+                                color: '#c23fe8',
                                 markPoint: {
                                     data: [
                                         {
@@ -769,16 +855,16 @@
                                 },
                             },
 
-                            {
-                                data: [average, average, average, average, average, average, average],
-                                type: 'line',
-                                smooth: true,
-                                symbol: 'none',
-                                lineStyle: {
-                                    type: 'dashed',
-                                    color: 'red'
-                                },
-                            },
+                            // {
+                            //     data: [average, average, average, average, average, average, average],
+                            //     type: 'line',
+                            //     smooth: true,
+                            //     symbol: 'none',
+                            //     lineStyle: {
+                            //         type: 'dashed',
+                            //         color: 'red'
+                            //     },
+                            // },
                         ]
                     };
 
@@ -806,17 +892,18 @@
                         },
                         xAxis: {
                             type: 'category',
-                            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
                         },
                         yAxis: {
                             type: 'value',
-                            name: '接单时间(小时)',
+                            name: '接单时间(分)',
                         },
                         series: [
                             {
                                 data: data,
                                 type: 'line',
-                                smooth: true,
+                                smooth: false,
+                                color: '#fea44d',
                                 markPoint: {
                                     data: [
                                         {
@@ -832,16 +919,16 @@
                                 },
                             },
 
-                            {
-                                data: [average,average,average,average,average,average,average],
-                                type: 'line',
-                                smooth: true,
-                                symbol: 'none',
-                                lineStyle: {
-                                    type: 'dashed',
-                                    color: 'red'
-                                },
-                            },
+                            // {
+                            //     data: [average,average,average,average,average,average,average],
+                            //     type: 'line',
+                            //     smooth: true,
+                            //     symbol: 'none',
+                            //     lineStyle: {
+                            //         type: 'dashed',
+                            //         color: 'red'
+                            //     },
+                            // },
                         ]
                     };
 
@@ -931,29 +1018,75 @@
     .chart-title {
         text-align: center;
     }
-
+    .item:not(:first-child) {
+        margin: 0 10px;
+    }
     .item {
-        /*padding: 0 20px 0 20px;*/
-        margin: 0 20px;
-        float: left;
-        border: solid lightgray 1px;
-        height: 100px;
-        width: 200px;
         color: white;
-        background-color: #4a7fec;
-        box-shadow: #4a7fec 0px 2px 6px 0px
+        width: 155px;
+        height: 70px;
+    }
+
+    .orange {
+        background-image: url("../../assets/img/statistics/statistic_oriange.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .green {
+        background-image: url("../../assets/img/statistics/statistic_green.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .blue {
+        background-image: url("../../assets/img/statistics/statistic_blue.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .yellow {
+        background-image: url("../../assets/img/statistics/statistic_yellow.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .pink {
+        background-image: url("../../assets/img/statistics/statistic_pink.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+    }
+
+    .purple {
+        background-image: url("../../assets/img/statistics/statistic_purple.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
     }
 
     .card-value {
-        margin-top: 15px;
-        font-size: 50px;
+        font-size: 22px;
+        text-align: center;
+        margin-top: 10px;
     }
 
     .card-title {
-        font-size: 8px;
+        position: relative;
+        font-size: 10px;
         color: white;
-        /*text-align: left;*/
-        /*margin-left: 50px;*/
+        top: 5px;
+        left: 8px;
     }
 
     .box-card {
@@ -962,6 +1095,13 @@
         /*padding-bottom: 20px;*/
     }
 
-
+    .changed {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        width:50%;
+        height: 50%;
+        -webkit-transform: translateX(-50%) translateY(-50%);text-align: center;
+    }
 
 </style>
