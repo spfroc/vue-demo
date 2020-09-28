@@ -89,7 +89,7 @@
         </el-row>
         <el-row style="margin-top: 20px;">
             <el-col :span="14" style="border: 1px solid lightgrey">
-                <section style="padding:20px 0px 20px 0px; font-size: 18px; font-weight: bold; color: #3a3a3a;">魏善庄镇行政地图</section>
+                <section style="padding:20px 0px 20px 0px; font-size: 18px; font-weight: bold; color: #3a3a3a;margin-left: 10px;">魏善庄镇行政地图</section>
                 <a-map
                         :width="100"
                         :lng="116.419461"
