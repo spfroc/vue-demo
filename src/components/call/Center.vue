@@ -29,47 +29,72 @@
                 <el-button type="primary" @click="searchList" size="mini">搜索</el-button>
             </el-form>
         </section>
-        <section class="header-bar" v-if="activeName=='customerService'">
-            <el-row>
-                <el-col :span="12">
-                    <el-form>
-                        <el-date-picker
-                                v-model="firstTab.searchDate"
-                                type="date"
-                                size="mini"
-                                id="datePicker"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                @change="statisticsByDate"
-                                placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form>
-                </el-col>
-                <el-col :span="12">
-                    <div>
-                        <el-button @click="statistics(1)" size="mini" :type="buttonType(1)">本日</el-button>
-                        <el-button @click="statistics(2)" size="mini" :type="buttonType(2)">本周</el-button>
-                        <el-button @click="statistics(3)" size="mini" :type="buttonType(3)">本月</el-button>
-                    </div>
-                </el-col>
-
-            </el-row>
-
-            <el-row>
-                <el-card class="box-card" body-style="padding: 20px 20px 20px 0">
-                    <div v-for="o in firstTab.list" :key="o.title" class="text item">
+        <section class="" v-if="activeName=='customerService'">
+            <el-row type="flex" justify="center">
+                    <el-col :span="6" v-for="o in firstTab.list" :key="o.title" :class="o.bg + ' item-col'">
                         <div class="card-title">{{o.text}}</div>
-                        <div class="card-value"><span class="number-value">{{o.self}}</span><span class="number-unit">本人</span>/<span  class="number-value">{{o.total}}</span><span  class="number-unit">总计</span></div>
-                        <div class="bottom-text" v-if="o.title == 1">历史接单列表</div>
-                        <div class="bottom-text" v-if="o.title == 3">历史工单列表</div>
-                    </div>
-                </el-card>
-            </el-row>
-            <el-row style="height: 200px">
-                <el-form class="search-form">
-                    <el-input v-model="firstTab.oldManMobile" style="width: 20%" placeholder="老人手机号"></el-input>
+                        <div class="self-number-text"><span class="">{{o.self}}次&nbsp;</span><span class="after-self-number-text">本人</span></div>
+                        <div><span  class="total-text">总计{{o.total}}次</span></div>
+                    </el-col>
+                    <el-col :span="6" style="margin-left: 10px;">
+                        <el-form style="width: 200px;margin: 0 auto">
+                            <el-date-picker
+                                    v-model="firstTab.searchDateStart"
+                                    type="date"
+                                    size="mini"
+                                    id="datePicker"
+                                    style="margin-left: 25px;width: 155px;"
+                                    align="center"
 
-                    <el-button @click="reception">接待</el-button>
-                </el-form>
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    @change="statisticsByDate"
+                                    placeholder="时间选择器(开始)">
+                            </el-date-picker>
+                            <div style="margin: 15px auto 15px auto;color: #c0c4cc;width: 200px;text-align: center;"><span>至</span></div>
+                            <el-date-picker
+                                    v-model="firstTab.searchDateEnd"
+                                    type="date"
+                                    size="mini"
+                                    align="center"
+                                    style="margin-left: 25px;width: 155px;"
+                                    id="datePicker"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    @change="statisticsByDate"
+                                    placeholder="时间选择器(结束)">
+                            </el-date-picker>
+                        </el-form>
+
+                        <div style="margin:15px auto 0 auto;width: 200px;">
+                            <el-button @click="statistics(1)" size="mini" :type="buttonType(1)">本日</el-button>
+                            <el-button @click="statistics(2)" size="mini" :type="buttonType(2)">本周</el-button>
+                            <el-button @click="statistics(3)" size="mini" :type="buttonType(3)">本月</el-button>
+                        </div>
+
+                    </el-col>
+
+            </el-row>
+            <el-row style="height: 200px;margin-top: 30px;" type="flex">
+                <el-col :span="7">&nbsp;</el-col>
+                <el-col :span="3">
+                    <div>
+                        <img width="150px" src="../../assets/img/index/male.png" alt="">
+                    </div>
+                </el-col>
+                <el-col :span="10">
+                    <div>
+                        <section style="font-size: 25px;font-weight: bold;color: #000000de;margin-left: 60px;margin-top: 30px;">接待中心</section>
+                        <el-form class="search-form">
+                            <el-input v-model="firstTab.oldManMobile" style="width: 40% !important;" placeholder="请输入老人手机号"></el-input>
+
+                            <el-button @click="reception" type="primary">接待</el-button>
+                        </el-form>
+                    </div>
+                </el-col>
+                <el-col :span="4">&nbsp;</el-col>
+
+
+
+
             </el-row>
 
             <el-row>
@@ -543,7 +568,8 @@
                 dialogTitle: '服务工单',
                 firstTab: {
                     oldManMobile: '',
-                    searchDate: '',
+                    searchDateStart: '',
+                    searchDateEnd: '',
                     oldManInfo: {},
                     orderList: [],
                     oldManList: [],
@@ -558,19 +584,23 @@
                             title: 1,
                             text: '接待次数',
                             total: 20,
-                            self: 15
+                            self: 15,
+                            bg: 'blue',
                         },
                         {
                             title: 2,
                             text: '派单次数',
                             total: 20,
-                            self: 15
+                            self: 15,
+                            bg: 'pink'
+
                         },
                         {
                             title: 3,
                             text: '结单次数',
                             total: 20,
-                            self: 15
+                            self: 15,
+                            bg: 'red'
                         },
                     ]
                 },
@@ -607,14 +637,12 @@
 
         methods: {
             buttonType(item) {
-                console.log('~~~', this.defaultButton, item);
                 if(this.defaultButton == item) {
                     return 'primary'
                 }
                 return 'default'
             },
             statistics(item) {
-                console.log(2343242);
                 let params = {};
 
                 if(item == undefined) {
@@ -660,10 +688,8 @@
             tableRowClassName({row, rowIndex}) {
 
                 if (rowIndex === 1) {
-                    console.log(rowIndex);
                     return 'warning-row';
                 } else if (rowIndex === 3) {
-                    console.log(rowIndex);
                     return 'success-row';
                 }
                 return '';
@@ -685,13 +711,11 @@
 
 
             orderReconfirm(userId) {
-                console.log('this is 重新派单');
                 let data = {
                     workOrderId: this.commonOrder.id,
                     userId: userId || 1
                 }
                 this.$http.post('/apis/callCenter/reConfirmDispatchWorkOrder', data).then((res) => {
-                    console.log(res);
                     this.$message({
                         message: res.data.msg || '操作成功',
                         type: 'success'
@@ -700,7 +724,6 @@
             },
 
             orderConfirm(type) {
-                console.log('this is order type: ', type, this.commonOrder, this.serviceOrderDialog, this.doctorOrderDialog);
                 let data = {
                     oldManId : this.commonOrder.id,
                     type : type
@@ -806,8 +829,6 @@
                 this.dialogButtonText = '确认派单';
                 // this.getServiceWorkers();
                 this.commonOrder = row
-                console.log(this.commonOrder);
-                console.log(row);
             },
 
             doctorOrder(row) {
@@ -822,7 +843,6 @@
                 this.showDialogController();
                 this.dialogButtonText = '保存';
                 this.commonOrder = row
-                console.log(row);
                 this.receptionDialog.detail = row.content;
                 this.dialogTitle = '接待记录';
 
@@ -851,7 +871,6 @@
                         id: id
                     }
                 }).then((res) => {
-                    console.log(res.data.data);
                     this.commonOrder = res.data.data;
                     this.orderDetail.historyOrders = res.data.data.dispatchList;
                     this.orderDetail.mobile = res.data.data.latestUserMobile;
@@ -860,7 +879,6 @@
                     } else if(res.data.data.type == '2') {
                         this.serviceOrderDialog.worker = res.data.data.latestUserId;
                     }
-                    console.log(res.data.data.serviceDetail.length);
                     this.orderDetail.serviceDetail = res.data.data.serviceDetail.length > 0 ? res.data.data.serviceDetail : [
                         // {
                         //     content: '~~~',
@@ -894,29 +912,24 @@
                 }
             },
             reception() {
-                console.log(this.firstTab.oldManMobile);
                 if(this.firstTab.oldManMobile) {
                     this.$http.get('/apis/callCenter/reception', {
                         params: {
                             mobile: this.firstTab.oldManMobile,
                         }
                     }).then(res => {
-                        console.log(res.data.data.list);
                         this.firstTab.oldManList = [res.data.data.oldMan];
-                        // console.log(res.data.data.list);
                         this.firstTab.workOrderList = res.data.data.list;
                     });
                 }
             },
 
             tabSwitch(tab) {
-                console.log(this.activeName);
                 this.searchForm = {
                     name: '',
                     mobile: '',
                     createTime: '',
                 };
-                console.log(this.activeName);
                 if(this.activeName == 'customerService') {
 
                 } else if(this.activeName == 'historyWorkOrder') {
@@ -982,77 +995,49 @@
             this.statistics();
             this.getServiceWorkers();
             this.getDoctorOptions();
-            console.log(document.getElementById('datePicker').style.width='180px');
+            // document.getElementById('datePicker').style.width='180px'
+            // console.log();
         }
     }
 </script>
 
 <style scoped>
-    .text {
-        font-size: 14px;
-    }
-
-    .item {
-        margin: 0 20px 0 0;
-        float: left;
-        border: solid lightgray 1px;
-        height: 150px;
-        width: 360px;
-    }
-
-    .card-value {
-        margin-top: 15px;
-        font-size: 30px;
-    }
 
     .card-title {
-        font-size: 8px;
-        color: gray;
+        color: white;
         text-align: left;
-        margin-left: 10px;
-        margin-top: 10px;
+        margin-left: 30px;
+        margin-top: 20px;
     }
 
-    .box-card {
-        width: 100%;
-        margin-bottom: 10px;
-        text-align: center;
-        padding: 20px 20px 20px 0;
+    .self-number-text {
+        color: white;
+        text-align: left;
+        margin-left: 30px;
+        margin-top: 10px;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .after-self-number-text{
+        font-size: 18px;
+    }
+
+    .total-text {
+        color: white;
+        text-align: left;
+        margin-left: 30px;
+        margin-top: 20px;
+        font-size: 18px;
     }
 
     .search-form {
-        text-align: center; /*让div内部文字居中*/
+        text-align: left; /*让div内部文字居中*/
         background-color: #fff;
         border-radius: 20px;
-        width: 80%;
-        /*height: 350px;*/
-        margin: 50px auto;
-        position: relative;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        margin-top: 20px;
     }
 
-    .number-unit {
-        font-size: 8px;
-    }
-
-    .number-value {
-        font-size: 50px;
-        font-weight: bolder;
-    }
-
-    .bottom-text {
-        font-size: 8px;
-        text-align: left;
-        color: gray;
-        position: relative;
-        /*margin-left: 10px;*/
-        top: 20px;
-        left: 10px;
-        /*margin-bottom: 10px;*/
-    }
 
     .el-table .warning-row {
         background: oldlace;
@@ -1060,5 +1045,35 @@
 
     .el-table .success-row {
         background: #f0f9eb;
+    }
+
+    .item-col:not(:first-child) {
+        margin-left: 10px;
+    }
+
+    .blue {
+        border-radius: 10px;
+        background-image: url("../../assets/img/index/index_item_blue.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+    }
+
+    .pink {
+        background-image: url("../../assets/img/index/index_item_pink.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        background-attachment:fixed;
+        border-radius: 10px;
+
+    }
+
+    .red {
+        background-image: url("../../assets/img/index/index_item_wtf.png");
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center;
+        border-radius: 10px;
     }
 </style>
