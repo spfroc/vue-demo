@@ -1,15 +1,26 @@
 <template>
     <div>
-        <section class="header-bar">
+        <section class="">
             <el-form :inline="true" :model="search" size="mini" class="">
-                <el-form-item label="" prop="createTime">
+                <el-form-item label="" prop="timeStart">
                     <el-date-picker
-                            v-model="search.createTime"
-                            type="daterange"
+                            v-model="search.timeStart"
+                            align="left"
+                            format="yyyy-MM-dd"
                             value-format="yyyy-MM-dd HH:mm:ss"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            type="date"
+                            placeholder="开始日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>至</el-form-item>
+                <el-form-item label="" prop="timeEnd">
+                    <el-date-picker
+                            v-model="search.timeEnd"
+                            align="left"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            type="date"
+                            placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -28,6 +39,7 @@
                     </el-table-column>
                     <el-table-column
                             label="宣传图"
+                            align="center"
                             width="200">
                         <template slot-scope="scope">
                             <el-image
@@ -63,6 +75,7 @@
                     </el-table-column>
                     <el-table-column
                             label="操作"
+                            min-width="180"
                             align="center">
                         <template slot-scope="scope">
                             <el-button @click="() => { edit(scope.row) }" type="primary" icon="el-icon-edit" size="small">编辑</el-button>
@@ -134,7 +147,10 @@
                     content: '',
                     cover:'',
                 },
-                search: {},
+                search: {
+                    timeStart: '',
+                    timeEnd: '',
+                },
                 page: {
                     pageSize: 10,
                 },
@@ -211,11 +227,6 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
-                    if(this.search.timeStart && this.search.timeEnd) {
-                        this.search.createTime = [];
-                        this.search.createTime.push(this.search.timeStart);
-                        this.search.createTime.push(this.search.timeEnd);
-                    }
                 })
             },
             onSubmit () {

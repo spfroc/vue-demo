@@ -11,20 +11,33 @@
                 </div>
             </el-col>
         </el-row>
-        <section class="header-bar" v-if="activeName != 'customerService'">
-            <el-form :model="searchForm" :inline="true">
-                <el-input v-model="searchForm.mobile" style="width: 15%" size="mini" placeholder="老人手机号"></el-input>
-                <el-input v-model="searchForm.name" style="width: 15%" size="mini" placeholder="老人姓名"></el-input>
-                <el-date-picker
-                        v-model="searchForm.createTime"
+        <section class="" v-if="activeName != 'customerService'">
+            <el-form :model="searchForm" size="mini" :inline="true">
+                <el-input v-model="searchForm.mobile" style="width: 120px" size="mini" placeholder="老人手机号"></el-input>
+                <el-input v-model="searchForm.name" style="width: 120px" size="mini" placeholder="老人姓名"></el-input>
+                <el-form-item label="" prop="timeStart">
+                    <el-date-picker
+                        v-model="searchForm.timeStart"
+                        align="left"
                         size="mini"
-                        type="daterange"
                         format="yyyy-MM-dd"
                         value-format="yyyy-MM-dd HH:mm:ss"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                </el-date-picker>
+                        type="date"
+                        placeholder="开始日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>至</el-form-item>
+                <el-form-item label="" prop="timeEnd">
+                    <el-date-picker
+                        v-model="searchForm.timeEnd"
+                        align="left"
+                        size="mini"
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        type="date"
+                        placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
 
                 <el-button type="primary" @click="searchList" size="mini">搜索</el-button>
             </el-form>
@@ -39,28 +52,27 @@
                     <el-col :span="6" style="margin-left: 10px;">
                         <el-form style="width: 200px;margin: 0 auto">
                             <el-date-picker
-                                    v-model="firstTab.searchDateStart"
-                                    type="date"
-                                    size="mini"
-                                    id="datePicker"
-                                    style="margin-left: 25px;width: 155px;"
-                                    align="center"
-
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    @change="statisticsByDate"
-                                    placeholder="时间选择器(开始)">
+                                v-model="firstTab.searchDateStart"
+                                type="date"
+                                size="mini"
+                                id="datePicker"
+                                style="margin-left: 25px;width: 155px;"
+                                align="center"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                @change="statisticsByDate"
+                                placeholder="时间选择器(开始)">
                             </el-date-picker>
                             <div style="margin: 15px auto 15px auto;color: #c0c4cc;width: 200px;text-align: center;"><span>至</span></div>
                             <el-date-picker
-                                    v-model="firstTab.searchDateEnd"
-                                    type="date"
-                                    size="mini"
-                                    align="center"
-                                    style="margin-left: 25px;width: 155px;"
-                                    id="datePicker"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    @change="statisticsByDate"
-                                    placeholder="时间选择器(结束)">
+                                v-model="firstTab.searchDateEnd"
+                                type="date"
+                                size="mini"
+                                align="center"
+                                style="margin-left: 25px;width: 155px;"
+                                id="datePicker"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                @change="statisticsByDate"
+                                placeholder="时间选择器(结束)">
                             </el-date-picker>
                         </el-form>
 
@@ -85,7 +97,6 @@
                         <section style="font-size: 25px;font-weight: bold;color: #000000de;margin-left: 60px;margin-top: 30px;">接待中心</section>
                         <el-form class="search-form">
                             <el-input v-model="firstTab.oldManMobile" style="width: 40% !important;" placeholder="请输入老人手机号"></el-input>
-
                             <el-button @click="reception" type="primary">接待</el-button>
                         </el-form>
                     </div>
@@ -103,53 +114,51 @@
                         style="width: 100%">
                     <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
                     <el-table-column
-                            prop="name"
-                            label="姓名"
-                            align="center"
-                            width="180">
+                        prop="name"
+                        label="姓名"
+                        align="center"
+                        width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="nation"
-                            label="民族"
-                            align="center"
-                            width="180">
+                        prop="nation"
+                        label="民族"
+                        align="center"
+                        width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="sex"
-                            align="center"
-                            :formatter="sexFormatter"
-                            label="性别">
+                        prop="sex"
+                        align="center"
+                        :formatter="sexFormatter"
+                        label="性别">
                     </el-table-column>
                     <el-table-column
-                            prop="mobile"
-                            min-width="110"
-                            align="center"
-                            label="手机号">
+                        prop="mobile"
+                        min-width="110"
+                        align="center"
+                        label="手机号">
                     </el-table-column>
                     <el-table-column
-                            prop="idCardNumber"
-                            min-width="165"
-                            align="center"
-                            label="身份证号">
+                        prop="idCardNumber"
+                        min-width="165"
+                        align="center"
+                        label="身份证号">
                     </el-table-column>
                     <el-table-column
-                            prop="age"
-                            align="center"
-                            label="年龄">
+                        prop="age"
+                        align="center"
+                        label="年龄">
                     </el-table-column>
                     <el-table-column
-                            prop=""
-                            label=""
-                            align="center"
-                            width="100"
-                    >
+                        prop=""
+                        label=""
+                        align="center"
+                        width="100">
                         <template slot-scope="scope">
                             <div style="float: left">
                                 <el-button style="float: left" @click="() => { serviceOrder(scope.row) }" type="primary" size="mini">服务工单</el-button>
                                 <el-button style="margin: 10px 0 0 0" @click="() => { doctorOrder(scope.row) }" type="primary" size="mini">医生工单</el-button>
                                 <el-button style="margin: 10px 0 0 0" @click="() => { receptionRecord(scope.row) }" type="primary" size="mini">接待记录</el-button>
                             </div>
-
                         </template>
                     </el-table-column>
                 </el-table>
@@ -165,54 +174,40 @@
                         style="width: 100%">
                     <el-table-column type="index" width="150"  label="工单号"></el-table-column>
                     <el-table-column
-                            prop="createTime"
-                            min-width="150"
-                            label="下单时间"
-                            align="center"
-                            width="180">
+                        prop="createTime"
+                        min-width="150"
+                        label="下单时间"
+                        align="center"
+                        width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="endTime"
-                            min-width="150"
-                            label="结单时间"
-                            align="center"
-                            width="180">
+                        prop="endTime"
+                        min-width="150"
+                        label="结单时间"
+                        align="center"
+                        width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="status"
-                            align="center"
-                            :formatter="statusFormatter"
-                            label="工单状态">
+                        prop="status"
+                        align="center"
+                        :formatter="statusFormatter"
+                        label="工单状态">
                     </el-table-column>
 
                     <el-table-column
-                            prop=""
-                            label=""
-                            align="center"
-                            width="100"
-                    >
+                        prop=""
+                        label=""
+                        align="center"
+                        width="100">
                         <template slot-scope="scope">
                             <div style="float: left">
                                 <el-button style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
                                 <el-button style="margin: 10px 0 0 0" @click="receptionOrderClick(scope.row)" v-if="receptionListShowOrderButton(scope.row)" type="primary" size="mini">{{receptionListOrderButtonText(scope.row)}}</el-button>
                                 <el-button v-if="scope.row.status != '2' && scope.row.status != '5'" style="margin: 10px 0 0 0" @click="() => { terminateOrder(scope.row) }" type="primary" size="mini">结束工单</el-button>
                             </div>
-
                         </template>
                     </el-table-column>
                 </el-table>
-                <!--<el-pagination-->
-                        <!--hide-on-single-page-->
-                        <!--background-->
-                        <!--layout="total, prev, pager, next"-->
-                        <!--:page-size="this.firstTab.workOrderPage.pageSize"-->
-                        <!--:total="this.firstTab.workOrderPage.total"-->
-                        <!--:current-page="this.firstTab.workOrderPage.pageNum"-->
-                        <!--@current-change="getWorkOrderList"-->
-                <!--&gt;-->
-                <!--</el-pagination>-->
-
-
             </el-row>
         </section>
         <el-row v-if="activeName=='historyWorkOrder'">
@@ -224,59 +219,58 @@
                     style="width: 100%">
                 <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
                 <el-table-column
-                        prop="name"
-                        label="姓名"
-                        align="center"
-                        width="180">
+                    prop="name"
+                    label="姓名"
+                    align="center"
+                    width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="nation"
-                        label="民族"
-                        align="center"
-                        width="180">
+                    prop="nation"
+                    label="民族"
+                    align="center"
+                    width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="sex"
-                        align="center"
-                        :formatter="sexFormatter"
-                        label="性别">
+                    prop="sex"
+                    align="center"
+                    :formatter="sexFormatter"
+                    label="性别">
                 </el-table-column>
                 <el-table-column
-                        prop="mobile"
-                        min-width="110"
-                        align="center"
-                        label="手机号">
+                    prop="mobile"
+                    min-width="110"
+                    align="center"
+                    label="手机号">
                 </el-table-column>
                 <el-table-column
-                        prop="idCardNumber"
-                        min-width="165"
-                        align="center"
-                        label="身份证号">
+                    prop="idCardNumber"
+                    min-width="165"
+                    align="center"
+                    label="身份证号">
                 </el-table-column>
                 <el-table-column
-                        prop="age"
-                        align="center"
-                        label="年龄">
+                    prop="age"
+                    align="center"
+                    label="年龄">
                 </el-table-column>
 
                 <el-table-column
-                        prop="createTime"
-                        min-width="150"
-                        align="center"
-                        label="创建时间">
+                    prop="createTime"
+                    min-width="150"
+                    align="center"
+                    label="创建时间">
                 </el-table-column>
                 <el-table-column
-                        prop="status"
-                        align="center"
-                        :formatter="statusFormatter"
-                        label="状态">
+                    prop="status"
+                    align="center"
+                    :formatter="statusFormatter"
+                    label="状态">
                 </el-table-column>
                 <el-table-column
-                        prop=""
-                        label=""
-                        align="center"
-                        width="100"
-                >
+                    prop=""
+                    label=""
+                    align="center"
+                    width="100">
                     <template slot-scope="scope">
                         <div style="float: left">
                             <el-button v-if="scope.row.status != '3'" style="float: left" @click="() => { orderView(scope.row) }" size="mini">查看工单</el-button>
@@ -289,14 +283,13 @@
             </el-table>
 
             <el-pagination
-                    hide-on-single-page
-                    background
-                    layout="total, prev, pager, next"
-                    :page-size="this.secondTab.historyWorkOrderPage.pageSize"
-                    :total="this.secondTab.historyWorkOrderPage.total"
-                    :current-page="this.secondTab.historyWorkOrderPage.pageNum"
-                    @current-change="getHistoryWorkOrderList"
-            >
+                hide-on-single-page
+                background
+                layout="total, prev, pager, next"
+                :page-size="this.secondTab.historyWorkOrderPage.pageSize"
+                :total="this.secondTab.historyWorkOrderPage.total"
+                :current-page="this.secondTab.historyWorkOrderPage.pageNum"
+                @current-change="getHistoryWorkOrderList">
             </el-pagination>
         </el-row>
         <el-row v-if="activeName=='historyReception'">
@@ -307,53 +300,52 @@
                     style="width: 100%">
                 <el-table-column type="index" width="50" align="center" label="序号"></el-table-column>
                 <el-table-column
-                        prop="name"
-                        label="姓名"
-                        align="center"
-                        width="180">
+                    prop="name"
+                    label="姓名"
+                    align="center"
+                    width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="nation"
-                        label="民族"
-                        align="center"
-                        width="180">
+                    prop="nation"
+                    label="民族"
+                    align="center"
+                    width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="sex"
-                        align="center"
-                        :formatter="sexFormatter"
-                        label="性别">
+                    prop="sex"
+                    align="center"
+                    :formatter="sexFormatter"
+                    label="性别">
                 </el-table-column>
                 <el-table-column
-                        prop="mobile"
-                        min-width="110"
-                        align="center"
-                        label="手机号">
+                    prop="mobile"
+                    min-width="110"
+                    align="center"
+                    label="手机号">
                 </el-table-column>
                 <el-table-column
-                        prop="idCardNumber"
-                        min-width="165"
-                        align="center"
-                        label="身份证号">
+                    prop="idCardNumber"
+                    min-width="165"
+                    align="center"
+                    label="身份证号">
                 </el-table-column>
                 <el-table-column
-                        prop="age"
-                        align="center"
-                        label="年龄">
+                    prop="age"
+                    align="center"
+                    label="年龄">
                 </el-table-column>
 
                 <el-table-column
-                        prop="createTime"
-                        min-width="150"
-                        align="center"
-                        label="创建时间">
+                    prop="createTime"
+                    min-width="150"
+                    align="center"
+                    label="创建时间">
                 </el-table-column>
                 <el-table-column
-                        prop=""
-                        label=""
-                        align="center"
-                        width="100"
-                >
+                    prop=""
+                    label=""
+                    align="center"
+                    width="100">
                     <template slot-scope="scope" v-if="activeName == 'historyReception'">
                         <div style="float: left">
                             <el-button style="float: left" @click="() => { receptionRecord(scope.row) }" size="mini">查看详情</el-button>
@@ -403,10 +395,10 @@
                 <el-form-item v-if="dialogTitle == '服务工单'" prop="worker" label="选择社工">
                     <el-select v-model="serviceOrderDialog.worker" placeholder="请选择">
                         <el-option
-                                v-for="item in serviceWorkers"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
+                            v-for="item in serviceWorkers"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -448,28 +440,28 @@
                             :show-header=false
                             :data="orderDetail.historyOrders">
                         <el-table-column
-                                prop="name"
-                                label="姓名"
-                                align="center"
-                                width="180">
+                            prop="name"
+                            label="姓名"
+                            align="center"
+                            width="180">
                         </el-table-column>
                         <el-table-column
-                                prop="mobile"
-                                min-width="110"
-                                label="手机号"
-                                align="center"
-                                width="180">
+                            prop="mobile"
+                            min-width="110"
+                            label="手机号"
+                            align="center"
+                            width="180">
                         </el-table-column>
                         <el-table-column
-                                prop="status"
-                                align="center"
-                                :formatter="statusFormatter"
-                                label="状态">
+                            prop="status"
+                            align="center"
+                            :formatter="statusFormatter"
+                            label="状态">
                         </el-table-column>
                         <el-table-column
-                                prop="orderTime"
-                                align="center"
-                                label="下单时间">
+                            prop="orderTime"
+                            align="center"
+                            label="下单时间">
                         </el-table-column>
                     </el-table>
                 </el-form-item>
@@ -609,6 +601,8 @@
                     name: '',
                     mobile: '',
                     createTime: '',
+                    timeStart: '',
+                    timeEnd: '',
                 },
                 secondTab: {
                     historyWorkOrderList: [],
@@ -929,6 +923,8 @@
                     name: '',
                     mobile: '',
                     createTime: '',
+                    timeStart: '',
+                    timeEnd: '',
                 };
                 if(this.activeName == 'customerService') {
 
@@ -952,12 +948,6 @@
                     this.secondTab.historyWorkOrderList = res.data.data.list;
                     this.secondTab.historyWorkOrderPage.total = res.data.data.total;
                     this.secondTab.historyWorkOrderPage.pageSize = res.data.data.pageSize;
-                    if(this.searchForm.timeStart && this.searchForm.timeEnd) {
-                        this.searchForm.createTime = [];
-                        this.searchForm.createTime.push(this.searchForm.timeStart);
-                        this.searchForm.createTime.push(this.searchForm.timeEnd);
-                    }
-                    // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
                 });
             },
 
@@ -973,12 +963,6 @@
                     this.thirdTab.historyReceptionList = res.data.data.list;
                     this.thirdTab.historyReceptionPage.total = res.data.data.total;
                     this.thirdTab.historyReceptionPage.pageSize = res.data.data.pageSize;
-                    if(this.searchForm.timeStart && this.searchForm.timeEnd) {
-                        this.searchForm.createTime = [];
-                        this.searchForm.createTime.push(this.searchForm.timeStart);
-                        this.searchForm.createTime.push(this.searchForm.timeEnd);
-                    }
-                    // this.secondTab.historyWorkOrderPage.pageNum = res.data.data.pageNum;
                 });
             },
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <template>
-            <section class="header-bar">
+            <section class="">
                 <el-row class="el-row" :key="item.name" v-for="item in companyPoint">
                     <el-col :span="2" align="center">{{item.companyName}}</el-col>
                     <el-col :span="22">
@@ -12,27 +12,38 @@
                     <el-col align="center">公司服务评分</el-col>
                 </el-row>
             </section>
-            <section class="header-bar">
+            <section class="">
                 <el-form :inline="true" :model="search" size="mini" class="">
-                    <el-form-item label="" prop="createTime">
+                    <el-form-item label="" prop="timeStart">
                         <el-date-picker
-                                v-model="search.createTime"
-                                type="daterange"
+                                v-model="search.timeStart"
+                                align="left"
+                                format="yyyy-MM-dd"
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                                type="date"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>至</el-form-item>
+                    <el-form-item label="" prop="timeEnd">
+                        <el-date-picker
+                                v-model="search.timeEnd"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="" prop="name">
-                        <el-input v-model="search.name" placeholder="姓名搜索"></el-input>
+                        <el-input v-model="search.name" style="width: 120px;" placeholder="姓名搜索"></el-input>
                     </el-form-item>
 
                     <el-form-item label="" prop="mobile">
-                        <el-input v-model="search.mobile" placeholder="手机号搜索"></el-input>
+                        <el-input v-model="search.mobile" style="width: 120px;" placeholder="手机号搜索"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-select v-model="search.companyId" placeholder="请选择">
+                        <el-select v-model="search.companyId" style="width: 120px;" placeholder="请选择">
                             <el-option
                                     v-for="item in companyOptions"
                                     :key="item.id"
@@ -119,7 +130,13 @@
                 page: {
 
                 },
-                search: {},
+                search: {
+                    timeStart: '',
+                    timeEnd: '',
+                    companyId: '',
+                    name: '',
+                    mobile: '',
+                },
                 companyOptions: []
             }
 

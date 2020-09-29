@@ -2,7 +2,7 @@
     <div>
         <el-form :inline="true" :model="search" size="mini" class="">
             <el-form-item label="" prop="imei">
-                <el-input v-model="search.imei" placeholder="imei号"></el-input>
+                <el-input v-model="search.imei" style="width: 120px;" placeholder="imei号"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>

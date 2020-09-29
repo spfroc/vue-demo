@@ -13,24 +13,35 @@
                 <div class="grid-content bg-purple">
                     <el-form :inline="true" :model="search" size="mini" class="">
                         <el-form-item label="" prop="name">
-                            <el-input v-model="search.name" placeholder="按姓名搜索"></el-input>
+                            <el-input v-model="search.name" style="width: 120px;" placeholder="按姓名搜索"></el-input>
                         </el-form-item>
 
                         <el-form-item label="" prop="mobile">
-                            <el-input v-model="search.mobile" placeholder="按手机号搜索"></el-input>
+                            <el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>
                         </el-form-item>
-                        <el-form-item label="" prop="createTime">
+                        <el-form-item label="" prop="timeStart">
                             <el-date-picker
-                                    v-model="search.createTime"
-                                    type="daterange"
+                                    v-model="search.timeStart"
+                                    align="left"
+                                    format="yyyy-MM-dd"
                                     value-format="yyyy-MM-dd HH:mm:ss"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
+                                    type="date"
+                                    placeholder="开始日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="" prop="activeTitle">
-                            <el-input v-model="search.activeTitle" placeholder="按活动搜索"></el-input>
+                        <el-form-item>至</el-form-item>
+                        <el-form-item label="" prop="timeEnd">
+                            <el-date-picker
+                                    v-model="search.timeEnd"
+                                    align="left"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    type="date"
+                                    placeholder="结束日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="" prop="avitivityName">
+                            <el-input v-model="search.avitivityName" style="width: 120px;" placeholder="按活动搜索"></el-input>
                         </el-form-item>
 
                         <el-form-item>
@@ -221,7 +232,13 @@
                 },
                 activeName: 'info',
                 tableData: [],
-                search: {},
+                search: {
+                    timeStart: '',
+                    timeEnd: '',
+                    avitivityName: '',
+                    mobile: '',
+                    name: '',
+                },
                 page: {},
                 infoListApi: '/apis/volunteer/list',
                 approvalListApi: '/apis/volunteer/auditList',
@@ -380,11 +397,6 @@
                     this.page.total = res.data.data.total
                     this.search.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
-                    if(this.search.timeStart && this.search.timeEnd) {
-                        this.search.createTime = [];
-                        this.search.createTime.push(this.search.timeStart);
-                        this.search.createTime.push(this.search.timeEnd);
-                    }
                 })
             },
 

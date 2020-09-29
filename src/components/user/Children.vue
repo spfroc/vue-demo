@@ -10,20 +10,30 @@
                 </div>
             </el-col>
             <el-col :span="17">
-                <div class="grid-content bg-purple">
+                <div class="">
                     <el-form :inline="true" :model="search" size="mini" class="">
-                        <el-form-item label="" prop="name">
+                        <el-form-item label="" style="width: 120px;" prop="name">
                             <el-input v-model="search.name" placeholder="按姓名搜索"></el-input>
                         </el-form-item>
-                        <el-form-item label="" prop="createTime">
+                        <el-form-item label="" prop="timeStart">
                             <el-date-picker
-                                    v-model="search.createTime"
-                                    type="daterange"
+                                    v-model="search.timeStart"
+                                    align="left"
+                                    format="yyyy-MM-dd"
                                     value-format="yyyy-MM-dd HH:mm:ss"
-                                    range-separator="至"
-                                    @change="datePickerChange"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
+                                    type="date"
+                                    placeholder="开始日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item>至</el-form-item>
+                        <el-form-item label="" prop="timeEnd">
+                            <el-date-picker
+                                    v-model="search.timeEnd"
+                                    align="left"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    type="date"
+                                    placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item>
@@ -401,7 +411,9 @@
                 isUpdate: false,
                 search: {
                     name: '',
-                    createTime: []
+                    createTime: [],
+                    timeStart: '',
+                    timeEnd: ''
                 },
                 rules: {
                     name: { required: true, message: '请输子女姓名', trigger: 'blur' },
@@ -417,14 +429,6 @@
 
         },
         methods: {
-
-            datePickerChange(value) {
-                console.log(value);
-                this.search.timeStart = value[0]
-                this.search.timeEnd = value[1]
-                console.log(this.search);
-            },
-
             statusStyle(status) {
                 let color = 'blue';
                 if(status == 0) {
@@ -496,10 +500,13 @@
                 return row.sex == 1 ? '男' : '女';
             },
             tabSwitch(tab, event) {
-                this.search = {};
-                // this.form = {};
+                this.search = {
+                    name: '',
+                    createTime: [],
+                    timeStart: '',
+                    timeEnd: ''
+                };
                 this.fetchList(1);
-                // console.log(tab, event);
             },
 
             resetForm(formName) {
@@ -592,10 +599,7 @@
 
             fetchList (currentPage) {
                 this.page.pageNum = currentPage || this.page.pageNum
-
                 this.search = this.$common.searchParams(this.search);
-                console.log('old',this.search);
-
                 // TODO id=1 是个接口bug
                 this.$http.get(this.currentListApi, {
                     params: Object.assign({
@@ -606,12 +610,6 @@
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
                     this.tableData = res.data.data.list;
-                    if(this.search.timeStart && this.search.timeEnd) {
-                        this.search.createTime = [];
-                        this.search.createTime.push(this.search.timeStart);
-                        this.search.createTime.push(this.search.timeEnd);
-                    }
-                    console.log('new',this.search);
                 })
             },
 

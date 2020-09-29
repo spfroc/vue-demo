@@ -24,18 +24,29 @@
             <div>
                 <el-form :inline="true" :model="search" size="mini" class="">
 
-                    <el-form-item label="" prop="createTime">
+                    <el-form-item label="" prop="timeStart">
                         <el-date-picker
-                                v-model="search.createTime"
-                                type="daterange"
+                                v-model="search.timeStart"
+                                align="left"
+                                format="yyyy-MM-dd"
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
+                                type="date"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>至</el-form-item>
+                    <el-form-item label="" prop="timeEnd">
+                        <el-date-picker
+                                v-model="search.timeEnd"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="" prop="type">
-                        <el-select v-model="search.type" placeholder="请选择~">
+                        <el-select v-model="search.type" style="width: 120px;" placeholder="请选择">
                             <el-option
                                     v-for="item in typeMap"
                                     :key="item.value"
@@ -211,7 +222,9 @@
 
                 page: {},
                 search: {
-                    pageNum: 1
+                    pageNum: 1,
+                    timeStart: '',
+                    timeEnd: '',
                 },
                 editingRow: {},
                 leftForm: {
@@ -384,11 +397,8 @@
             },
 
             fetchList (currentPage) {
-                // console.log(this.search);
                 this.search.pageNum = currentPage || this.search.pageNum
-                // console.log(this.search);
                 this.search = this.$common.searchParams(this.search);
-                // console.log(this.search);
                 this.$http.get('/apis/oldManArchives/list', {
                     params: Object.assign({
                         pageSize: 10,
@@ -398,12 +408,6 @@
                     this.page.total = res.data.data.total
                     this.page.pageSize = res.data.data.pageSize
                     this.search.pageNum = parseInt(res.data.data.pageNum)
-                    // console.log(this.search);
-                    if(this.search.timeStart && this.search.timeEnd) {
-                        this.search.createTime = [];
-                        this.search.createTime.push(this.search.timeStart);
-                        this.search.createTime.push(this.search.timeEnd);
-                    }
                     this.tableData = res.data.data.list;
                 })
             },
