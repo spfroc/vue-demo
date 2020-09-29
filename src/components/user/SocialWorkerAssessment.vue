@@ -12,51 +12,57 @@
                     <el-col align="center">公司服务评分</el-col>
                 </el-row>
             </section>
-            <section class="">
-                <el-form :inline="true" :model="search" size="mini" class="">
-                    <el-form-item label="" prop="timeStart">
-                        <el-date-picker
-                                v-model="search.timeStart"
-                                align="left"
-                                format="yyyy-MM-dd"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                type="date"
-                                placeholder="开始日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item>至</el-form-item>
-                    <el-form-item label="" prop="timeEnd">
-                        <el-date-picker
-                                v-model="search.timeEnd"
-                                align="left"
-                                format="yyyy-MM-dd"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                type="date"
-                                placeholder="结束日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="" prop="name">
-                        <el-input v-model="search.name" style="width: 120px;" placeholder="姓名搜索"></el-input>
-                    </el-form-item>
+            <el-row>
+                <el-col :span="20">
+                    <el-form :inline="true" :model="search" size="mini" class="">
+                        <el-form-item label="" prop="timeStart">
+                            <el-date-picker
+                                    v-model="search.timeStart"
+                                    align="left"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    type="date"
+                                    placeholder="开始日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item>至</el-form-item>
+                        <el-form-item label="" prop="timeEnd">
+                            <el-date-picker
+                                    v-model="search.timeEnd"
+                                    align="left"
+                                    format="yyyy-MM-dd"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    type="date"
+                                    placeholder="结束日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="" prop="name">
+                            <el-input v-model="search.name" style="width: 120px;" placeholder="姓名搜索"></el-input>
+                        </el-form-item>
 
-                    <el-form-item label="" prop="mobile">
-                        <el-input v-model="search.mobile" style="width: 120px;" placeholder="手机号搜索"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-select v-model="search.companyId" style="width: 120px;" placeholder="请选择">
-                            <el-option
-                                    v-for="item in companyOptions"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
-                    </el-form-item>
-                </el-form>
-            </section>
+                        <el-form-item label="" prop="mobile">
+                            <el-input v-model="search.mobile" style="width: 120px;" placeholder="手机号搜索"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-select v-model="search.companyId" style="width: 120px;" placeholder="请选择">
+                                <el-option
+                                        v-for="item in companyOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+                <el-col :span="4">
+                    <export-excel url="/export/kpi" :params="search"></export-excel>
+                </el-col>
+
+            </el-row>
             <h4>员工评分</h4>
             <div>
                 <el-table
@@ -95,9 +101,13 @@
 </template>
 
 <script>
+    import ExportExcel from '../common/ExportExcel'
+
     export default {
         name: "SocialWorkerAssessment",
-
+        components: {
+            ExportExcel
+        },
         data() {
             return {
                 companyPoint: [

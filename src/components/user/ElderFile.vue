@@ -21,143 +21,147 @@
         </el-col>
         <el-col :span="1">&nbsp;</el-col>
         <el-col :span="18" class="container">
-            <div>
-                <el-form :inline="true" :model="search" size="mini" class="">
+            <el-form :inline="true" :model="search" size="mini" class="">
+                <el-form-item label="" prop="timeStart">
+                    <el-date-picker
+                            v-model="search.timeStart"
+                            align="left"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            type="date"
+                            placeholder="开始日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>至</el-form-item>
+                <el-form-item label="" prop="timeEnd">
+                    <el-date-picker
+                            v-model="search.timeEnd"
+                            align="left"
+                            format="yyyy-MM-dd"
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            type="date"
+                            placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="" prop="type">
+                    <el-select v-model="search.type" style="width: 120px;" placeholder="请选择">
+                        <el-option
+                                v-for="item in typeMap"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                </el-form-item>
+            </el-form>
+            <el-row>
+                <el-col :span="20">&nbsp;</el-col>
+                <el-col :span="4">
+                    <export-excel url="/export/oldManArchives" :params="search"></export-excel>
 
-                    <el-form-item label="" prop="timeStart">
-                        <el-date-picker
-                                v-model="search.timeStart"
-                                align="left"
-                                format="yyyy-MM-dd"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                type="date"
-                                placeholder="开始日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item>至</el-form-item>
-                    <el-form-item label="" prop="timeEnd">
-                        <el-date-picker
-                                v-model="search.timeEnd"
-                                align="left"
-                                format="yyyy-MM-dd"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                type="date"
-                                placeholder="结束日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="" prop="type">
-                        <el-select v-model="search.type" style="width: 120px;" placeholder="请选择">
-                            <el-option
-                                    v-for="item in typeMap"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
-                    </el-form-item>
-                </el-form>
-                <section class="header-bar">
                     <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
-                </section>
-                <template>
-                    <div>
-                        <el-table
-                                :data="tableData">
-                            <el-table-column type="index" align="center" width="80" label="序号">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="oldManName"
-                                    align="center"
-                                    label="姓名">
-                            </el-table-column>
-
-                            <el-table-column
-                                    prop="addUserName"
-                                    align="center"
-                                    label="创建人">
-                            </el-table-column>
-                            <el-table-column
-                                    prop="type"
-                                    align="center"
-                                    :formatter="typeFormatter"
-                                    label="类型">
-                            </el-table-column>
-                            <el-table-column align="center" min-width="150" prop="createTime" label="创建时间">
-                            </el-table-column>
-                            <el-table-column align="center" prop="updateTime" min-width="150" label="修改时间">
-                            </el-table-column>
-                            <el-table-column
-                                    width="250"
-                                    align="center"
-                                    label="操作">
-                                <template slot-scope="scope">
-                                    <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
-                                    <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <el-pagination
-                                hide-on-single-page
-                                background
-                                layout="total, prev, pager, next"
-                                :page-size="page.pageSize"
-                                :total="page.total"
-                                :current-page="search.pageNum"
-                                @current-change="fetchList"
-                        >
-                        </el-pagination>
-
-                        <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
-                            <el-form ref="form" :rules="rules" :model="form" label-width="90px">
-                                <el-form-item v-show="form.id" label="ID" prop="id">
-                                    <el-input :disabled="true" v-model="form.id"></el-input>
-                                </el-form-item>
-                                <el-form-item label="老人姓名" prop="oldManName">
-                                    <!--<el-input v-model="form.oldManId"></el-input>-->
-                                    <el-autocomplete
-                                            v-model="form.oldManName"
-                                            value="age"
-                                            :fetch-suggestions="querySearchAsync"
-                                            placeholder="请输入内容"
-                                            value-key="name"
-                                            @select="handleSelect"
-                                    ></el-autocomplete>
-                                </el-form-item>
+                </el-col>
 
 
-                                <el-form-item label="类型" prop="type">
-                                    <el-select v-model="form.type" placeholder="请选择">
-                                        <el-option
-                                                v-for="item in typeMap"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="内容" prop="content">
-                                    <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
-                                </el-form-item>
-                                <el-form-item label="图片" prop="imgListArr">
-                                    <multiple-image-upload
-                                            v-model="form.imgList"
-                                            :file-list="imgListArr"
-                                            :file-list-container="imgListArr"
-                                            width="100" height="100">
-                                    </multiple-image-upload>
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" @click="onSubmit">确定</el-button>
-                                    <el-button v-on:click="cancel">取消</el-button>
-                                </el-form-item>
-                            </el-form>
-                        </el-dialog>
-                    </div>
-                </template>
-            </div>
+            </el-row>
+            <template>
+                <div>
+                    <el-table
+                            :data="tableData">
+                        <el-table-column type="index" align="center" width="80" label="序号">
+                        </el-table-column>
+                        <el-table-column
+                                prop="oldManName"
+                                align="center"
+                                label="姓名">
+                        </el-table-column>
+
+                        <el-table-column
+                                prop="addUserName"
+                                align="center"
+                                label="创建人">
+                        </el-table-column>
+                        <el-table-column
+                                prop="type"
+                                align="center"
+                                :formatter="typeFormatter"
+                                label="类型">
+                        </el-table-column>
+                        <el-table-column align="center" min-width="150" prop="createTime" label="创建时间">
+                        </el-table-column>
+                        <el-table-column align="center" prop="updateTime" min-width="150" label="修改时间">
+                        </el-table-column>
+                        <el-table-column
+                                width="250"
+                                align="center"
+                                label="操作">
+                            <template slot-scope="scope">
+                                <el-button @click="() => { edit(scope.row) }" type="primary" size="mini" icon="el-icon-edit">编辑</el-button>
+                                <el-button @click="() => { remove(scope.row.id) }" type="danger" size="mini" icon="el-icon-delete">删除</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination
+                            hide-on-single-page
+                            background
+                            layout="total, prev, pager, next"
+                            :page-size="page.pageSize"
+                            :total="page.total"
+                            :current-page="search.pageNum"
+                            @current-change="fetchList"
+                    >
+                    </el-pagination>
+
+                    <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
+                        <el-form ref="form" :rules="rules" :model="form" label-width="90px">
+                            <el-form-item v-show="form.id" label="ID" prop="id">
+                                <el-input :disabled="true" v-model="form.id"></el-input>
+                            </el-form-item>
+                            <el-form-item label="老人姓名" prop="oldManName">
+                                <!--<el-input v-model="form.oldManId"></el-input>-->
+                                <el-autocomplete
+                                        v-model="form.oldManName"
+                                        value="age"
+                                        :fetch-suggestions="querySearchAsync"
+                                        placeholder="请输入内容"
+                                        value-key="name"
+                                        @select="handleSelect"
+                                ></el-autocomplete>
+                            </el-form-item>
+
+
+                            <el-form-item label="类型" prop="type">
+                                <el-select v-model="form.type" placeholder="请选择">
+                                    <el-option
+                                            v-for="item in typeMap"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="内容" prop="content">
+                                <editor ref="myTextEditor" v-model="form.content" :options="editorOption"></editor>
+                            </el-form-item>
+                            <el-form-item label="图片" prop="imgListArr">
+                                <multiple-image-upload
+                                        v-model="form.imgList"
+                                        :file-list="imgListArr"
+                                        :file-list-container="imgListArr"
+                                        width="100" height="100">
+                                </multiple-image-upload>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit">确定</el-button>
+                                <el-button v-on:click="cancel">取消</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-dialog>
+                </div>
+            </template>
         </el-col>
     </el-row>
 </template>
@@ -166,11 +170,12 @@
 
     import Editor from "../common/Editor"
     import MultipleImageUpload from "../common/MultipleImageUpload"
+    import ExportExcel from '../common/ExportExcel'
 
     export default {
         name: "ElderFile",
         components: {
-            Editor,MultipleImageUpload
+            Editor,MultipleImageUpload,ExportExcel
         },
         data () {
             return {

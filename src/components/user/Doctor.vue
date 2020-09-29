@@ -1,44 +1,49 @@
 <template>
     <div class="container">
-        <div class="grid-content bg-purple">
-            <el-form :inline="true" :model="search" size="mini" class="">
-                <el-form-item label="" prop="name">
-                    <el-input v-model="search.name" style="width: 120px;" placeholder="按姓名搜索"></el-input>
-                </el-form-item>
+        <el-row>
+            <el-col :span="20">
+                <el-form :inline="true" :model="search" size="mini" class="">
+                    <el-form-item label="" prop="name">
+                        <el-input v-model="search.name" style="width: 120px;" placeholder="按姓名搜索"></el-input>
+                    </el-form-item>
 
-                <el-form-item label="" prop="mobile">
-                    <el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="timeStart">
-                    <el-date-picker
-                            v-model="search.timeStart"
-                            align="left"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            type="date"
-                            placeholder="开始日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>至</el-form-item>
-                <el-form-item label="" prop="timeEnd">
-                    <el-date-picker
-                            v-model="search.timeEnd"
-                            align="left"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            type="date"
-                            placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
-                </el-form-item>
-            </el-form>
+                    <el-form-item label="" prop="mobile">
+                        <el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="timeStart">
+                        <el-date-picker
+                                v-model="search.timeStart"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>至</el-form-item>
+                    <el-form-item label="" prop="timeEnd">
+                        <el-date-picker
+                                v-model="search.timeEnd"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="4">
+                <export-excel url="/export/doctor" :params="search"></export-excel>
 
-        </div>
-        <section class="header-bar">
-            <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
-        </section>
+                <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
+
+            </el-col>
+        </el-row>
+
         <template>
             <div>
                 <el-table
@@ -149,8 +154,13 @@
 <script>
     import { isValidPhone } from '../../util/validate'
     import { checkNumber } from '../../util/validate'
+    import ExportExcel from '../common/ExportExcel'
+
     export default {
         name: "Doctor",
+        components: {
+            ExportExcel
+        },
         data () {
             return {
                 search: {

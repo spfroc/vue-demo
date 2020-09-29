@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-row :gutter="20">
-            <el-col :span="3">
+            <el-col :span="4">
                 <div class="grid-content bg-purple">
                     <el-tabs v-model="activeName" @tab-click="tabSwitch">
                         <el-tab-pane label="信息列表" name="info"></el-tab-pane>
@@ -9,51 +9,57 @@
                     </el-tabs>
                 </div>
             </el-col>
-            <el-col :span="17">
-                <div class="grid-content bg-purple">
-                    <el-form :inline="true" :model="search" size="mini" class="">
-                        <el-form-item label="" prop="name">
-                            <el-input v-model="search.name" style="width: 120px;" placeholder="按姓名搜索"></el-input>
-                        </el-form-item>
+            <el-col :span="20">
+                <el-row>
+                    <el-col :span="24">
+                        <el-form :inline="true" :model="search" size="mini" class="">
+                            <el-form-item label="" prop="name">
+                                <el-input v-model="search.name" style="width: 120px;" placeholder="按姓名搜索"></el-input>
+                            </el-form-item>
 
-                        <el-form-item label="" prop="mobile">
-                            <el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>
-                        </el-form-item>
-                        <el-form-item label="" prop="timeStart">
-                            <el-date-picker
-                                    v-model="search.timeStart"
-                                    align="left"
-                                    format="yyyy-MM-dd"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    type="date"
-                                    placeholder="开始日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item>至</el-form-item>
-                        <el-form-item label="" prop="timeEnd">
-                            <el-date-picker
-                                    v-model="search.timeEnd"
-                                    align="left"
-                                    format="yyyy-MM-dd"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    type="date"
-                                    placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="" prop="avitivityName">
-                            <el-input v-model="search.avitivityName" style="width: 120px;" placeholder="按活动搜索"></el-input>
-                        </el-form-item>
+                            <el-form-item label="" prop="mobile">
+                                <el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>
+                            </el-form-item>
+                            <el-form-item label="" prop="timeStart">
+                                <el-date-picker
+                                        v-model="search.timeStart"
+                                        align="left"
+                                        format="yyyy-MM-dd"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        type="date"
+                                        placeholder="开始日期">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item>至</el-form-item>
+                            <el-form-item label="" prop="timeEnd">
+                                <el-date-picker
+                                        v-model="search.timeEnd"
+                                        align="left"
+                                        format="yyyy-MM-dd"
+                                        value-format="yyyy-MM-dd HH:mm:ss"
+                                        type="date"
+                                        placeholder="结束日期">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="" prop="avitivityName">
+                                <el-input v-model="search.avitivityName" style="width: 120px;" placeholder="按活动搜索"></el-input>
+                            </el-form-item>
 
-                        <el-form-item>
-                            <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
+                            <el-form-item>
+                                <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-col>
+                </el-row>
             </el-col>
+
+        </el-row>
+        <el-row>
+            <el-col :span="20">&nbsp;</el-col>
             <el-col :span="4">
-                <div class="grid-content bg-purple">
-                    <el-button v-if="activeName=='info'" type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
-                </div>
+                <export-excel v-if="activeName=='info'"  url="/export/volunteer" :params="search"></export-excel>
+
+                <el-button v-if="activeName=='info'" type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
             </el-col>
         </el-row>
         <template>
@@ -219,11 +225,12 @@
     import Editor from '../common/Editor'
     import SingleImageUpload from '../common/SingleImageUpload'
     import { isValidPhone } from '../../util/validate'
+    import ExportExcel from '../common/ExportExcel'
 
     export default {
         name: "Approval",
         components: {
-            Editor,SingleImageUpload
+            Editor,SingleImageUpload,ExportExcel
         },
         data () {
             return {

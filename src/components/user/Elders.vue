@@ -1,43 +1,50 @@
 <template>
     <div>
-        <section class="">
-            <el-form :inline="true" :model="search" size="mini" class="">
-                <el-form-item label="" prop="name">
-                    <el-input v-model="search.name" style="width: 120px;" placeholder="姓名搜索"></el-input>
-                </el-form-item>
+        <el-row class="">
 
-                <el-form-item label="" prop="mobile">
-                    <el-input v-model="search.mobile" style="width: 120px;" placeholder="手机号搜索"></el-input>
-                </el-form-item>
-                <el-form-item label="" prop="timeStart">
-                    <el-date-picker
-                            v-model="search.timeStart"
-                            align="left"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            type="date"
-                            placeholder="开始日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>至</el-form-item>
-                <el-form-item label="" prop="timeEnd">
-                    <el-date-picker
-                            v-model="search.timeEnd"
-                            align="left"
-                            format="yyyy-MM-dd"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            type="date"
-                            placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
-                </el-form-item>
-            </el-form>
-        </section>
-        <section class="header-bar">
-        <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
-        </section>
+            <el-col :span="20">
+                <el-form :inline="true" :model="search" size="mini" class="">
+                    <el-form-item label="" prop="name">
+                        <el-input v-model="search.name" style="width: 120px;" placeholder="姓名搜索"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="" prop="mobile">
+                        <el-input v-model="search.mobile" style="width: 120px;" placeholder="手机号搜索"></el-input>
+                    </el-form-item>
+                    <el-form-item label="" prop="timeStart">
+                        <el-date-picker
+                                v-model="search.timeStart"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>至</el-form-item>
+                    <el-form-item label="" prop="timeEnd">
+                        <el-date-picker
+                                v-model="search.timeEnd"
+                                align="left"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+            <el-col :span="4">
+                <div class="grid-content bg-purple" style="float: left;">
+                    <export-excel url="/export/oldMan" :params="search"></export-excel>
+                    <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
+                </div>
+            </el-col>
+        </el-row>
+
         <template>
             <div>
                 <el-table
@@ -247,11 +254,12 @@
     import { lazyAMapApiLoaderInstance } from 'vue-amap';
     import { isValidPhone } from '../../util/validate'
     import { checkNumber } from '../../util/validate'
+    import ExportExcel from '../common/ExportExcel'
 
     export default {
         name: "Elders",
         components: {
-            Editor, SingleImageUpload, Amap, lazyAMapApiLoaderInstance
+            Editor, SingleImageUpload, Amap, lazyAMapApiLoaderInstance, ExportExcel
         },
 
         computed : {

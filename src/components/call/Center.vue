@@ -11,37 +11,43 @@
                 </div>
             </el-col>
         </el-row>
-        <section class="" v-if="activeName != 'customerService'">
-            <el-form :model="searchForm" size="mini" :inline="true">
-                <el-input v-model="searchForm.mobile" style="width: 120px" size="mini" placeholder="老人手机号"></el-input>
-                <el-input v-model="searchForm.name" style="width: 120px" size="mini" placeholder="老人姓名"></el-input>
-                <el-form-item label="" prop="timeStart">
-                    <el-date-picker
-                        v-model="searchForm.timeStart"
-                        align="left"
-                        size="mini"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        type="date"
-                        placeholder="开始日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item>至</el-form-item>
-                <el-form-item label="" prop="timeEnd">
-                    <el-date-picker
-                        v-model="searchForm.timeEnd"
-                        align="left"
-                        size="mini"
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        type="date"
-                        placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
+        <el-row class="" v-if="activeName != 'customerService'">
+            <el-col :span="22">
+                <el-form :model="searchForm" size="mini" :inline="true">
+                    <el-input v-model="searchForm.mobile" style="width: 120px" size="mini" placeholder="老人手机号"></el-input>
+                    <el-input v-model="searchForm.name" style="width: 120px" size="mini" placeholder="老人姓名"></el-input>
+                    <el-form-item label="" prop="timeStart">
+                        <el-date-picker
+                                v-model="searchForm.timeStart"
+                                align="left"
+                                size="mini"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="开始日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item>至</el-form-item>
+                    <el-form-item label="" prop="timeEnd">
+                        <el-date-picker
+                                v-model="searchForm.timeEnd"
+                                align="left"
+                                size="mini"
+                                format="yyyy-MM-dd"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="date"
+                                placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
 
-                <el-button type="primary" @click="searchList" size="mini">搜索</el-button>
-            </el-form>
-        </section>
+                    <el-button type="primary" @click="searchList" size="mini">搜索</el-button>
+                </el-form>
+            </el-col>
+            <el-col :span="2">
+                <export-excel v-if="activeName=='historyReception'" url="/export/receptionList" :params="search"></export-excel>
+                <export-excel v-if="activeName=='historyWorkOrder'" url="/export/workOrder" :params="search"></export-excel>
+            </el-col>
+        </el-row>
         <section class="" v-if="activeName=='customerService'">
             <el-row type="flex" justify="center">
                     <el-col :span="6" v-for="o in firstTab.list" :key="o.title" :class="o.bg + ' item-col'">
@@ -102,9 +108,6 @@
                     </div>
                 </el-col>
                 <el-col :span="4">&nbsp;</el-col>
-
-
-
 
             </el-row>
 
@@ -493,9 +496,13 @@
 </template>
 
 <script>
+    import ExportExcel from '../common/ExportExcel'
+
     export default {
         name: "Center",
-
+        components: {
+            ExportExcel
+        },
         computed: {
             genderFormatter() {
                 return this.commonOrder.sex == 1 ? '男': '女';
