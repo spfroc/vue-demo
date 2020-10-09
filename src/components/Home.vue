@@ -95,10 +95,13 @@ export default {
   -webkit-background-size: cover;
   -o-background-size: cover;
   background-position: center 0;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
 }
 
 .box:not(:first-child) {
-  margin-left: 57px;
+  margin-left: 65px;
 }
 
 </style>
