@@ -1,24 +1,22 @@
 <template>
     <div>
-        <el-row>
+        <el-row type="flex" style="width: 93%;">
             <el-col :span="4" v-for="o in summary" :key="o.title" :class="'item '+ o.bg">
                 <div class="card-title">{{o.title}}</div>
                 <div class="text card-value">
                     <strong>{{o.value}}</strong><span style="font-size: 22px;">{{o.unit}}</span>
                 </div>
             </el-col>
-
         </el-row>
-        <el-row style="margin-top:20px;">
-            <el-col :span="14" style="border: 1px solid lightgrey">
+        <el-row style="margin-top:40px;">
+            <el-col :span="14" style="box-shadow: gray 0px 0px 10px;">
                 <section id="sos" style="width: 100%;height:300px;" class="box-card"></section>
             </el-col>
-            <el-col :span="8" style="border: 1px solid lightgrey;height: 302px;margin-left: 20px">
-                <section class="chart-title" style="font-size: 18px; font-weight: bold; color: #3a3a3a;">自2020-09-26来累计数据</section>
+            <el-col :span="8" style="box-shadow: gray 0px 0px 10px;height: 302px;margin-left: 20px">
+                <section class="chart-title" style="font-size: 18px; font-weight: bold; color: #3a3a3a;margin-top: 10px;">自2020-09-26来累计数据</section>
 
                 <el-row>
                     <el-col :span="12">
-                        <!--<section id="cumulative-number-of-calls-received" style="width: 100%;height:200px;">累计接听电话数</section>-->
                         <section style="width: 100%;height:150px;">
                             <div class="changed">
                                 <div style="color: #fda047;font-size: 25px;font-weight: bold;">{{callNumbers.phoneTime || 191}}</div>
@@ -27,7 +25,6 @@
                         </section>
                     </el-col>
                     <el-col :span="12">
-                        <!--<section id="cumulative-call-time" style="width: 100%;height:200px;">累计接听电话时长</section>-->
                         <section style="width: 100%;height:150px;">
                             <div class="changed">
                                 <div style="color: #fc56b8;font-size: 25px;font-weight: bold;">{{callNumbers.dispatchNum || 191}}</div>
@@ -40,7 +37,6 @@
                 </el-row>
                 <el-row>
                     <el-col :span="12">
-                        <!--<section id="cumulative-dispatched-order-number" style="width: 100%;height:200px;">累计派单数</section>-->
                         <section style="width: 100%;height:150px;">
                             <div class="changed">
                                 <div style="color: #46b7ff;font-size: 25px;font-weight: bold;">{{callNumbers.workOrderNum || 191}}</div>
@@ -51,7 +47,6 @@
 
                     </el-col>
                     <el-col :span="12">
-                        <!--<section id="cumulative-number-of-completed-work" style="width: 100%;height:200px;">累计完成工单数</section>-->
                         <section style="width: 100%;height:150px;">
                             <div class="changed">
                                 <div style="color: #c447ff;font-size: 25px;font-weight: bold;">{{callNumbers.pickUpPhoneNum || 191}}</div>
@@ -62,33 +57,32 @@
 
                     </el-col>
                 </el-row>
-                <!--<section id="summary" style="width: 600px;height:400px;"></section>-->
 
             </el-col>
         </el-row>
 
         <el-row style="margin-top: 20px;">
-            <el-col :span="11" style="border: 1px solid lightgrey">
-                <section id="worker-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px">驿工平均接单时间</section>
+            <el-col :span="11" style="box-shadow: gray 0px 0px 10px;">
+                <section id="worker-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px"></section>
             </el-col>
-            <el-col :span="11" style="border: 1px solid lightgrey;margin-left: 20px">
-                <section id="doctor-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px">医生平均接单时间</section>
+            <el-col :span="11" style="box-shadow: gray 0px 0px 10px;;margin-left: 20px">
+                <section id="doctor-average" style="width: 100%;height:400px;padding:20px 0px 20px 0px"></section>
             </el-col>
         </el-row>
 
         <el-row style="margin-top: 20px;">
-            <el-col :span="7" style="border: 1px solid lightgrey">
+            <el-col :span="7" style="box-shadow: gray 0px 0px 10px;">
                 <section id="order-rate" style="width: 100%;height:300px;padding:20px 0px 20px 0px">工单占比</section>
             </el-col>
-            <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 10px">
+            <el-col :span="8" style="box-shadow: gray 0px 0px 10px;;margin-left: 10px">
                 <section id="monthly-total-reception" style="width: 100%;height:300px;padding:20px 0px 20px 0px">本月接待总计</section>
             </el-col>
-            <el-col :span="7" style="border: 1px solid lightgrey;margin-left: 10px">
+            <el-col :span="7" style="box-shadow: gray 0px 0px 10px;;margin-left: 10px">
                 <section id="weekly-service-summary" style="width: 100%;height:300px;padding:20px 0px 20px 0px">本周服务汇总</section>
             </el-col>
         </el-row>
         <el-row style="margin-top: 20px;">
-            <el-col :span="14" style="border: 1px solid lightgrey">
+            <el-col :span="14" style="box-shadow: gray 0px 0px 10px;">
                 <section style="padding:20px 0px 20px 0px; font-size: 18px; font-weight: bold; color: #3a3a3a;margin-left: 10px;">魏善庄镇行政地图</section>
                 <a-map
                         :width="100"
@@ -96,11 +90,8 @@
                         :lat="39.663952"
                         :height="376"></a-map>
             </el-col>
-            <el-col :span="8" style="border: 1px solid lightgrey;margin-left: 20px;">
-                <!--<section id="data-statistics" style="width: 100%;height:400px;padding:20px 0px 20px 0px">数据统计</section>-->
+            <el-col :span="8" style="box-shadow: gray 0px 0px 10px;margin-left: 20px;">
                 <section style="width: 100%;height:400px;padding:20px 0px 20px 0px;" id="statistic-container">
-                    <!--['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],-->
-                    <!--<progress></progress>-->
                         <div style="text-align: center; font-size: 18px; font-weight: bold; color: #3a3a3a;">数据统计</div>
                         <el-row :style="dataStatistic">
                             <el-col :span="3">
@@ -167,8 +158,6 @@
                                 ></custom-progress>
                             </el-col>
                         </el-row>
-
-
                 </section>
             </el-col>
         </el-row>
@@ -180,11 +169,13 @@
     import Echart from 'echarts'
     import AMap from '../common/Map'
     import CustomProgress from '../common/CustomProgress'
-    import HighCharts from 'highcharts'
+    import HighCharts from 'highcharts/highstock'
+    import Highcharts3D from 'highcharts/highcharts-3d';
+
     export default {
         name: "Chart",
         components: {
-            Echart, AMap, CustomProgress, HighCharts
+            Echart, AMap, CustomProgress, HighCharts, Highcharts3D
         },
         data() {
             return {
@@ -264,7 +255,9 @@
 
                 sosData: {
                     title: {
-                        text: 'SOS报警接听数变化图'
+                        text: 'SOS报警接听数变化图',
+                        x: 10,
+                        y: 5,
                     },
 
                     xAxis: {
@@ -331,136 +324,134 @@
                 }).then(res => {
                     this.sosData.series[0].data = res.data.data.value;
                     let option = {
-                        title: this.sosData.title,
-                        tooltip: {},
-                        xAxis: xAxis,
-                        yAxis: {},
-                        series: this.sosData.series,
-                        // series: [],
-                        toolbox: {
-                            // padding:30,
-                            show : true,
-                            orient: 'horizontal',
-                            itemSize: 25,
-                            itemGap: 20,
-                            width: 300,
-                            feature: {
-                                myDay: {
-                                    show: true,
-                                    title: '本日',
-                                    icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAABXCAMAAABlYbrOAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
-                                        "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
-                                        "2//bkDoAAAA6kNv/tmZmtv8AADo6ZmZmZmZmZjo6AAAAAGa2/////7ZmAAD//9vb29u2kDo6kLbb" +
-                                        "//+2ZgAAZrbb27aQZjq229sAOpD/25CQkDo6kJCQ2/+QOgAAOjo6Ojo6OgBmtts6ZrbbtmaQttu2" +
-                                        "Zjo6ZpAAOmZmOgBmkLY6OpCQtra2tpBmZpCQZmZzfPo2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
-                                        "xAAADsQBlSsOGwAAAAd0SU1FB+QIFAA5BkntULIAAALtSURBVHja7ZrZVtswEEBtghzjtgRwSlwK" +
-                                        "6Q6FQtf//7fGkqwt2lJzOjM+nqcsTnRv7BlLoxTFtKJEH7Tpow7QWGMVoJnGKkADjTSImCGLACkV" +
-                                        "/BAsJXwfLzV+l5gev8M8jv9osYtjIINn4C9YtYvlfxcwsKch8O9fBCWguMdmMKxAOfoEHCRQVwfE" +
-                                        "SZbBLDAL0BNoXrxMxKtT1AKrs9Rh5xfPLtCug/G6H+wy/P4GhUB3yMVrx5tZYBaYgsDVIhBvB87L" +
-                                        "0BHXKATiQ/Vxs8k4HJ8A05dKcjyMAttTLZBzCtAJWLmdcTfGJtDzrN71g73fDdl8oCbAx1mKuRBz" +
-                                        "CiYJgY7TCAE+ZnJIXAK1GEXORlkOGioBPsqu9EiB9mPGRYRJgAP3eTusB+qMSoRJQK1j1IOuSlYi" +
-                                        "RAIaRQnwu1qcTqyJP31OxJe8W/sYga1eteolJatSaYBmUS/OsWDVAjwtommARUCQysmPsajfproJ" +
-                                        "WAT4FGjIV7Mrwcw38AqIOfTSfDY86eIGOKqQ+BlVsloCYujVceyj0AKCX8/+7caWeDfEiEFAJKpx" +
-                                        "lTidORYzQCAg12DGl7utRbHI8V9F8AKS36z1roCosf5MBheQ/Nbddq+5KzsVPgNogdrD7+lOH8le" +
-                                        "yy02AcnvtB887fWhWXHnNipgBb5WPn7v/sBgcOOkMqiA7GHtDe/d4BgMmnssAu1DgD+wQ6NaXnc4" +
-                                        "NjhkbeTlvbZXH+LGZr30bWMYPBrVCE7gSfNnTCl5mgy1qDFA4ATkj3mmKNICxfmTyw8o8KD5swWK" +
-                                        "tnMxAJOY6fq5tTd1+e/8aL30faM+Zd/MIMso+xFon0f3idf2U+ipxOECTkxDoPm5SMQv3H81yI1Z" +
-                                        "YBaYqsDqep2IK9xViHwZnQUABfg06ndyS7/90x+X3HY2BUYYAP173QAfewqgQnFPQ4CegYFN0sCE" +
-                                        "Lgka2Mz0DFxiagZ7vGVJScEHW9JRCKGW1CJiRiKi5wZ/JC8v5GFC/wUisGlCS1mpjwAAACV0RVh0" +
-                                        "ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNjo1NzowNiswODowMFflKq8AAAAldEVYdGRhdGU6bW9k" +
-                                        "aWZ5ADIwMjAtMDgtMTlUMTY6NTc6MDYrMDg6MDAmuJITAAAAIHRFWHRzb2Z0d2FyZQBodHRwczov" +
-                                        "L2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8A" +
-                                        "AAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADg3u2rVsAAAABd0RVh0VGh1bWI6OkltYWdlOjpX" +
-                                        "aWR0aAAxOTLTrCEIAAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0" +
-                                        "VGh1bWI6Ok1UaW1lADE1OTc4Mjc0MjY2cuDcAAAAEnRFWHRUaHVtYjo6U2l6ZQAxNzU5QkJbBd7g" +
-                                        "AAAARXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBwL3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5" +
-                                        "NjU0ODQ2MDEyNTQwODdfNl9bMF2hHQjUAAAAAElFTkSuQmCC",
-                                    onclick: () => {
-                                        this.switchSos(1);
+                            title: this.sosData.title,
+                            tooltip: {},
+                            xAxis: xAxis,
+                            yAxis: {},
+                            series: this.sosData.series,
+                            toolbox: {
+                                show : true,
+                                orient: 'horizontal',
+                                itemSize: 25,
+                                itemGap: 20,
+                                width: 300,
+                                feature: {
+                                    myDay: {
+                                        show: true,
+                                        title: '本日',
+                                        icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAABXCAMAAABlYbrOAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                            "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
+                                            "2//bkDoAAAA6kNv/tmZmtv8AADo6ZmZmZmZmZjo6AAAAAGa2/////7ZmAAD//9vb29u2kDo6kLbb" +
+                                            "//+2ZgAAZrbb27aQZjq229sAOpD/25CQkDo6kJCQ2/+QOgAAOjo6Ojo6OgBmtts6ZrbbtmaQttu2" +
+                                            "Zjo6ZpAAOmZmOgBmkLY6OpCQtra2tpBmZpCQZmZzfPo2AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
+                                            "xAAADsQBlSsOGwAAAAd0SU1FB+QIFAA5BkntULIAAALtSURBVHja7ZrZVtswEEBtghzjtgRwSlwK" +
+                                            "6Q6FQtf//7fGkqwt2lJzOjM+nqcsTnRv7BlLoxTFtKJEH7Tpow7QWGMVoJnGKkADjTSImCGLACkV" +
+                                            "/BAsJXwfLzV+l5gev8M8jv9osYtjIINn4C9YtYvlfxcwsKch8O9fBCWguMdmMKxAOfoEHCRQVwfE" +
+                                            "SZbBLDAL0BNoXrxMxKtT1AKrs9Rh5xfPLtCug/G6H+wy/P4GhUB3yMVrx5tZYBaYgsDVIhBvB87L" +
+                                            "0BHXKATiQ/Vxs8k4HJ8A05dKcjyMAttTLZBzCtAJWLmdcTfGJtDzrN71g73fDdl8oCbAx1mKuRBz" +
+                                            "CiYJgY7TCAE+ZnJIXAK1GEXORlkOGioBPsqu9EiB9mPGRYRJgAP3eTusB+qMSoRJQK1j1IOuSlYi" +
+                                            "RAIaRQnwu1qcTqyJP31OxJe8W/sYga1eteolJatSaYBmUS/OsWDVAjwtommARUCQysmPsajfproJ" +
+                                            "WAT4FGjIV7Mrwcw38AqIOfTSfDY86eIGOKqQ+BlVsloCYujVceyj0AKCX8/+7caWeDfEiEFAJKpx" +
+                                            "lTidORYzQCAg12DGl7utRbHI8V9F8AKS36z1roCosf5MBheQ/Nbddq+5KzsVPgNogdrD7+lOH8le" +
+                                            "yy02AcnvtB887fWhWXHnNipgBb5WPn7v/sBgcOOkMqiA7GHtDe/d4BgMmnssAu1DgD+wQ6NaXnc4" +
+                                            "NjhkbeTlvbZXH+LGZr30bWMYPBrVCE7gSfNnTCl5mgy1qDFA4ATkj3mmKNICxfmTyw8o8KD5swWK" +
+                                            "tnMxAJOY6fq5tTd1+e/8aL30faM+Zd/MIMso+xFon0f3idf2U+ipxOECTkxDoPm5SMQv3H81yI1Z" +
+                                            "YBaYqsDqep2IK9xViHwZnQUABfg06ndyS7/90x+X3HY2BUYYAP173QAfewqgQnFPQ4CegYFN0sCE" +
+                                            "Lgka2Mz0DFxiagZ7vGVJScEHW9JRCKGW1CJiRiKi5wZ/JC8v5GFC/wUisGlCS1mpjwAAACV0RVh0" +
+                                            "ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNjo1NzowNiswODowMFflKq8AAAAldEVYdGRhdGU6bW9k" +
+                                            "aWZ5ADIwMjAtMDgtMTlUMTY6NTc6MDYrMDg6MDAmuJITAAAAIHRFWHRzb2Z0d2FyZQBodHRwczov" +
+                                            "L2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRodW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8A" +
+                                            "AAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADg3u2rVsAAAABd0RVh0VGh1bWI6OkltYWdlOjpX" +
+                                            "aWR0aAAxOTLTrCEIAAAAGXRFWHRUaHVtYjo6TWltZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0" +
+                                            "VGh1bWI6Ok1UaW1lADE1OTc4Mjc0MjY2cuDcAAAAEnRFWHRUaHVtYjo6U2l6ZQAxNzU5QkJbBd7g" +
+                                            "AAAARXRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBwL3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5" +
+                                            "NjU0ODQ2MDEyNTQwODdfNl9bMF2hHQjUAAAAAElFTkSuQmCC",
+                                        onclick: () => {
+                                            this.switchSos(1);
+                                        },
                                     },
-                                },
-                                myWeek: {
-                                    show: true,
-                                    title: '本周',
-                                    // icon: "image://http://localhost:9090/images/app/2020/08/19/f386368441174732a7c88f6489c00e13.svg",
-                                    icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
-                                        "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
-                                        "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
-                                        "ZgDb27aQZjpmtv/btpDb2/8AAGaQkDo6kJAAADqQ2/+2//+QOgD/29u2kGa2tts6Ojo6ZpBmtts6" +
-                                        "ZrbbtmaQttu2ZjoAOmZmOgA6OpCQtra2tpDbtrbhtsv4AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
-                                        "wwAADsMBx2+oZAAAAAd0SU1FB+QIExc4AD0rSYoAAAOuSURBVHja7Zt9X9sgEMeTKrHbUo3W2U3t" +
-                                        "rE636ba6h/f/3pZwQA4CCUsNcH56f/lpk/D7Fu6BC2bZ67M8eaOuf4AitrDdIWKr2h0itqSdGXrp" +
-                                        "kjKnUioAbrGUAOx6qRF0FdMj6GgmSGCIJkmgyx6LMDuo7TAdhBHPYEVtR9EQkO7R6ygJhFyHmQph" +
-                                        "/maEvX3nxxAGoSxG2GKPsEd4pQgekqQdn5BBqJrceEoaYX5Wf76cHKE6d9r7RtmF+3ulITLCaowr" +
-                                        "gilxe4Q9wksjDKQIuOiFET4cOOyjHPbCdYUKl5ERXMaHQcP2WaIIrB33kiYC90TfacDujBPHFXdn" +
-                                        "/Ml1Fg5B8/KhDB05IrlFrT81ym7q4Ta39BD4GEdQIzG7jNQRmmW0vgMEPl6/RyeIUEIcEpUq4zy0" +
-                                        "EOQIAqH6PLSUJMK9kfseGoSF8eGXAAhccuPBcr9QDkWlUpQbXhvQWvrkCGqno/5YFf1RKTUEroOv" +
-                                        "fYXA13SPOySGAGn5UpsO+MvtDgrhq4d9mxoBqjtQ2yJw93C7Q9lPaB9kKgTQKp6Otv9oblJH4KWR" +
-                                        "9FzcwWD4i5QRmFbVaU2YVQ9DQggQUZQWDQGcZH3ovC8JhNLYHeitMPjWGlo1BLzTMExeMhkCjI3W" +
-                                        "itHNY04GLX1HRBBDo6hjNiRhG2RZSywNBDEyjv0mAkRci0+ngSAG1nyy0xYWXY0OQxdhafZfr86m" +
-                                        "RigtBJbO9kx0Zh71u1d4Bdo3CfOpEQSB8VRLc16ukiftygQQvhc2Auv7BcmwQE6tNhjxEETXqxMu" +
-                                        "ra9IJMPmRzoI1U8HgeMtj4o4ajFxRer28AgiUvJwb9T7kOrMYr9l2N4ieUpRcITZc0vgsevi48q4" +
-                                        "tBEerJdIoRHkHGzvlJZhhOz4GRNAQFILbm5rW0AzY5pZAE8AAm+ErFqhKAo/gypMImRn1j7NONHC" +
-                                        "f+ut/fgKa9Mb19xm7BgFBvvleFjve+dz/bJWUMxi+/8QlEHh1F5GEIE7EKr8XI1UkzodBK3n4Ymg" +
-                                        "J5LoCBDF0FUeCL4nZ8IgwCTg4mQYYXZSDFIGRGCFl8NUD3VE/s2T3B/xQtvjiE0QBAg//S9QECoy" +
-                                        "j3vCIJgR1WmdxO9zzinMQmqmwedIm5ktlj7H4HSEyU4Llx6nAzJ8HoKnkUePW7DwSREy9uT1sL+o" +
-                                        "bL32Gx/pHosQ+eR8B4H2/y/QZNBF5wQZTM30GLqKqTFY9OY5JQi72JwOhFtqTs166UjYwAylbx7L" +
-                                        "LHHDov8ByWiBDKpBO64AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDgtMTlUMTU6NTY6MDArMDg6" +
-                                        "MDBmPRhlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA4LTE5VDE1OjU2OjAwKzA4OjAwF2Cg2QAA" +
-                                        "ACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6" +
-                                        "RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA4N7tq1bAA" +
-                                        "AAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTk0Os+EPQAAABl0RVh0VGh1bWI6Ok1pbWV0eXBl" +
-                                        "AGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNTk3ODIzNzYwNlmp4wAAABJ0RVh0" +
-                                        "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
-                                        "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
-                                        "YII=",
-                                    onclick: () => {
-                                        this.switchSos(2);
-                                    }
+                                    myWeek: {
+                                        show: true,
+                                        title: '本周',
+                                        // icon: "image://http://localhost:9090/images/app/2020/08/19/f386368441174732a7c88f6489c00e13.svg",
+                                        icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMIAAABXCAMAAABhlGrzAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                            "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAnFBMVEX///9/f3//27a2tra2" +
+                                            "2//bkDoAAAA6kNv/25BmZmZmkLbb////tmYAOpD//7ZmAAD//9u229s6AAAAZrbb29u2kDo6kLa2" +
+                                            "ZgDb27aQZjpmtv/btpDb2/8AAGaQkDo6kJAAADqQ2/+2//+QOgD/29u2kGa2tts6Ojo6ZpBmtts6" +
+                                            "ZrbbtmaQttu2ZjoAOmZmOgA6OpCQtra2tpDbtrbhtsv4AAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAO" +
+                                            "wwAADsMBx2+oZAAAAAd0SU1FB+QIExc4AD0rSYoAAAOuSURBVHja7Zt9X9sgEMeTKrHbUo3W2U3t" +
+                                            "rE636ba6h/f/3pZwQA4CCUsNcH56f/lpk/D7Fu6BC2bZ67M8eaOuf4AitrDdIWKr2h0itqSdGXrp" +
+                                            "kjKnUioAbrGUAOx6qRF0FdMj6GgmSGCIJkmgyx6LMDuo7TAdhBHPYEVtR9EQkO7R6ygJhFyHmQph" +
+                                            "/maEvX3nxxAGoSxG2GKPsEd4pQgekqQdn5BBqJrceEoaYX5Wf76cHKE6d9r7RtmF+3ulITLCaowr" +
+                                            "gilxe4Q9wksjDKQIuOiFET4cOOyjHPbCdYUKl5ERXMaHQcP2WaIIrB33kiYC90TfacDujBPHFXdn" +
+                                            "/Ml1Fg5B8/KhDB05IrlFrT81ym7q4Ta39BD4GEdQIzG7jNQRmmW0vgMEPl6/RyeIUEIcEpUq4zy0" +
+                                            "EOQIAqH6PLSUJMK9kfseGoSF8eGXAAhccuPBcr9QDkWlUpQbXhvQWvrkCGqno/5YFf1RKTUEroOv" +
+                                            "fYXA13SPOySGAGn5UpsO+MvtDgrhq4d9mxoBqjtQ2yJw93C7Q9lPaB9kKgTQKp6Otv9oblJH4KWR" +
+                                            "9FzcwWD4i5QRmFbVaU2YVQ9DQggQUZQWDQGcZH3ovC8JhNLYHeitMPjWGlo1BLzTMExeMhkCjI3W" +
+                                            "itHNY04GLX1HRBBDo6hjNiRhG2RZSywNBDEyjv0mAkRci0+ngSAG1nyy0xYWXY0OQxdhafZfr86m" +
+                                            "RigtBJbO9kx0Zh71u1d4Bdo3CfOpEQSB8VRLc16ukiftygQQvhc2Auv7BcmwQE6tNhjxEETXqxMu" +
+                                            "ra9IJMPmRzoI1U8HgeMtj4o4ajFxRer28AgiUvJwb9T7kOrMYr9l2N4ieUpRcITZc0vgsevi48q4" +
+                                            "tBEerJdIoRHkHGzvlJZhhOz4GRNAQFILbm5rW0AzY5pZAE8AAm+ErFqhKAo/gypMImRn1j7NONHC" +
+                                            "f+ut/fgKa9Mb19xm7BgFBvvleFjve+dz/bJWUMxi+/8QlEHh1F5GEIE7EKr8XI1UkzodBK3n4Ymg" +
+                                            "J5LoCBDF0FUeCL4nZ8IgwCTg4mQYYXZSDFIGRGCFl8NUD3VE/s2T3B/xQtvjiE0QBAg//S9QECoy" +
+                                            "j3vCIJgR1WmdxO9zzinMQmqmwedIm5ktlj7H4HSEyU4Llx6nAzJ8HoKnkUePW7DwSREy9uT1sL+o" +
+                                            "bL32Gx/pHosQ+eR8B4H2/y/QZNBF5wQZTM30GLqKqTFY9OY5JQi72JwOhFtqTs166UjYwAylbx7L" +
+                                            "LHHDov8ByWiBDKpBO64AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjAtMDgtMTlUMTU6NTY6MDArMDg6" +
+                                            "MDBmPRhlAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIwLTA4LTE5VDE1OjU2OjAwKzA4OjAwF2Cg2QAA" +
+                                            "ACB0RVh0c29mdHdhcmUAaHR0cHM6Ly9pbWFnZW1hZ2ljay5vcme8zx2dAAAAGHRFWHRUaHVtYjo6" +
+                                            "RG9jdW1lbnQ6OlBhZ2VzADGn/7svAAAAF3RFWHRUaHVtYjo6SW1hZ2U6OkhlaWdodAA4N7tq1bAA" +
+                                            "AAAXdEVYdFRodW1iOjpJbWFnZTo6V2lkdGgAMTk0Os+EPQAAABl0RVh0VGh1bWI6Ok1pbWV0eXBl" +
+                                            "AGltYWdlL3BuZz+yVk4AAAAXdEVYdFRodW1iOjpNVGltZQAxNTk3ODIzNzYwNlmp4wAAABJ0RVh0" +
+                                            "VGh1bWI6OlNpemUAMTc1MEJCVNTlbwAAAEZ0RVh0VGh1bWI6OlVSSQBmaWxlOi8vL2FwcC90bXAv" +
+                                            "aW1hZ2VsYy9pbWd2aWV3Ml85XzE1OTI1NTg1NDQwNDcxMTk3XzEwX1swXUxNw/IAAAAASUVORK5C" +
+                                            "YII=",
+                                        onclick: () => {
+                                            this.switchSos(2);
+                                        }
 
-                                },
+                                    },
 
-                                myMonth: {
-                                    show: true,
-                                    title: '本月',
-                                    icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMEAAABbCAMAAAD9YRGLAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
-                                        "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAk1BMVEX///9/f3//27a2tra2" +
-                                        "2//bkDoAAAA6kNuQZmZmZmZmkNv/25A6AAAAZrYAAGa229vb29u2kDq2/////9s6kLbb//+2ZgDb" +
-                                        "27aQZjr//7ZmAAAAOpBmtv//tmaQkDo6kJAAADqQ2/86ZmZmOgCQOgA6ZpBmtts6ZrbbtmaQttu2" +
-                                        "Zjo6OjoAOmZmkLY6OpA6OgDb2/+KKFEkAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOwwAADsMBx2+o" +
-                                        "ZAAAAAd0SU1FB+QIExc4AUoseRwAAAODSURBVHja7ZrZdpswEIbBjnDa7HFMkya0tG6Wtk7b93+6" +
-                                        "Yo0ASWiZY47QyIe5SoyN/g9pFo3IsmOznLwlLt8NEVvXaIbYokYzxFY0FsHFRstsSlPRbxWbkn6j" +
-                                        "3tQABorTA9A1Jwigik4SQJF9JASx9RyKoLEcZItlYyexCPJs/BSworFVBIJsJjiMYHH6AWkfiRKc" +
-                                        "nRdIu5gJZoLjJri8unbaDX2CW8QtZwLN1p4pv7Nf39AgKLH+5/PImWAmSJjg09Ji963QO9s3rmgQ" +
-                                        "2Ozhc0vwuEH9gBwB61fLU5IEcpWDmwRqBIqDo/Iyscqu2j/PL/vhvjb+UH9LjoC78QrqIoYakxpB" +
-                                        "yZc0EHAahDOTIqggAonalCE8tCWov7s3+dtpCPhTbwKQIFj/QI1KKBZxxXvnbfcHFSoeESLoNjbd" +
-                                        "H2WBiEd0CPgT50o6ApQ4MgQQUp664VbYgakQQEF30Q/HCbhreFyBE/gKkPAEIFXokHb60swQJ+Dl" +
-                                        "UOu0cq+CFT5vrjBFYHACphRySrel9CFUGHGhCSo16SsE4CCXJ+4fRyYAgH4hqB0vuGoPNihxYQnA" +
-                                        "W6WFovXsmBuBX35euu0+JIGoLaV4o3cdy8K1kEpsaRqKQADIMV8ngFBrcWdxMR6BAFBuPuj8iv6F" +
-                                        "ESE2QWUAMPSuF6IF8zK8Q9+diUIgALR8ZOi+txux10HmQh2ABDsBeStMAMbzgxbhUfdnVEoOFU1F" +
-                                        "c2sQJ40nIC1C/fMQbUEI1r8sAJYznG5Hr6wkTPUaiKCNIfswX/1WDDKc8tHzRkLYSTEJHNnb0ghA" +
-                                        "sNj2AKJwcBlf6G1EqiXB/c5uagIxA7vbToafIHvY6gCQkf0N1gAE4AUAgCbI1qW2ZGAR+furQTyZ" +
-                                        "9c/uzNCe2ikfvW+6X71oN0G1V8NEU/bHMvnO8+Rr+R9lczo9gXs4VOcdlh/iq1QJYAoQvVWyBAxZ" +
-                                        "sGHz3uQEEIgwxySQDOkRlNgpEKnQfxgxMYF7/8yaWkSE4r9FgfSXaQkM21PZhlkSMasKwQgEFIHY" +
-                                        "m1lzweBwCjsF/WvLgQnezt1urO8+d4jXoHvdUxDAQ7Z/S+0A1O+Y03WN4HAEpCc3laqrnpBfPfmH" +
-                                        "GleWPQ4B++77+hSRjfGmiM7HOnME0zSnhzBQnBrCUG+ep8RgFJunw2CVmqdmLrYkzD099M2/xIgb" +
-                                        "zk+oWuxIMtsx2n/EN2tXjljI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNTo1Njow" +
-                                        "MSswODowMMBKE9EAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDgtMTlUMTU6NTY6MDErMDg6MDCx" +
-                                        "F6ttAAAAIHRFWHRzb2Z0d2FyZQBodHRwczovL2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRo" +
-                                        "dW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADkx" +
-                                        "SxJBxAAAABd0RVh0VGh1bWI6OkltYWdlOjpXaWR0aAAxOTOkqxGeAAAAGXRFWHRUaHVtYjo6TWlt" +
-                                        "ZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADE1OTc4MjM3NjFBXpl1AAAA" +
-                                        "EnRFWHRUaHVtYjo6U2l6ZQAxNjk1QkIlqbGMAAAARnRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBw" +
-                                        "L3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5NTQxMTQxMzgwNzI4NDJfOTRfWzBdATOGWQAAAABJ" +
-                                        "RU5ErkJggg==",
-                                    // onclick: this.switchSos('month')
-                                    onclick: () => {
-                                        this.switchSos(3);
-                                    }
-                                },
+                                    myMonth: {
+                                        show: true,
+                                        title: '本月',
+                                        icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMEAAABbCAMAAAD9YRGLAAAABGdBTUEAALGPC/xhBQAAACBjSFJN" +
+                                            "AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAk1BMVEX///9/f3//27a2tra2" +
+                                            "2//bkDoAAAA6kNuQZmZmZmZmkNv/25A6AAAAZrYAAGa229vb29u2kDq2/////9s6kLbb//+2ZgDb" +
+                                            "27aQZjr//7ZmAAAAOpBmtv//tmaQkDo6kJAAADqQ2/86ZmZmOgCQOgA6ZpBmtts6ZrbbtmaQttu2" +
+                                            "Zjo6OjoAOmZmkLY6OpA6OgDb2/+KKFEkAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAOwwAADsMBx2+o" +
+                                            "ZAAAAAd0SU1FB+QIExc4AUoseRwAAAODSURBVHja7ZrZdpswEIbBjnDa7HFMkya0tG6Wtk7b93+6" +
+                                            "Yo0ASWiZY47QyIe5SoyN/g9pFo3IsmOznLwlLt8NEVvXaIbYokYzxFY0FsHFRstsSlPRbxWbkn6j" +
+                                            "3tQABorTA9A1Jwigik4SQJF9JASx9RyKoLEcZItlYyexCPJs/BSworFVBIJsJjiMYHH6AWkfiRKc" +
+                                            "nRdIu5gJZoLjJri8unbaDX2CW8QtZwLN1p4pv7Nf39AgKLH+5/PImWAmSJjg09Ji963QO9s3rmgQ" +
+                                            "2Ozhc0vwuEH9gBwB61fLU5IEcpWDmwRqBIqDo/Iyscqu2j/PL/vhvjb+UH9LjoC78QrqIoYakxpB" +
+                                            "yZc0EHAahDOTIqggAonalCE8tCWov7s3+dtpCPhTbwKQIFj/QI1KKBZxxXvnbfcHFSoeESLoNjbd" +
+                                            "H2WBiEd0CPgT50o6ApQ4MgQQUp664VbYgakQQEF30Q/HCbhreFyBE/gKkPAEIFXokHb60swQJ+Dl" +
+                                            "UOu0cq+CFT5vrjBFYHACphRySrel9CFUGHGhCSo16SsE4CCXJ+4fRyYAgH4hqB0vuGoPNihxYQnA" +
+                                            "W6WFovXsmBuBX35euu0+JIGoLaV4o3cdy8K1kEpsaRqKQADIMV8ngFBrcWdxMR6BAFBuPuj8iv6F" +
+                                            "ESE2QWUAMPSuF6IF8zK8Q9+diUIgALR8ZOi+txux10HmQh2ABDsBeStMAMbzgxbhUfdnVEoOFU1F" +
+                                            "c2sQJ40nIC1C/fMQbUEI1r8sAJYznG5Hr6wkTPUaiKCNIfswX/1WDDKc8tHzRkLYSTEJHNnb0ghA" +
+                                            "sNj2AKJwcBlf6G1EqiXB/c5uagIxA7vbToafIHvY6gCQkf0N1gAE4AUAgCbI1qW2ZGAR+furQTyZ" +
+                                            "9c/uzNCe2ikfvW+6X71oN0G1V8NEU/bHMvnO8+Rr+R9lczo9gXs4VOcdlh/iq1QJYAoQvVWyBAxZ" +
+                                            "sGHz3uQEEIgwxySQDOkRlNgpEKnQfxgxMYF7/8yaWkSE4r9FgfSXaQkM21PZhlkSMasKwQgEFIHY" +
+                                            "m1lzweBwCjsF/WvLgQnezt1urO8+d4jXoHvdUxDAQ7Z/S+0A1O+Y03WN4HAEpCc3laqrnpBfPfmH" +
+                                            "GleWPQ4B++77+hSRjfGmiM7HOnME0zSnhzBQnBrCUG+ep8RgFJunw2CVmqdmLrYkzD099M2/xIgb" +
+                                            "zk+oWuxIMtsx2n/EN2tXjljI5wAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMC0wOC0xOVQxNTo1Njow" +
+                                            "MSswODowMMBKE9EAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjAtMDgtMTlUMTU6NTY6MDErMDg6MDCx" +
+                                            "F6ttAAAAIHRFWHRzb2Z0d2FyZQBodHRwczovL2ltYWdlbWFnaWNrLm9yZ7zPHZ0AAAAYdEVYdFRo" +
+                                            "dW1iOjpEb2N1bWVudDo6UGFnZXMAMaf/uy8AAAAXdEVYdFRodW1iOjpJbWFnZTo6SGVpZ2h0ADkx" +
+                                            "SxJBxAAAABd0RVh0VGh1bWI6OkltYWdlOjpXaWR0aAAxOTOkqxGeAAAAGXRFWHRUaHVtYjo6TWlt" +
+                                            "ZXR5cGUAaW1hZ2UvcG5nP7JWTgAAABd0RVh0VGh1bWI6Ok1UaW1lADE1OTc4MjM3NjFBXpl1AAAA" +
+                                            "EnRFWHRUaHVtYjo6U2l6ZQAxNjk1QkIlqbGMAAAARnRFWHRUaHVtYjo6VVJJAGZpbGU6Ly8vYXBw" +
+                                            "L3RtcC9pbWFnZWxjL2ltZ3ZpZXcyXzlfMTU5NTQxMTQxMzgwNzI4NDJfOTRfWzBdATOGWQAAAABJ" +
+                                            "RU5ErkJggg==",
+                                        // onclick: this.switchSos('month')
+                                        onclick: () => {
+                                            this.switchSos(3);
+                                        }
+                                    },
 
+                                }
                             }
-                        }
                     };
                     this.chartSos.setOption(option);
                 });
@@ -468,8 +459,6 @@
             },
 
             serviceCommon (chart, title, value) {
-                // this.cumulativeNumberOfCallsReceived = Echart.init(document.getElementById('cumulative-number-of-calls-received'));
-                // this.cumulativeNumberOfCallsReceived.hideLoading();
                 let option = {
                     tooltip: {
                         trigger: 'item',
@@ -493,8 +482,6 @@
                                     value: value,
                                     name: title+value,
                                     label: {
-                                        // show: true,
-                                        // position: 'center'
                                     }
                                 },
                             ],
@@ -520,10 +507,6 @@
             getCallNumber() {
                 this.$http.get('/apis/statistic/countCallCenter').then((res) => {
                     this.callNumbers = res.data.data
-                    // this.cumulativeNumberOfCallsReceivedInit();
-                    // this.cumulativeCallTimeInit();
-                    // this.cumulativeDispatchedOrderNumberInit();
-                    // this.cumulativeNumberOfCompletedWorkInit();
                 });
             },
 
@@ -553,7 +536,6 @@
                 this.monthlyTotalReception = Echart.init(document.getElementById('monthly-total-reception'));
                 this.monthlyTotalReception.hideLoading();
                 let total = 234;
-                // let data = [1, 2, 3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
                 let data = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
                 let value = [2,5,3,9,4,7,11]
                 this.$http.get('/apis/statistic/countReception').then(res => {
@@ -636,93 +618,6 @@
 
             },
 
-            //数据统计
-            dataStatisticsInit() {
-                this.dataStatistics = Echart.init(document.getElementById('data-statistics'));
-                this.dataStatistics.hideLoading();
-
-
-                let option = {
-                    title: {
-                        text: '数据统计',
-                        left: 'center',
-                        // backgroundColor: '#255788',
-
-                        textStyle: {
-                            width: '100%'
-                        },
-                        rich: {
-                            width: '100%',
-                            textBorderWidth: '100%',
-                        }
-                    },
-                    backgroundColor: '#244566',
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: '{a} <br/>{b} : {c} ({d}%)'
-                    },
-                    legend: {
-                        left: 'center',
-                        top: 'bottom',
-                        data: ['驿工', '总接待电话数', '老人', '驿站数', '医生', '子女用户数', '总工单数'],
-                        itemGap: 20,
-                        textStyle: {
-                            color: 'white'
-                        }
-                    },
-                    toolbox: {
-                        // show: true,
-                        // feature: {
-                        //     mark: {show: true},
-                        //     dataView: {show: true, readOnly: false},
-                        //     magicType: {
-                        //         show: true,
-                        //         type: ['pie', 'funnel']
-                        //     },
-                        //     restore: {show: true},
-                        //     saveAsImage: {show: true}
-                        // }
-                    },
-                    series: [
-                        {
-                            name: '面积模式',
-                            type: 'pie',
-                            radius: [30, 110],
-                            center: ['50%', '50%'],
-                            roseType: 'area',
-                            data: [
-                                {value: 10, name: '驿工', itemStyle: {
-                                    color: '#1E90FF'
-                                    }},
-                                {value: 5, name: '总接待电话数', itemStyle: {
-                                    color: '#708090'
-                                    }},
-                                {value: 15, name: '老人', itemStyle: {
-                                    color: '#32CD32'
-                                    }},
-                                {value: 25, name: '驿站数', itemStyle: {
-                                    color: '#40E0D0'
-                                }},
-                                {value: 20, name: '医生', itemStyle: {
-                                    color: '#FF4500'
-                                    }},
-                                {value: 35, name: '子女用户数', itemStyle: {
-                                        color: '#4169E1'
-                                    }},
-                                {value: 30, name: '总工单数', itemStyle: {
-                                        color: '#838B8B'
-                                    }},
-                            ]
-                        }
-                    ]
-                };
-
-                this.dataStatistics.setOption(option);
-
-            },
-
-
-
             orderRateInit() {
 
                 let doctorOrderNum = 124;
@@ -730,17 +625,15 @@
                 this.$http.get('/apis/statistic/countWorkOrder').then(res => {
                     serviceOrderNum = res.data.data.serviceOrderNum;
                     doctorOrderNum = res.data.data.doctorOrderNum;
+                    Highcharts3D(HighCharts)
                     let chart = HighCharts.chart({
                         chart: {
                             renderTo: 'order-rate',
-                            title: 'test',
                             type: 'pie',
                             options3d: {
                                 enabled: true,
-                                alpha: 15,
-                                beta: 15,
-                                depth: 50,
-                                viewDistance: 25
+                                alpha: 70,
+                                beta: 0
                             }
                         },
                         title: {
@@ -757,13 +650,11 @@
                         plotOptions: {
                             pie: {
                                 allowPointSelect: false,
-                                // cursor: 'pointer',
                                 dataLabels: {
                                     enabled: false
                                 },
-                                depth: 35,
+                                depth: 60,
                                 showInLegend: true,
-
                                 animation: false,
                             }
                         },
@@ -781,7 +672,6 @@
                             symbolPadding: 1,
                             labelFormatter: function () {
                                 return '<p style="margin-bottom: 10px">' + this.name + '</P>' + '<br />' + '数量: ' + this.y + '<br />' + '占比: ' + this.percentage.toFixed(1) + '%';
-
                             }
                         },
 
@@ -789,7 +679,7 @@
                             name: '工单占比',
                             colorByPoint: true,
                             borderWidth: 0,
-                            center: [110,100],
+                            center: ['50%' ,'40%'],
                             data: [
                                 {
                                     name: '社工工单',
@@ -825,6 +715,7 @@
                     let option = {
                         title: {
                             text: '医生平均接单时间',
+                            x: 10
                         },
                         xAxis: {
                             type: 'category',
@@ -854,17 +745,6 @@
                                     ]
                                 },
                             },
-
-                            // {
-                            //     data: [average, average, average, average, average, average, average],
-                            //     type: 'line',
-                            //     smooth: true,
-                            //     symbol: 'none',
-                            //     lineStyle: {
-                            //         type: 'dashed',
-                            //         color: 'red'
-                            //     },
-                            // },
                         ]
                     };
 
@@ -889,6 +769,7 @@
                     let option = {
                         title: {
                             text: '驿工平均接单时间',
+                            x: 10
                         },
                         xAxis: {
                             type: 'category',
@@ -1019,16 +900,15 @@
         text-align: center;
     }
     .item:not(:first-child) {
-        margin: 0 10px;
+        margin: 0 0 0 30px;
     }
     .item {
         color: white;
-        width: 155px;
-        height: 70px;
+        height: 80px;
     }
 
     .orange {
-        background-image: url("../../assets/img/statistics/statistic_oriange.png");
+        background-image: url("../../assets/img/statistics/blank_red.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
@@ -1036,7 +916,7 @@
     }
 
     .green {
-        background-image: url("../../assets/img/statistics/statistic_green.png");
+        background-image: url("../../assets/img/statistics/blank_green.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
@@ -1044,7 +924,7 @@
     }
 
     .blue {
-        background-image: url("../../assets/img/statistics/statistic_blue.png");
+        background-image: url("../../assets/img/statistics/blank_blue.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
@@ -1052,7 +932,7 @@
     }
 
     .yellow {
-        background-image: url("../../assets/img/statistics/statistic_yellow.png");
+        background-image: url("../../assets/img/statistics/blank_yellow.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
@@ -1060,7 +940,7 @@
     }
 
     .pink {
-        background-image: url("../../assets/img/statistics/statistic_pink.png");
+        background-image: url("../../assets/img/statistics/blank_pink.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
@@ -1068,7 +948,7 @@
     }
 
     .purple {
-        background-image: url("../../assets/img/statistics/statistic_purple.png");
+        background-image: url("../../assets/img/statistics/blank_purple.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
