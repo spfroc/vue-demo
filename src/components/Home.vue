@@ -98,7 +98,7 @@ export default {
 }
 
 .box:not(:first-child) {
-  margin-left: 50px;
+  margin-left: 57px;
 }
 
 </style>
