@@ -1,6 +1,6 @@
 <template>
   <div class="home-container" body-style="{width: '100%'}">
-    <el-row style="margin-bottom: 20px">
+    <el-row type="flex" style="margin-bottom: 20px">
       <el-col :span="4" v-for="o in list" :key="o.title" class="box">
         <div class="card-title">{{o.title}}</div>
         <div class="card-value"><strong>{{o.value}}</strong>{{o.unit}}</div>
@@ -77,22 +77,21 @@ export default {
 }
 
 .card-value {
-  margin-top: 15px;
+  margin-top: 10px;
   font-size: 32px;
   color: white;
 }
 
 .card-title {
   color: white;
-  position: relative;
-  top: 9px;
+  text-align: left;
   font-size: 15px;
-  left: -61px;
+  margin: 10px 0 0 10px
 }
 
 .box {
   height: 100px;
-  background-image: url('../assets/img/index/index_item_yellow.png');
+  background-image: url('../assets/img/index/blank_yellow.png');
   -webkit-background-size: cover;
   -o-background-size: cover;
   background-position: center 0;
