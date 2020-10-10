@@ -147,6 +147,7 @@
                     imei: [
 
                         {validator: this.usabilityValidator, trigger: 'blur'},
+                        {required: true , trigger: 'blur'},
                     ],
                 },
                 page: {},
@@ -210,13 +211,11 @@
                     },
 
                 }).then(res => {
-                    // console.log(res.data.data.result);
                     if(res.data.data.result == false) {
-                        return callback(new Error('未在服务器中查询到此胸卡，请将胸卡重新开机，等待五分钟后重新检测'));
+                        callback(new Error('未在服务器中查询到此胸卡，请将胸卡重新开机，等待五分钟后重新检测'));
                     } else {
-                        return true;
+                        callback();
                     }
-
                 });
 
             },
@@ -328,12 +327,8 @@
             },
 
             onSubmit () {
-
-                if(!this.usability) {
-                    this.showUsabilityError = true;
-                    return false;
-                }
                 this.$refs['form'].validate((valid) => {
+                    console.log(valid);
                     if (valid) {
                         this.form.whitePhones = '';
                         this.whiteList.forEach((item, index) => {
