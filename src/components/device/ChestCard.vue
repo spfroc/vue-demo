@@ -63,7 +63,7 @@
                         <el-form-item label="imei号" prop="imei">
                             <el-input v-model="form.imei" style="width: 70%;" @focus="clearCheckUsableError"></el-input>
 
-                            <el-button @click="clickValidateUsability" type="primary" style="margin-left: 20px">检测</el-button>
+                            <el-button @click="clickValidateUsability" :type="checkButtonType" style="margin-left: 20px">检测</el-button>
                         </el-form-item>
                         <el-form-item label="老人姓名" prop="oldManName">
                             <el-input v-model="form.oldManName" style="width: 70%;"></el-input>
@@ -140,6 +140,7 @@
 
         data () {
             return {
+                checkButtonType: 'primary',
                 tableData: [],
                 editing: false,
                 isUpdate: false,
@@ -193,9 +194,9 @@
             clickValidateUsability() {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        this.checkButtonType = 'success';
                     } else {
-                        console.log('error submit!!');
+                        this.checkButtonType = 'primary';
                         return false;
                     }
                 });
@@ -275,6 +276,7 @@
                 return row.status && row.status ? '正常' : '离线';
             },
             add () {
+                this.checkButtonType = 'primary';
                 this.editing = true
                 this.isUpdate = false
                 this.form = {};
@@ -283,6 +285,7 @@
 
             },
             edit (row) {
+                this.checkButtonType = 'primary';
                 this.editing = true
                 this.isUpdate = true
                 this.editingRow = row
