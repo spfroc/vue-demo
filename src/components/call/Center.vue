@@ -1044,17 +1044,18 @@
     .blue {
         border-radius: 10px;
         background-image: url("../../assets/img/index/index_item_blue.png");
+        /*background-image: url("../../assets/img/index/center_purple.png");*/
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
     }
 
     .pink {
-        background-image: url("../../assets/img/index/index_item_pink.png");
+        background-image: url("../../assets/img/index/center_purple.png");
         -webkit-background-size: cover;
         -o-background-size: cover;
         background-position: center;
-        background-attachment:fixed;
+        /*background-attachment:fixed;*/
         border-radius: 10px;
 
     }
