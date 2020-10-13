@@ -28,6 +28,16 @@
                 <el-form-item label="" prop="name">
                     <el-input v-model="search.name" style="width: 120px;" placeholder="按名称搜索"></el-input>
                 </el-form-item>
+                <el-form-item label="" prop="categoryId">
+                    <el-select v-model="search.categoryId" placeholder="请选择类型">
+                        <el-option
+                                v-for="item in storeType"
+                                :key="item.id"
+                                :label="item.name"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                 </el-form-item>
@@ -40,13 +50,21 @@
             <div>
                 <el-table
                         :data="tableData">
-                    <el-table-column type="index" align="center" width="80" label="序号">
+                    <el-table-column type="index" align="center" width="50" label="序号">
                     </el-table-column>
                     <el-table-column
                             prop="name"
+                            min-width="160"
                             align="center"
                             :show-overflow-tooltip="false"
                             label="商家名称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="categoryId"
+                            align="center"
+                            :formatter="categoryFormatter"
+                            label="类型">
+
                     </el-table-column>
                     <el-table-column
                             prop="mobile"
@@ -57,13 +75,12 @@
                     <el-table-column
                             prop="address"
                             align="center"
-
+                            min-width="160"
                             label="商家地址">
                     </el-table-column>
                     <el-table-column
                             prop="businessHours"
                             align="center"
-
                             label="营业时间">
                     </el-table-column>
 
@@ -218,6 +235,7 @@
                     createTime: '',
                     timeStart: '',
                     timeEnd: '',
+                    categoryId: '',
                 },
                 rules: {
                     name: { required: true, message: '请输入商家名称', trigger: 'blur' },
@@ -234,7 +252,8 @@
                 },
 
                 map: null,
-                searchPlace: null
+                searchPlace: null,
+                storeType: [],
             }
 
         },
@@ -420,12 +439,29 @@
                 // console.log(results);
                 // results[1].setAttribute('style', 'z-index: 4000 !important');
             },
+
+            getStoreTypeMap() {
+                this.$http.get('/apis/storeCategory/list', {
+                }).then(res => {
+                    this.storeType = res.data.data.list
+                })
+            },
+
+            categoryFormatter(row) {
+                let categoryNames = this.storeType.filter((item, index) => {
+                    if(item.id == row.categoryId) {
+                        return true;
+                    }
+                });
+                console.log(categoryNames);
+                return categoryNames[0].name;
+            }
         },
 
         mounted() {
+            this.getStoreTypeMap();
             this.fetchList(1);
             this.getCategoryOptions();
-
         }
     }
 </script>

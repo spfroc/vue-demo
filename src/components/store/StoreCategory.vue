@@ -119,7 +119,8 @@
                 }).then(res => {
                     this.page.total = res.data.data.total
                     this.page.pageNum = parseInt(res.data.data.pageNum)
-                    this.tableData = res.data.data.list;                         })
+                    this.tableData = res.data.data.list;
+                })
             },
 
             onSubmit () {
