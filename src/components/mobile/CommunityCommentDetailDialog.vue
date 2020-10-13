@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-dialog">
+    <div class="comment-dialog" ref="dom-to-scroll">
         <el-row>
             <el-col :span="20">
                 <el-form :model="form" :rules="rules" ref="form">
@@ -7,6 +7,7 @@
                         <el-input style="width: 100%;"
                                   type="textarea"
                                   placeholder="评价内容"
+                                  @focus="scrollToViewLocation"
                                   :autosize="{ minRows: 2, maxRows: 5}"
                                   v-model="form.content"></el-input>
                     </el-form-item>
@@ -17,9 +18,7 @@
                 <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;font-weight: bold;" @click="reply">发布</span>
             </el-col>
         </el-row>
-        <span slot="footer" class="dialog-footer">
-                </span>
-
+        <span slot="footer" class="dialog-footer"></span>
     </div>
 </template>
 
@@ -71,6 +70,10 @@
 
                 })
             },
+
+            scrollToViewLocation() {
+                this.$refs['dom-to-scroll'].scrollIntoView();
+            }
         }
     }
 </script>
