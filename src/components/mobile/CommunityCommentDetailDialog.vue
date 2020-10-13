@@ -73,7 +73,7 @@
 
             scrollToViewLocation() {
                 setTimeout(() => {
-                    this.$refs['dom-to-scroll'].scrollIntoView();
+                    this.$refs['dom-to-scroll'].scrollIntoView({behavior: 'smooth', block: 'start'});
                 }, 500)
             }
         }
