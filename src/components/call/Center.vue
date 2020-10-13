@@ -405,9 +405,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '服务工单'">
-                    <el-input type="hidden" v-model="commonOrder.type" value="2"></el-input>
-                </el-form-item>
+                <el-input v-if="dialogTitle == '服务工单'" type="hidden" v-model="commonOrder.type" value="2"></el-input>
                 <!--接待记录详情是否有社工选项待定-->
                 <!--<el-form-item v-if="dialogTitle == '接待记录'" prop="worker" label="选择社工">-->
                     <!--<el-select v-model="receptionDialog.worker" placeholder="请选择">-->
@@ -471,10 +469,10 @@
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="驿工手机号">
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">
+                <el-form-item v-if="dialogTitle == '查看工单' || dialogTitle == '服务工单'" prop="content" label="服务内容">
                     <section v-for="(detail, index) in orderDetail.serviceDetail" :key="index">
                         <div>
-                            <span>{{detail.content}}</span>
+                            <span>{{detail.content || '服务内容'}}</span>
                         </div>
                         <el-image v-for="(img, index) in detail.imgs" v-if="img.url.length > 0"
                               :key="index"
@@ -484,11 +482,12 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
-                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}-新</el-button>
-                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}-新</el-button>
-                    <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
-                    <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}-改</el-button>
+                    <el-button @click="orderConfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderConfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.status == undefined" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderReconfirm(2)" v-if="dialogTitle == '服务工单' && commonOrder.type == 2 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="orderReconfirm(1)" v-if="dialogTitle == '医生工单' && commonOrder.type == 1 && (commonOrder.status && commonOrder.status == '3')" type="primary">{{dialogButtonText}}</el-button>
                     <el-button @click="hideDialog()" v-if="dialogTitle == '查看工单'" type="primary">{{dialogButtonText}}</el-button>
+                    <el-button @click="hideDialog()" type="default">取消</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
