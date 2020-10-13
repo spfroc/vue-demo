@@ -182,7 +182,7 @@
           },
 
           {
-            icon: 'el-icon-service',
+            icon: 'el-icon-magic-stick',
             title: '志愿者管理',
             index: '3',
             subs: [
@@ -213,7 +213,7 @@
             index: '/stage/monitor'
           },
           {
-            icon: 'el-icon-tickets',
+            icon: 'el-icon-cpu',
             title: '电子围栏',
             index: '/electronic/fence'
           },
@@ -396,7 +396,7 @@
               },
 
               {
-                icon: 'el-icon-service',
+                icon: 'el-icon-magic-stick',
                 title: '志愿者管理',
                 index: '3',
                 subs: [
@@ -427,7 +427,7 @@
                 index: '/stage/monitor'
               },
               {
-                icon: 'el-icon-tickets',
+                icon: 'el-icon-cpu',
                 title: '电子围栏',
                 index: '/electronic/fence'
               },
@@ -607,7 +607,7 @@
             },
 
             {
-              icon: 'el-icon-service',
+              icon: 'el-icon-magic-stick',
               title: '志愿者管理',
               index: '3',
               subs: [
@@ -638,7 +638,7 @@
               index: '/stage/monitor'
             },
             {
-              icon: 'el-icon-tickets',
+              icon: 'el-icon-cpu',
               title: '电子围栏',
               index: '/electronic/fence'
             },
@@ -813,7 +813,7 @@
             },
 
             {
-              icon: 'el-icon-service',
+              icon: 'el-icon-magic-stick',
               title: '志愿者管理',
               index: '3',
               subs: [
@@ -844,7 +844,7 @@
               index: '/stage/monitor'
             },
             {
-              icon: 'el-icon-tickets',
+              icon: 'el-icon-cpu',
               title: '电子围栏',
               index: '/electronic/fence'
             },
