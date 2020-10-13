@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <input type="text" v-model="commentContent" placeholder="请输入评价内容" id="commentContentInput">
+            <input type="text" v-model="commentContent" @focus="scrollToViewLocation" placeholder="请输入评价内容" id="commentContentInput">
             <input id="upload_file" type="file" style="display: none;" accept='image/*' name="file" @change="fileChange($event)"/>
             <div class="image-item space" @click="showActionSheet()">
                 <div class="image-up"></div>
@@ -243,6 +243,12 @@
             handleClick(){
                 this.$store.commit('add')
             },
+
+            scrollToViewLocation() {
+                setTimeout(() => {
+                    this.$refs['dom-to-scroll'].scrollIntoView();
+                }, 500)
+            }
         },
         mounted() {
             console.log('token in store: ', this.$store.getters.token);
