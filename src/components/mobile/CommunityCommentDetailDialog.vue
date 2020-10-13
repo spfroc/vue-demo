@@ -72,7 +72,10 @@
             },
 
             scrollToViewLocation() {
-                this.$refs['dom-to-scroll'].scrollIntoView();
+                alert(222);
+                setTimeout(() => {
+                    this.$refs['dom-to-scroll'].scrollIntoView();
+                }, 500)
             }
         }
     }
