@@ -280,7 +280,7 @@
                 isUpdate: false,
                 editingRow: {},
                 rules: {
-                    name: {required: true, message: '请输入志愿都姓名'},
+                    name: {required: true, message: '请输入志愿者姓名'},
                     sex: {required: true, message: '请选择性别'},
                     nation: {required: true, message: '请输入民族'},
                     birthday: {required: true, message: '请选择出生年月'},
