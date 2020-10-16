@@ -273,7 +273,7 @@
             },
 
             statusFormatter (row) {
-                return row.status && row.status ? '正常' : '离线';
+                return row.status && row.status == '1' ? '正常' : '异常';
             },
             add () {
                 this.checkButtonType = 'primary';
