@@ -44,6 +44,7 @@ import HealthDetail from "../components/mobile/HealthDetail";
 import Merchant from "../components/mobile/Merchant";
 import Download from "../components/mobile/Download";
 import CommunityCommentDetail from "../components/mobile/CommunityCommentDetail";
+import Index from "../components/log/Index";
 
 Vue.use(Router)
 
@@ -239,6 +240,13 @@ export default new Router({
         path: '/user/social-worker-assessment',
         meta: {title: '公司管理'},
         component: SocialWorkerAssessment
+      },
+
+      {
+        path: '/log/:type',
+        meta: {title: '操作日志'},
+        component: Index,
+        props: true
       },
         
       {
