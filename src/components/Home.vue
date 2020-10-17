@@ -7,7 +7,19 @@
       </el-col>
     </el-row>
     <!--<img src="https://www.arizonachristian.edu/wp-content/uploads/2017/06/logo-placeholder.png" alt="" class="logo">-->
-    <img class="pic" src="../assets/img/index/index_bg.png" alt="">
+    <el-upload
+            class="avatar-uploader"
+            ref="uploadContainer"
+            style="border: none;"
+            :action="fileUploadUrl"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
+
+    <!--<img class="pic" src="../assets/img/index/index_bg.png" alt="">-->
   </div>
 </template>
 
@@ -16,6 +28,8 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      fileUploadUrl: '/apis/upload/file?token=' + localStorage.getItem('auth-token'),
+      imageUrl: '/images/app/2020/10/17/e118d4868c2d4d6d877e2889d18ea84a.png',
       list: [
         {
           title: '今日派单数',
@@ -58,11 +72,34 @@ export default {
         this.list[4].value = res.data.data.wCallNum;//本周呼叫数
 
       });
+    },
+
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = '/images'+res.data.pic;
+    },
+    beforeAvatarUpload(file) {
+      // const isJPG = file.type === 'image/jpeg';
+      // const isLt2M = file.size / 1024 / 1024 < 2;
+
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!');
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!');
+      // }
+      // return isJPG && isLt2M;
     }
   },
 
   mounted() {
     this.getStatisticsData();
+    this.$refs.uploadContainer.$el.children[0].style.width= '100%';
+    this.$refs.uploadContainer.$el.children[0].style.height= '100%';
+    this.$refs.uploadContainer.$el.children[0].style.border= 'none';
+
+    console.log(this.$refs.uploadContainer.$el.style);
+
+
   }
 }
 </script>
@@ -103,5 +140,19 @@ export default {
 .box:not(:first-child) {
   margin-left: 65px;
 }
+.avatar {
+  width: 100%;
+  display: block;
+}
 
+.avatar-uploader {
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.el-upload--text{
+  border: none
+}
 </style>
