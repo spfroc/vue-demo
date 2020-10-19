@@ -252,40 +252,40 @@
               }
             ]
           });
-          allMenus.push(
-            {
-              icon: 'el-icon-timer',
-              title: '操作日志',
-              index: '11',
-              subs: [
-                {
-                  index: '/log/administration',
-                  title: '管理员操作日志',
-                  params: {type: 1}
-                },
-                {
-                  index: '/log/social-worker',
-                  title: '社工操作日志'
-                },
-                {
-                  index: '/log/message',
-                  title: '消息推送日志'
-                },
-                {
-                  index: '/log/chest-card',
-                  title: '胸牌操作日志'
-                },
-                {
-                  index: '/log/elderly-information',
-                  title: '老人信息操作日志'
-                },
-                {
-                  index: '/log/children',
-                  title: '子女信息操作日志'
-                },
-              ]
-            }
-          );
+          // allMenus.push(
+          //   {
+          //     icon: 'el-icon-timer',
+          //     title: '操作日志',
+          //     index: '11',
+          //     subs: [
+          //       {
+          //         index: '/log/administration',
+          //         title: '管理员操作日志',
+          //         params: {type: 1}
+          //       },
+          //       {
+          //         index: '/log/social-worker',
+          //         title: '社工操作日志'
+          //       },
+          //       {
+          //         index: '/log/message',
+          //         title: '消息推送日志'
+          //       },
+          //       {
+          //         index: '/log/chest-card',
+          //         title: '胸牌操作日志'
+          //       },
+          //       {
+          //         index: '/log/elderly-information',
+          //         title: '老人信息操作日志'
+          //       },
+          //       {
+          //         index: '/log/children',
+          //         title: '子女信息操作日志'
+          //       },
+          //     ]
+          //   }
+          // );
           return allMenus;
 
         } else if (roleId == 2) {
