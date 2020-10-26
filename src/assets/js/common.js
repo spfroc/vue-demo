@@ -40,9 +40,13 @@ const searchParams = (searchParamsObject) => {
 }
 
 const richTextContentFormatter = (row, column, cellValue) => {
-    console.log('~~~',cellValue.replace(/(<.*?>|&nbsp;|\s\r\n\t|[ ])/g,""));
-    let handledStr = cellValue.replace(/(<.*?>|&nbsp;|\s\r\n\t|[ ])/g,"").substr(0, 10);
-    return handledStr.length < 10 ? handledStr : handledStr + '...';
+    if(cellValue) {
+        let handledStr = cellValue.replace(/(<.*?>|&nbsp;|\s\r\n\t|[ ])/g,"").substr(0, 10);
+        return handledStr.length < 10 ? handledStr : handledStr + '...';
+    } else {
+        return '';
+    }
+
 
 }
 

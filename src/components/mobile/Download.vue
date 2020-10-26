@@ -27,7 +27,7 @@
         mounted() {
 
             console.log(navigator.userAgent);
-
+            console.log(process.env.ANDROID_PACKAGE_URL)
             //https://www.pgyer.com/Le5S   //安卓
             //
             //     IOS下载地址: https://www.pgyer.com/a0ti  com.yz.ainursing
@@ -37,7 +37,7 @@
             } else if (/(Android)/i.test(navigator.userAgent)) { //判断Android
                 // window.location.href ="Android.html";
                 this.userAgent = 'Android'
-                window.location.href = 'https://www.pgyer.com/Le5S';
+                window.location.href = process.env.ANDROID_PACKAGE_URL;      //生产环境
             } else { //pc
                 this.userAgent = 'PC'
                 window.close();
