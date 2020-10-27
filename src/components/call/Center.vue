@@ -669,13 +669,22 @@
                 });
             },
 
-            statisticsByDate(item) {
+            statisticsByDate() {
+                let searchParams = {}
+                if(this.firstTab.searchDateStart) {
+                    searchParams.timeStart = this.firstTab.searchDateStart
+                }
 
+                if(this.firstTab.searchDateEnd) {
+                    searchParams.timeEnd = this.firstTab.searchDateEnd
+                }
+
+                if(!this.firstTab.searchDateEnd && !this.firstTab.searchDateStart) {
+                    searchParams.type = 1;
+                }
                 this.defaultButton = undefined;
                 this.$http.get('/apis/callCenter/count', {
-                    params: {
-                        time: item
-                    }
+                    params: searchParams
                 }).then((res) => {
                     this.firstTab.list[0].self = res.data.data.receptionNum
                     this.firstTab.list[0].total = res.data.data.totalReceptionNum
