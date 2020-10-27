@@ -6,7 +6,6 @@
         <div class="card-value"><strong>{{o.value}}</strong>{{o.unit}}</div>
       </el-col>
     </el-row>
-    <!--<img src="https://www.arizonachristian.edu/wp-content/uploads/2017/06/logo-placeholder.png" alt="" class="logo">-->
     <el-upload
             class="avatar-uploader"
             ref="uploadContainer"
@@ -18,8 +17,6 @@
       <img v-if="imageUrl" :src="imageUrl" class="avatar">
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
-
-    <!--<img class="pic" src="../assets/img/index/index_bg.png" alt="">-->
   </div>
 </template>
 
@@ -76,7 +73,21 @@ export default {
 
     handleAvatarSuccess(res, file) {
       this.imageUrl = '/images'+res.data.pic;
+      this.saveImage(res.data.pic)
     },
+
+    saveImage(url) {
+      this.$http.post('/apis/banner/addOrUpdate', {
+        type: 4,
+        link: url,
+        name: '首页背景图',
+        pic: url,
+        text: '首页背景图'
+      }).then(res => {
+        console.log(res);
+      })
+    },
+
     beforeAvatarUpload(file) {
       // const isJPG = file.type === 'image/jpeg';
       // const isLt2M = file.size / 1024 / 1024 < 2;
@@ -88,17 +99,28 @@ export default {
       //   this.$message.error('上传头像图片大小不能超过 2MB!');
       // }
       // return isJPG && isLt2M;
+    },
+
+    getImage() {
+      this.$http.get('/apis/banner/list', {
+        params: {
+          type: 4
+        }
+      }).then(res => {
+        if(res.data.data.list.length >= 1) {
+          this.imageUrl = '/images' + res.data.data.list.shift().pic;
+          console.log(this.imageUrl);
+        }
+      });
     }
   },
 
   mounted() {
     this.getStatisticsData();
+    this.getImage();
     this.$refs.uploadContainer.$el.children[0].style.width= '100%';
     this.$refs.uploadContainer.$el.children[0].style.height= '100%';
     this.$refs.uploadContainer.$el.children[0].style.border= 'none';
-
-    console.log(this.$refs.uploadContainer.$el.style);
-
 
   }
 }
