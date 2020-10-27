@@ -436,7 +436,7 @@
                 <el-form-item v-if="dialogTitle == '医生工单'">
                     <el-input type="hidden" v-model="commonOrder.type" value="1"></el-input>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '查看工单'" prop="" label="历史派单">
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="" label="查看工单">
                     <el-table
                             :show-header=false
                             :data="orderDetail.historyOrders">
@@ -471,6 +471,9 @@
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单' || dialogTitle == '服务工单'" prop="content" label="服务内容">
                     <section v-for="(detail, index) in orderDetail.serviceDetail" :key="index">
+                        <div>
+                            <span>{{detail.sno || index}}、{{detail.createTime || '-'}}</span>
+                        </div>
                         <div>
                             <span>{{detail.content || '服务内容'}}</span>
                         </div>
