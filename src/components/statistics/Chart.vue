@@ -538,7 +538,8 @@
                 let total = 234;
                 let data = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
                 let value = [2,5,3,9,4,7,11]
-                this.$http.get('/apis/statistic/countReception').then(res => {
+                // this.$http.get('/apis/statistic/countReception').then(res => {
+                this.$http.get('/apis/statistic/countReceptionForWeek').then(res => {
                     total = res.data.data.totalNum;
                     data = res.data.data.date;
                     value = res.data.data.value;
