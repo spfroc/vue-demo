@@ -536,12 +536,12 @@
                 this.monthlyTotalReception = Echart.init(document.getElementById('monthly-total-reception'));
                 this.monthlyTotalReception.hideLoading();
                 let total = 234;
-                let data = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+                let data = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'];
                 let value = [2,5,3,9,4,7,11]
                 // this.$http.get('/apis/statistic/countReception').then(res => {
                 this.$http.get('/apis/statistic/countReceptionForWeek').then(res => {
                     total = res.data.data.totalNum;
-                    data = res.data.data.date;
+                    // data = res.data.data.date;
                     value = res.data.data.value;
                     let option = {
                         title: {
