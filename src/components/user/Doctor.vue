@@ -208,7 +208,7 @@
                         { required: true, message: '请输入年龄', trigger: 'blur' },
                         { validator: checkNumber, trigger: 'blur' }
                     ],
-                    sex: { required: true, message: '请选择性别', trigger: 'blur' },
+                    // sex: { required: true, message: '请选择性别', trigger: 'blur' },
                     // homeAddress: { required: true, message: '请输入家庭住址', trigger: 'blur' },
                     // idCardNumber: { required: true, message: '请输入身份证号', trigger: 'blur' },
                 }
