@@ -10,7 +10,7 @@
                 </el-option>
             </el-select>
 
-            <el-select v-model="bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" :placeholder="'请选择'+index">
+            <el-select v-model="bindOldMan[index].id" :prop="'oldMan.' + index + '.id'" placeholder="请选择">
                 <el-option
                         v-if="oldManOptions"
                         v-for="item in oldManOptions"

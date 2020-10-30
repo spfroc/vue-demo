@@ -481,15 +481,13 @@
 
                 }).then((res) => {
                     this.oldManOptions[index] = res.data.data.list;
-                    console.log('index: ' +index);
-                    console.log(this.oldManOptions[index]);
                 })
             },
             removeOldMan (oldMan) {
-                this.form.bindOldMan.splice(this.form.bindOldMan.indexOf(oldMan), 1);
+                this.bindOldManUi.splice(this.bindOldManUi.indexOf(oldMan), 1);
             },
             bindButton () {
-                this.form.bindOldMan.push({
+                this.bindOldManUi.push({
                     id:'',
                     // name:'',
                     relation: '',
