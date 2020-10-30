@@ -289,6 +289,8 @@
                 }).then((res) => {
                     this.fileListContainer = [];
                     this.form = Object.assign({}, res.data.data)
+                    // console.log(this.form.lng, this.form.lat);
+                    this.mapInit();
                     this.introductionFileList = this.form.introduction
                     this.form.introduction.forEach((file, index) => {
                         this.fileListContainer.push({
@@ -373,7 +375,7 @@
                             this.editing = false
                         })
                     } else {
-                        console.log('error submit!!')
+                        // console.log('error submit!!')
                         return false
                     }
                 })
@@ -396,7 +398,7 @@
                     let marker = new AMap.Marker({
                         position:[this.form.lng, this.form.lat]//位置
                     })
-                    console.log('marker', marker);
+                    // console.log('marker', marker);
                     this.map.add(marker);//添加到地图
                     // 输入提示
                     let autoOptions = {
@@ -409,7 +411,6 @@
                         pageSize: 2
                     });
                     AMap.event.addListener(auto, "select", (e) => {
-                        console.log('e~~', e);
                         this.form.lng = e.poi.location.R;
                         this.form.lat = e.poi.location.Q;
                         this.placeSearch.setCity(e.poi.adcode);
@@ -422,9 +423,9 @@
             },
 
             select(e) {
-                console.log('e', e);
                 this.form.lng = e.poi.location.R;
                 this.form.lat = e.poi.location.Q;
+                this.form.address = e.poi.name;
                 this.placeSearch.setCity(e.poi.adcode);
                 this.placeSearch.search(e.poi.name);  //关键字查询查询
                 this.placeSearch.clear();
@@ -453,7 +454,7 @@
                         return true;
                     }
                 });
-                console.log(categoryNames);
+                // console.log(categoryNames);
                 return categoryNames[0].name;
             }
         },

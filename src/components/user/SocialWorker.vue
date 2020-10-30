@@ -72,7 +72,15 @@
                             align="center"
                             label="身份证号">
                     </el-table-column>
-
+                    <el-table-column
+                        prop="workingStatus"
+                        min-width="150"
+                        align="center"
+                        label="工作状态">
+                        <template v-if="scope.row.idCardNumber"  slot-scope="scope">
+                            <span :style="statusStyle(scope.row.idCardNumber%2)">{{statusText(scope.row.idCardNumber%2)}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column
                             prop="createTime"
                             min-width="150"
@@ -229,6 +237,30 @@
         },
 
         methods: {
+
+            statusStyle(status) {
+                let color = 'blue';
+                if(status == 0) {
+                    color = 'red'
+                } else if(status == 1) {
+                    color = 'blue'
+                }
+                let style = {
+                    color: color,
+                    textAlign: 'center'
+                }
+
+                return style;
+            },
+            statusText(status) {
+                let text = '工作中';
+                if(status == 0) {
+                    text = '休假中'
+                } else if(status == 1) {
+                    text = '工作中'
+                }
+                return text;
+            },
             getCompanyOptions() {
                 this.$http.get('/apis/serviceCompany/selectList').then((res) => {
                     this.companyOptions = res.data.data.list;

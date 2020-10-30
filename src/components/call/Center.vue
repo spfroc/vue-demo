@@ -44,8 +44,8 @@
                 </el-form>
             </el-col>
             <el-col :span="2">
-                <export-excel v-if="activeName=='historyReception'" url="/export/receptionList" :params="search"></export-excel>
-                <export-excel v-if="activeName=='historyWorkOrder'" url="/export/workOrder" :params="search"></export-excel>
+                <export-excel v-if="activeName=='historyReception'" url="/export/receptionList" :params="searchForm"></export-excel>
+                <export-excel v-if="activeName=='historyWorkOrder'" url="/export/workOrder" :params="searchForm"></export-excel>
             </el-col>
         </el-row>
         <section class="" v-if="activeName=='customerService'">
@@ -400,8 +400,14 @@
                         <el-option
                             v-for="item in serviceWorkers"
                             :key="item.id"
-                            :label="item.name"
+                            :label="getLabel(item)"
                             :value="item.id">
+                            <template v-if="item.id%2 == 0">
+                                {{item.name}}    <span style="color: red">休假中</span>
+                            </template>
+                            <template v-if="item.id%2 != 0">
+                                {{item.name}}    <span style="color: blue">工作中</span>
+                            </template>
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -639,6 +645,14 @@
 
 
         methods: {
+            getLabel(item) {
+                if(item.id % 2 == 0) {
+                    return item.name + "  休假中"
+                } else {
+                    return item.name + "  工作中"
+                }
+            },
+
             buttonType(item) {
                 if(this.defaultButton == item) {
                     return 'primary'
