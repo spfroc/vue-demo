@@ -205,7 +205,7 @@
                         { validator: isValidPhone, trigger: 'blur' }
                     ],
                     age: [
-                        { required: true, message: '请输入年龄', trigger: 'blur' },
+                        // { required: true, message: '请输入年龄', trigger: 'blur' },
                         { validator: checkNumber, trigger: 'blur' }
                     ],
                     // sex: { required: true, message: '请选择性别', trigger: 'blur' },
