@@ -364,6 +364,7 @@
                 }
                 // console.log('form.introduction:', this.form.introduction);return;
                 this.$refs['form'].validate((valid) => {
+                    console.log(this.form);
                     if (valid) {
                         this.$http.post('/apis/store/addOrUpdate', this.form).then(res => {
                             this.$message({
@@ -413,6 +414,8 @@
                     AMap.event.addListener(auto, "select", (e) => {
                         this.form.lng = e.poi.location.R;
                         this.form.lat = e.poi.location.Q;
+                        console.log(e.poi);
+                        this.form.address = e.poi.name;
                         this.placeSearch.setCity(e.poi.adcode);
                         this.placeSearch.search(e.poi.name);  //关键字查询查询
                     });//注册监听，当选中某条记录时会触发
@@ -426,6 +429,7 @@
                 this.form.lng = e.poi.location.R;
                 this.form.lat = e.poi.location.Q;
                 this.form.address = e.poi.name;
+                console.log(e.poi.name);
                 this.placeSearch.setCity(e.poi.adcode);
                 this.placeSearch.search(e.poi.name);  //关键字查询查询
                 this.placeSearch.clear();
