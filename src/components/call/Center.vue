@@ -402,10 +402,10 @@
                             :key="item.id"
                             :label="getLabel(item)"
                             :value="item.id">
-                            <template v-if="item.id%2 == 0">
+                            <template v-if="item.offDay == 1">
                                 {{item.name}}    <span style="color: red">休假中</span>
                             </template>
-                            <template v-if="item.id%2 != 0">
+                            <template v-if="item.offDay == 0">
                                 {{item.name}}    <span style="color: blue">工作中</span>
                             </template>
                         </el-option>

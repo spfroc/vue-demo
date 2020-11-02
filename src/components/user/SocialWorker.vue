@@ -73,12 +73,12 @@
                             label="身份证号">
                     </el-table-column>
                     <el-table-column
-                        prop="workingStatus"
+                        prop="offDay"
                         min-width="150"
                         align="center"
                         label="工作状态">
-                        <template v-if="scope.row.idCardNumber"  slot-scope="scope">
-                            <span :style="statusStyle(scope.row.idCardNumber%2)">{{statusText(scope.row.idCardNumber%2)}}</span>
+                        <template v-if="scope.row.offDay"  slot-scope="scope">
+                            <span :style="statusStyle(scope.row.offDay)">{{statusText(scope.row.offDay)}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -156,6 +156,16 @@
                             <el-radio v-model="form.canLogin" label=1>是</el-radio>
                             <el-radio v-model="form.canLogin" label=0>否</el-radio>
                         </el-form-item>
+                        <el-form-item label="工作状态" prop="offDay">
+                            <el-select v-model="form.offDay" placeholder="请选择">
+                                <el-option
+                                        v-for="item in workingStatusOptions"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
@@ -198,12 +208,23 @@
                     canLogin: '',
                     userType: 3,
                     serviceCompanyId: '',
+                    offDay: "1",
                 },
                 companyOptions: [],
                 page: {
                     pageSize: 10
                 },
                 tableData: [],
+                workingStatusOptions: [
+                    {
+                        id: 1,
+                        name: '休假中'
+                    },
+                    {
+                        id: 0,
+                        name: '工作中'
+                    }
+                ],
                 genderOptions: [
                     {
                         label: '男',
@@ -240,9 +261,9 @@
 
             statusStyle(status) {
                 let color = 'blue';
-                if(status == 0) {
+                if(status == 1) {
                     color = 'red'
-                } else if(status == 1) {
+                } else if(status == 0) {
                     color = 'blue'
                 }
                 let style = {
@@ -254,9 +275,9 @@
             },
             statusText(status) {
                 let text = '工作中';
-                if(status == 0) {
+                if(status == 1) {
                     text = '休假中'
-                } else if(status == 1) {
+                } else if(status == 0) {
                     text = '工作中'
                 }
                 return text;
@@ -274,6 +295,7 @@
                 this.isUpdate = false
                 this.form = {
                     userType: 3,
+                    offDay: 1
                 }
             },
             edit (row) {
@@ -285,8 +307,12 @@
                         id: row.id
                     }
                 }).then(res => {
-                    console.log(res.data.data.bindOldManList);
                     this.form = Object.assign({}, res.data.data)
+                    if(!res.data.data.offDay) {
+                        this.form.offDay = 0;
+                    } else {
+                        this.form.offDay = parseInt(res.data.data.offDay);
+                    }
 
                 });
                 // this.form = Object.assign({}, row)
@@ -354,7 +380,6 @@
                             this.editing = false
                         })
                     } else {
-                        console.log('error submit!!')
                         return false
                     }
                 })
