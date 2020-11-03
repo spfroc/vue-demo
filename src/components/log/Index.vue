@@ -10,6 +10,16 @@
                     <!--<el-form-item label="" prop="mobile">-->
                         <!--<el-input v-model="search.mobile" style="width: 120px;" placeholder="按手机号搜索"></el-input>-->
                     <!--</el-form-item>-->
+                    <!--<el-form-item label="工作状态" prop="opType">-->
+                        <!--<el-select v-model="search.opType" placeholder="请选择类型">-->
+                            <!--<el-option-->
+                                    <!--v-for="item in typeOptions"-->
+                                    <!--:key="item.opType"-->
+                                    <!--:label="item.opTypeDesc"-->
+                                    <!--:value="item.opType">-->
+                            <!--</el-option>-->
+                        <!--</el-select>-->
+                    <!--</el-form-item>-->
                     <el-form-item label="" prop="timeStart">
                         <el-date-picker
                                 v-model="search.timeStart"
@@ -48,26 +58,26 @@
                     <el-table-column type="index" align="center" width="80" label="序号">
                     </el-table-column>
                     <el-table-column
-                            prop="happenedAt"
+                            prop="createTime"
                             align="center"
                             label="发生时间">
                     </el-table-column>
 
                     <el-table-column
-                            prop="category"
+                            prop="opTypeDesc"
                             min-width="110"
                             align="center"
                             label="类型">
                     </el-table-column>
                     <el-table-column
-                            prop="content"
+                            prop="opContent"
                             min-width="165"
                             align="center"
                             label="变更内容">
                     </el-table-column>
 
                     <el-table-column
-                            prop="operator"
+                            prop="opUserName"
                             min-width="150"
                             align="center"
                             label="操作者">
@@ -102,10 +112,8 @@
         props: ['type'],
         data() {
             return {
-                search: {
-                    timeStart: '',
-                    timeEnd: '',
-                },
+                typeOptions: [],
+                search: {},
                 tableData: [],
                 page: {
                     pageNum: 1,
@@ -124,27 +132,28 @@
         methods: {
             fetchList(currentPage) {
                 currentPage = currentPage || this.page.pageNum;
-                this.$http.get('http://rap2api.taobao.org/app/mock/262326/apis/log', {
-                    params: {
-                        pageNum: this.pageNum,
-                        category: this.type,
-                    }
+                this.search.pageNum = currentPage;
+                this.$http.get('/apis/opLog/list', {
+                    params: this.search
                 }).then(res => {
-                    this.tableData = res.data.data.data
+                    this.tableData = res.data.data.list
                     this.page.total = res.data.data.total
                     this.page.pageNum = res.data.data.pageNum;
                 })
             },
+
+            getTypeOption() {
+                this.$http.get('/apis/opLog/opTypeList').then(res => {
+                    this.typeOptions = res.data.data.list;
+                });
+            }
         },
 
         mounted() {
-
             this.fetchList()
+            this.getTypeOption();
+
         },
-
-        created() {
-
-        }
     }
 </script>
 

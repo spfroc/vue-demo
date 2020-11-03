@@ -243,7 +243,7 @@ export default new Router({
       },
 
       {
-        path: '/log/:type',
+        path: '/log',
         meta: {title: '操作日志'},
         component: Index,
         props: true
