@@ -63,7 +63,7 @@
               },
               {
                 index: '/app/community-banner',
-                title: '社区播图管理'
+                title: '社区轮播图管理'
               },
               {
                 index: '/community',

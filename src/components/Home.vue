@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       fileUploadUrl: '/apis/upload/file?token=' + localStorage.getItem('auth-token'),
-      imageUrl: '/images/app/2020/10/17/e118d4868c2d4d6d877e2889d18ea84a.png',
+      imageUrl: '/images/app/2020/11/03/56b170b570854d578afc049730637564.png',
       list: [
         {
           title: '今日派单数',
