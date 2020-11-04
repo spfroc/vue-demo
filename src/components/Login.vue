@@ -79,9 +79,10 @@
 <style scoped>
   .login-wrap {
     position: relative;
+    background-color: lightskyblue;
     width: 100%;
     height: 100%;
-    background-image: url(https://org.modao.cc/uploads4/images/4543/45433553/v2_q6vz7g.jpg);
+    background-image: url('../assets/img/index/v2_q6vz7g.jpg');
     background-size: 100%;
   }
   .ms-title {
