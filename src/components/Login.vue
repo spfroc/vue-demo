@@ -27,6 +27,7 @@
         </div>
       </el-form>
     </div>
+    <div class="blue-mask"></div>
   </div>
 </template>
 
@@ -79,11 +80,20 @@
 <style scoped>
   .login-wrap {
     position: relative;
-    background-color: lightskyblue;
     width: 100%;
     height: 100%;
     background-image: url('../assets/img/index/v2_q6vz7g.jpg');
     background-size: 100%;
+    z-index: 1000;
+  }
+
+  .blue-mask {
+    position: absolute;
+    background-color: lightskyblue;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+    opacity: 0.3
   }
   .ms-title {
     width: 100%;
@@ -102,6 +112,7 @@
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.3);
     overflow: hidden;
+    z-index: 1002;
   }
   .ms-content {
     padding: 30px 30px;
