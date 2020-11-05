@@ -4,5 +4,5 @@ module.exports = {
   // Mock: false
   API_HOST: '"https://wszhylapi.yzsjkj.com.cn"',
   APP_HOST: '"https://huberyzhyl.yzsjkj.com.cn"',
-  ANDROID_PACKAGE_URL: '"https://wszhyl.yzsjkj.com.cn/apk/AiServOld_25-1.2.5.apk"',
+  ANDROID_PACKAGE_URL: '"http://d.7short.com/x6py"',
 }
