@@ -1,8 +1,8 @@
 {
-  "name": "museum-admin-fe",
+  "name": "yanglao-admin",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "lackhurt <pangjn@yeah.net>",
+  "description": "养老项目",
+  "author": "spf <spf_roc@163.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "compression-webpack-plugin": "^1.1.2",
     "echarts": "^4.8.0",
     "element-ui": "^2.12.0",
     "ezuikit-js": "^0.1.1",
@@ -67,7 +68,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.6.0",
+    "webpack": "^3.12.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
