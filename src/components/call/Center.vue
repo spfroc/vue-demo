@@ -475,7 +475,8 @@
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="驿工手机号">
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '查看工单' || dialogTitle == '服务工单'" prop="content" label="服务内容">
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">
+                    <el-input v-model="orderDetail.content" disabled="true"></el-input>
                     <section v-for="(detail, index) in orderDetail.serviceDetail" :key="index">
                         <div>
                             <span>{{detail.sno || index}}、{{detail.createTime || '-'}}</span>
@@ -488,6 +489,9 @@
                               style="width: 100px; height: 100px; margin-right: 10px;"
                               :src="'/images'+img.url"></el-image>
                     </section>
+                </el-form-item>
+                <el-form-item v-if="dialogTitle == '服务工单'" prop="content" label="服务内容">
+                    <el-input v-model="orderDetail.content"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="saveReception()" v-if="dialogTitle == '接待记录'" type="primary">{{dialogButtonText}}</el-button>
@@ -905,6 +909,7 @@
                     } else if(res.data.data.type == '2') {
                         this.serviceOrderDialog.worker = res.data.data.latestUserId;
                     }
+                    this.orderDetail.content = res.data.data.content || '无';
                     this.orderDetail.serviceDetail = res.data.data.serviceDetail.length > 0 ? res.data.data.serviceDetail : [
                         // {
                         //     content: '~~~',
