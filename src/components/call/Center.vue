@@ -476,7 +476,7 @@
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">
-                    <el-input v-model="orderDetail.content" disabled="true"></el-input>
+                    <el-input v-model="orderDetail.content" :disabled=true></el-input>
                     <section v-for="(detail, index) in orderDetail.serviceDetail" :key="index">
                         <div>
                             <span>{{detail.sno || index}}、{{detail.createTime || '-'}}</span>
@@ -490,7 +490,7 @@
                               :src="'/images'+img.url"></el-image>
                     </section>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '服务工单'" prop="content" label="服务内容">
+                <el-form-item v-if="dialogTitle == '服务工单' || dialogTitle == '医生工单'" prop="content" label="服务内容">
                     <el-input v-model="orderDetail.content"></el-input>
                 </el-form-item>
                 <el-form-item>
@@ -740,10 +740,15 @@
 
 
 
-            orderReconfirm(userId) {
+            orderReconfirm(type) {
                 let data = {
                     workOrderId: this.commonOrder.id,
-                    userId: userId || 1
+                    content: this.orderDetail.content,
+                }
+                if(type == 1) { //1 医生工单
+                    data.userId = this.doctorOrderDialog.doctor;
+                } else {    //2 服务工单
+                    data.userId = this.serviceOrderDialog.worker;
                 }
                 this.$http.post('/apis/callCenter/reConfirmDispatchWorkOrder', data).then((res) => {
                     this.$message({
@@ -756,14 +761,15 @@
             orderConfirm(type) {
                 let data = {
                     oldManId : this.commonOrder.id,
-                    type : type
+                    type : type,
+                    content: this.orderDetail.content
                 };
                 if(type == 1) { //1 医生工单
                     data.userId = this.doctorOrderDialog.doctor;
                 } else {    //2 服务工单
                     data.userId = this.serviceOrderDialog.worker;
                 }
-
+                console.log(data);
                 this.$http.post('/apis/callCenter/confirmDispatchWorkOrder', data).then((res) => {
                     this.$message({
                         message: res.data.msg || '操作成功',
@@ -859,6 +865,7 @@
                 this.dialogButtonText = '确认派单';
                 // this.getServiceWorkers();
                 this.commonOrder = row
+                this.orderDetail.content = '';
             },
 
             doctorOrder(row) {
@@ -866,7 +873,7 @@
                 this.dialogButtonText = '确认派单';
                 this.commonOrder = row
                 this.dialogTitle = '医生工单';
-
+                this.orderDetail.content = '';
             },
 
             receptionRecord(row) {

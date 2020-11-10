@@ -65,9 +65,11 @@ axios.interceptors.response.use(
                 localStorage.removeItem('auth-username')
                 return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg || response.data.message}`)
             } else {
-                // console.log('234324',response);
-
-                Message.error(response.data.msg || response.data.message)
+                let message = response.data.msg || response.data.message;
+                if(response.data.exception && response.data.exception.split(": ")[1]) {
+                    message = response.data.exception.split(": ")[1];
+                }
+                Message.error(message)
                 return Promise.reject(`Response code is : ${response.data.code}, message is : ${response.data.msg || response.data.message}`)
             }
         } else {
