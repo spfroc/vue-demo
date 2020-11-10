@@ -114,25 +114,39 @@
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="100px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="form.name" ></el-input>
-                        </el-form-item>
-                        <el-form-item label="性别" prop="sex">
-                            <el-select v-model="form.sex" placeholder="请选择">
-                                <el-option
-                                        v-for="item in genderOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="手机号" prop="mobile">
-                            <el-input v-model="form.mobile"></el-input>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="16">
+                                <el-form-item v-show="form.id" label="ID" prop="id">
+                                    <el-input :disabled="true" v-model="form.id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名" prop="name">
+                                    <el-input v-model="form.name" ></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别" prop="sex">
+                                    <el-select v-model="form.sex" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in genderOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="手机号" prop="mobile">
+                                    <el-input v-model="form.mobile"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="" prop="headImg">
+                                    <single-image-upload
+                                            v-model="form.headImg"
+                                            width="150"
+                                            @change="picUploaded"
+                                            height="200"></single-image-upload>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+
                         <el-form-item label="年龄" prop="age">
                             <el-input v-model="form.age"></el-input>
                         </el-form-item>
@@ -182,11 +196,12 @@
     import { isValidPhone } from '../../util/validate'
     import { checkNumber } from '../../util/validate'
     import ExportExcel from '../common/ExportExcel'
+    import SingleImageUpload from "../common/SingleImageUpload"
 
     export default {
         name: "SocialWorker",
         components: {
-            ExportExcel
+            ExportExcel, SingleImageUpload
         },
         data () {
             return {
@@ -202,6 +217,7 @@
                     name: '',
                     mobile: '',
                     idCardNumber: '',
+                    headImg: '',
                     sex: '',
                     homeAddress: '',
                     age: '',
@@ -258,7 +274,9 @@
         },
 
         methods: {
-
+            picUploaded(res, file) {
+                this.form.headImg = res.pic
+            },
             statusStyle(status) {
                 let color = 'blue';
                 if(status == 1) {
