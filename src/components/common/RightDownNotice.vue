@@ -1,5 +1,5 @@
 <template>
-    <div v-if="centerDialogVisible" ref="inOutNotice" id="in-out-notice" :class="classString">
+    <div v-show="centerDialogVisible" ref="inOutNotice" id="in-out-notice" :class="classString">
         <div class="notice-bar">
             <i class="el-icon-bell notice-bar-ring"></i>
             <span class="notice-bar-text">电子围栏</span>
@@ -17,8 +17,7 @@
         name: "RightDownNotice",
         data() {
             return {
-                centerDialogVisible: true,
-
+                centerDialogVisible: false,
                 info: {
                     type: 1,
                     dateTime: '2020-11-10 17:00',
@@ -53,10 +52,10 @@
 
             getInfo() {
                 setInterval(() => {
-                    // this.centerDialogVisible = !this.centerDialogVisible;
-
                     this.$refs['inOutNotice'].classList.remove('move')
                     setTimeout(() => {
+                        this.centerDialogVisible = false;
+
                         if(this.info.type == 1) {
                             this.info.type = 2;
                             this.classString = 'in move'
@@ -64,14 +63,9 @@
                             this.classString = 'out move'
                             this.info.type = 1;
                         }
+                        this.centerDialogVisible = true;
+
                     },0);
-
-                    // window.requestAniationFrame(function (time) {
-                    //     this.classString += ' move';
-                    // })
-
-                    console.log(this.classString);
-                    // this.centerDialogVisible = !this.centerDialogVisible;
                 }, 4000)
             }
         },
@@ -112,6 +106,10 @@
     color: dimgray;
     margin-right: 10px;
     margin-top: 3px;
+}
+
+.reset {
+    bottom: -200px
 }
 
 .notice-bar {
