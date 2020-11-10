@@ -55,6 +55,25 @@
                         <el-form-item label="联系电话" prop="contactNumber">
                             <el-input v-model="form.contactNumber"></el-input>
                         </el-form-item>
+                        <el-row>
+                            <el-col :span="11">
+                                <el-form-item label="房间总数" prop="roomCount">
+                                    <el-input v-model="form.roomCount"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="2">&nbsp;</el-col>
+                            <el-col :span="11">
+                                <el-form-item label="餐厅房间数" prop="restaurantRoomCount">
+                                    <el-input v-model="form.restaurantRoomCount"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                        <el-form-item label="场所面积" prop="areaMeasure">
+                            <el-input v-model="form.areaMeasure" style="width: 20%"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;平方米
+                        </el-form-item>
+                        <el-form-item label="服务内容" prop="content">
+                            <el-input type="textarea" :rows="3" v-model="form.content"></el-input>
+                        </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
                             <el-button v-on:click="cancel">取消</el-button>
@@ -100,6 +119,11 @@
                     contactNumber: '',
                     manager: '',
                     address: '',
+                    areaMeasure: '',
+                    roomCount: '',
+                    restaurantRoomCount: '',
+                    content: '',
+
                 },
             }
         },
