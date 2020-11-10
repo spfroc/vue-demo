@@ -27,6 +27,7 @@
         <el-backtop target=".content"></el-backtop>
       </div>
     </div>
+    <right-down-notice></right-down-notice>
   </div>
 </template>
 
@@ -34,7 +35,7 @@
   import vHead from './Header';
   import vSidebar from './Sidebar';
   import bus from '../common/bus';
-
+  import RightDownNotice from '../common/RightDownNotice';
   export default {
     data() {
       return {
@@ -304,7 +305,8 @@
     },
     components: {
       vHead,
-      vSidebar
+      vSidebar,
+      RightDownNotice,
     },
     watch: {
       '$route' (to, from) {
