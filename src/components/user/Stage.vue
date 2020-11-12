@@ -62,18 +62,18 @@
                         <el-row>
                             <el-col :span="11">
                                 <el-form-item label="房间总数" prop="totalRoomNum">
-                                    <el-input v-model="form.totalRoomNum"></el-input>
+                                    <el-input type="number" v-model="form.totalRoomNum"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="2">&nbsp;</el-col>
                             <el-col :span="11">
                                 <el-form-item label="餐厅房间数" prop="diningRoomNum">
-                                    <el-input v-model="form.diningRoomNum"></el-input>
+                                    <el-input type="number" v-model="form.diningRoomNum"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>
                         <el-form-item label="场所面积" prop="placeArea">
-                            <el-input v-model="form.placeArea" style="width: 20%"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;平方米
+                            <el-input type="number" v-model="form.placeArea" style="width: 20%"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;平方米
                         </el-form-item>
                         <el-form-item label="服务内容" prop="serviceContent">
                             <el-input type="textarea" :rows="3" v-model="form.serviceContent"></el-input>
