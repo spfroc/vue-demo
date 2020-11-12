@@ -79,6 +79,9 @@
                                     @change="picUploaded"
                                     height="200"></single-image-upload>
                         </el-form-item>
+                        <el-form-item label="排序" prop="sno">
+                            <el-input type="number" v-model="form.sno"></el-input>
+                        </el-form-item>
                         <el-form-item label="链接" prop="link">
                             <el-input v-model="form.link"></el-input>
                         </el-form-item>
@@ -123,6 +126,7 @@
                     link: '',
                     text: '',
                     type: 2,
+                    sno: '',
                     createTime: '',
                     updateTime: '',
                 },

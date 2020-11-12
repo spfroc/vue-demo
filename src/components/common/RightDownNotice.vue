@@ -5,10 +5,10 @@
             <span class="notice-bar-text">电子围栏</span>
             <i class="el-icon-close close-icon" @click="close()"></i>
         </div>
-        <div class="date-time">{{info.dateTime}}</div>
-        <div class="old-man-name-container"><span class="old-man-name">{{info.name}}</span><span class="old-man">老人</span></div>
-        <div class="old-man-mobile">手机号: {{info.mobile}}</div>
-        <div class="notice-text">{{text}}</div>
+        <div class="date-time">{{info.createTime && info.createTime.substring(0, 16)}}</div>
+        <div class="old-man-name-container"><span class="old-man-name">{{info.oldManName}}</span><span class="old-man">老人</span></div>
+        <div class="old-man-mobile">手机号: {{info.oldManMobile}}</div>
+        <div class="notice-text">{{info.content || text}}</div>
     </div>
 </template>
 
@@ -20,10 +20,11 @@
                 centerDialogVisible: false,
                 info: {
                     type: 1,
-                    dateTime: '2020-11-10 17:00',
-                    name: '程术凤',
-                    mobile: '15119988776',
+                    createTime: '2020-11-10 17:00:00',
+                    oldManName: '程术凤',
+                    oldManMobile: '15119988776',
                     address: '魏庄镇伊庄村',
+                    content: '',
                 },
 
                 classString: 'in'
@@ -52,22 +53,40 @@
 
             getInfo() {
                 setInterval(() => {
-                    this.$refs['inOutNotice'].classList.remove('move')
+                    // console.log(this.$refs['inOutNotice'].classList);
+                    // if(this.$refs['inOutNotice'].classList) {
+
+                    // }
+                    //this.$refs['inOutNotice'].classList.remove('move')
+
                     setTimeout(() => {
-                        this.centerDialogVisible = false;
+                        this.$http.get('/apis/badge/oldManInOutForAdmin').then(res => {
+                        // this.$http.get('http://rap2api.taobao.org/app/mock/261698/adminApi/badge/oldManInOutForAdmin').then(res => {
+                            if(this.info != res.data.data) {
+                                this.info = res.data.data;
+                                if(this.info.type && this.info.createTime && this.info.oldManMobile && this.info.oldManName) {
 
-                        if(this.info.type == 1) {
-                            this.info.type = 2;
-                            this.classString = 'in move'
-                        } else {
-                            this.classString = 'out move'
-                            this.info.type = 1;
-                        }
-                        this.centerDialogVisible = true;
 
+                                    this.centerDialogVisible = false;
+                                    if(this.info.type == 10) {
+                                        console.log(10);
+                                        this.classString = 'in move'
+                                    } else {
+                                        console.log(12);
+                                        this.classString = 'out move'
+                                    }
+
+                                    setTimeout(() => {
+                                        this.centerDialogVisible = true;
+                                    }, 1000)
+                                }
+                            }
+
+
+                        });
                     },0);
                 }, 4000)
-            }
+            },
         },
 
         mounted() {

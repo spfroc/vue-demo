@@ -14,6 +14,10 @@
                             align="center"
                             label="驿站">
                     </el-table-column>
+                    <el-table-column align="center" min-width="150" prop="placeArea" label="场地面积">
+                    </el-table-column>
+                    <el-table-column align="center" min-width="150" prop="serviceContent" label="服务内容">
+                    </el-table-column>
                     <el-table-column align="center" min-width="150" prop="createTime" label="创建时间">
                     </el-table-column>
                     <el-table-column prop="updateTime" min-width="150" align="center" label="修改时间">
@@ -57,22 +61,22 @@
                         </el-form-item>
                         <el-row>
                             <el-col :span="11">
-                                <el-form-item label="房间总数" prop="roomCount">
-                                    <el-input v-model="form.roomCount"></el-input>
+                                <el-form-item label="房间总数" prop="totalRoomNum">
+                                    <el-input v-model="form.totalRoomNum"></el-input>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="2">&nbsp;</el-col>
                             <el-col :span="11">
-                                <el-form-item label="餐厅房间数" prop="restaurantRoomCount">
-                                    <el-input v-model="form.restaurantRoomCount"></el-input>
+                                <el-form-item label="餐厅房间数" prop="diningRoomNum">
+                                    <el-input v-model="form.diningRoomNum"></el-input>
                                 </el-form-item>
                             </el-col>
                         </el-row>
-                        <el-form-item label="场所面积" prop="areaMeasure">
-                            <el-input v-model="form.areaMeasure" style="width: 20%"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;平方米
+                        <el-form-item label="场所面积" prop="placeArea">
+                            <el-input v-model="form.placeArea" style="width: 20%"></el-input>&nbsp;&nbsp;&nbsp;&nbsp;平方米
                         </el-form-item>
-                        <el-form-item label="服务内容" prop="content">
-                            <el-input type="textarea" :rows="3" v-model="form.content"></el-input>
+                        <el-form-item label="服务内容" prop="serviceContent">
+                            <el-input type="textarea" :rows="3" v-model="form.serviceContent"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">确定</el-button>
@@ -119,10 +123,10 @@
                     contactNumber: '',
                     manager: '',
                     address: '',
-                    areaMeasure: '',
-                    roomCount: '',
-                    restaurantRoomCount: '',
-                    content: '',
+                    placeArea: '',
+                    totalRoomNum: '',
+                    diningRoomNum: '',
+                    serviceContent: '',
 
                 },
             }
@@ -179,7 +183,6 @@
             onSubmit () {
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
-                        this.form.roleId = this.form.roleName
                         this.$http.post('/apis/courierStation/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',

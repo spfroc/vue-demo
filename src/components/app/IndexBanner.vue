@@ -79,6 +79,9 @@
                                     width="400"
                                     height="200"></single-image-upload>
                         </el-form-item>
+                        <el-form-item label="排序" prop="sno">
+                            <el-input type="number" v-model="form.sno"></el-input>
+                        </el-form-item>
                         <el-form-item label="链接" prop="link">
                             <el-input v-model="form.link"></el-input>
                         </el-form-item>
@@ -122,6 +125,7 @@
                     id: '',
                     name: '',
                     pic: 'https://i1.wp.com/streamlays.com/wp-content/uploads/2017/03/Preview-Hitman-Twitter-Banner.jpg?fit=1920%2C1080&ssl=1',
+                    sno: '',
                     link: '',
                     text: '',
                     type: 3,
