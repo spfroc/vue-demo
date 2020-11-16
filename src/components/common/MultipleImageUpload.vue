@@ -9,8 +9,10 @@
                 :data="data"
                 :headers="headers"
                 :on-success="handleSuccess"
+                :limit="3"
+                :on-exceed="hideButton"
                 list-type="picture-card">
-            <el-button size="small" type="primary">点击上传~</el-button>
+            <el-button ref="btnContainer" size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
 
         </el-upload>
@@ -38,7 +40,12 @@
                 },
             };
         },
+
         methods: {
+
+            hideButton(file, fileList) {
+                console.log(file, fileList);
+            },
             handleRemove(file, fileList) {
                 // console.log('remove file and fileList and container', file, fileList, this.fileListContainer);
                 this.fileListContainer.forEach((f,index) => {
@@ -48,11 +55,11 @@
                         this.fileListContainer.splice(index, 1);
                     }
                 })
+                this.checkButton();
                 // console.log('fileListContainer:', this.fileListContainer);
             },
 
             hidePicPreview() {
-                console.log('pic preview dialog closed');
                 this.dialogVisible = false;
                 return;
             },
@@ -62,16 +69,25 @@
             },
 
             handleSuccess(response, file, list) {
-                // console.log('response:', response);
-                // console.log('file:', file);
-                // console.log('list', list);
                 this.fileListContainer.push({
                     name: file.response.data.pic,
                     url: '/images'+file.response.data.pic,
                     path: file.response.data.pic,
                 })
-                // console.log('fileListContainer:' ,this.fileListContainer);
+                this.checkButton()
+            },
+
+            checkButton() {
+                if (this.fileList.length >= 3) {
+                    this.$refs['btnContainer'].$parent.$el.style.display= 'none'
+                } else {
+                    this.$refs['btnContainer'].$parent.$el.style.display= 'inline-block'
+                }
             }
+        },
+
+        mounted() {
+            this.checkButton();
         }
     }
 </script>
