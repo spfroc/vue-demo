@@ -400,7 +400,7 @@
                         <el-option
                             v-for="item in serviceWorkers"
                             :key="item.id"
-                            :label="getLabel(item)"
+                            :label="statusText(item)"
                             :value="item.id">
                             <template v-if="item.offDay == 1">
                                 {{item.name}}    <span style="color: red">休假中</span>
@@ -649,11 +649,11 @@
 
 
         methods: {
-            getLabel(item) {
-                if(item.id % 2 == 0) {
-                    return item.name + "  休假中"
-                } else {
-                    return item.name + "  工作中"
+            statusText(item) {
+                if(item.offDay == "1") {
+                    return item.name + " 休假中"
+                } else if(item.offDay == "0") {
+                    return item.name + " 工作中"
                 }
             },
 
@@ -769,7 +769,6 @@
                 } else {    //2 服务工单
                     data.userId = this.serviceOrderDialog.worker;
                 }
-                console.log(data);
                 this.$http.post('/apis/callCenter/confirmDispatchWorkOrder', data).then((res) => {
                     this.$message({
                         message: res.data.msg || '操作成功',
@@ -863,6 +862,7 @@
                 this.showDialogController();
                 this.dialogTitle = '服务工单';
                 this.dialogButtonText = '确认派单';
+                this.serviceOrderDialog.worker = '';
                 // this.getServiceWorkers();
                 this.commonOrder = row
                 this.orderDetail.content = '';
