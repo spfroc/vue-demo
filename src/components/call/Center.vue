@@ -472,7 +472,7 @@
                         </el-table-column>
                     </el-table>
                 </el-form-item>
-                <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="驿工手机号">
+                <el-form-item v-if="dialogTitle == '查看工单'" prop="mobile" label="社工手机号">
                     <el-input v-model="orderDetail.mobile"></el-input>
                 </el-form-item>
                 <el-form-item v-if="dialogTitle == '查看工单'" prop="content" label="服务内容">

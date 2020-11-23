@@ -106,6 +106,7 @@
         border: solid lightgray 1px;
         height: 150px;
         width: 250px;
+        margin-top: 20px;
     }
 
     .item:not(:first-child) {
