@@ -1,5 +1,18 @@
 <template>
     <div>
+        <section class="">
+            <el-form :inline="true" :model="search" size="mini" class="">
+                <el-form-item label="" prop="name">
+                    <el-input v-model="search.name" style="width: 200px;" placeholder="村书记或村专干姓名搜索"></el-input>
+                </el-form-item>
+                <el-form-item label="" prop="mobile">
+                    <el-input v-model="search.mobile" style="width: 200px;" placeholder="村书记或村专干手机号搜索"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="fetchList()">搜索</el-button>
+                </el-form-item>
+            </el-form>
+        </section>
         <section class="header-bar">
             <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
         </section>
@@ -76,14 +89,29 @@
                             </el-col>
                         </el-row>
                         <el-form-item label="电子围栏" prop="railRadius">
-                            <el-input v-model="form.railRadius" @change="radiusChanged"></el-input>
+                            <el-input v-model="form.railRadius" placeholder="围栏半径数"></el-input>
                         </el-form-item>
-                        <el-form-item>
-                            <div id="container">
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="经度" prop="lng">
+                                    <el-input v-model="form.lng" placeholder="经度"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="纬度" prop="lat">
+                                    <el-input v-model="form.lat" placeholder="纬度"></el-input>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
 
-                            </div>
 
-                        </el-form-item>
+
+                        <!--<el-form-item>-->
+                            <!--<div id="container">-->
+
+                            <!--</div>-->
+
+                        <!--</el-form-item>-->
 
                         <el-input type="hidden" v-model="form.latitude"></el-input>
                         <el-input type="hidden" v-model="form.longitude"></el-input>
@@ -141,21 +169,30 @@
               editing: false,
               isUpdate: false,
               rules: {
-                  name: {required: true, message: '请输村庄名称', trigger: 'blur'},
-                  secretaryName: { required: true, message: '请输村书记姓名', trigger: 'blur' },
-                  secretaryMobile: [
-                      {required: true, message: '请输村书记手机号', trigger: 'blur'},
-                      { validator: isValidPhone, trigger: 'blur' }
-                  ],
-                  cadreName: {required: true, message: '请输村专干手机号', trigger: 'blur'},
-                  cadreMobile: [
-                      {required: true, message: '请输村专干手机号', trigger: 'blur'},
-                      { validator: isValidPhone, trigger: 'blur' }
-                  ],
+                  name: {required: true, message: '请输入村庄名称', trigger: 'blur'},
+                  // secretaryName: { required: true, message: '请输入村书记姓名', trigger: 'blur' },
+                  // secretaryMobile: [
+                  //     {required: true, message: '请输村书记手机号', trigger: 'blur'},
+                  //     { validator: isValidPhone, trigger: 'blur' }
+                  // ],
+                  // cadreName: {required: true, message: '请输村专干姓名', trigger: 'blur'},
+                  // cadreMobile: [
+                  //     {required: true, message: '请输村专干手机号', trigger: 'blur'},
+                  //     { validator: isValidPhone, trigger: 'blur' }
+                  // ],
                   railRadius: [
-                      {required: true, message: '请输围栏半径', trigger: 'blur'},
+                      {required: true, message: '请输入围栏半径', trigger: 'blur'},
                       { validator: checkNumber, trigger: 'blur' }
                   ],
+
+                  lat: [
+                      {required: true, message: '请输入纬度', trigger: 'blur'},
+                      { validator: checkNumber, trigger: 'blur' }
+                  ],
+                  lng: [
+                      {required: true, message: '请输入经度', trigger: 'blur'},
+                      { validator: checkNumber, trigger: 'blur' }
+                  ]
               },
               page: {},
               search: {},
@@ -190,7 +227,7 @@
             add () {
                 this.editing = true
                 this.isUpdate = false
-                this.mapInit();
+                // this.mapInit();
             },
 
             selectPoint(e) {
@@ -276,7 +313,7 @@
                 }).then(res => {
                     console.log(res.data.data);
                     this.form = Object.assign({}, res.data.data)
-                    this.mapInit()
+                    // this.mapInit()
 
                 })
             },
