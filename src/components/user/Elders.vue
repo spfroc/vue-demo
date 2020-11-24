@@ -32,6 +32,16 @@
                                 placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
+                    <el-form-item label="" prop="categoryId">
+                        <el-select v-model="search.villageId" placeholder="选择村庄">
+                            <el-option
+                                    v-for="item in villageOptions"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                     <el-form-item>
                         <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
                     </el-form-item>
@@ -355,7 +365,8 @@
                     }
                 ],
                 villageOptions: [],
-                showTrack: false
+                showTrack: false,
+
             }
 
         },
@@ -378,6 +389,12 @@
                     }
                 });
 
+            },
+
+            getVillageOptions () {
+                this.$http.get('/apis/village/selectList').then((res) => {
+                    this.villageOptions = res.data.data.list
+                })
             },
 
             markersInit(AMap) {
@@ -533,15 +550,15 @@
             cancel () {
                 this.editing = false
             },
-            getVillageOptions () {
-                this.$http.get('/apis/village/list', {
-                    params: {
-                        pageSize: 100,
-                    }
-                }).then(res => {
-                    this.villageOptions = res.data.data.list;
-                });
-            },
+            // getVillageOptions () {
+            //     this.$http.get('/apis/village/list', {
+            //         params: {
+            //             pageSize: 100,
+            //         }
+            //     }).then(res => {
+            //         this.villageOptions = res.data.data.list;
+            //     });
+            // },
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
