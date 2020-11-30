@@ -6,7 +6,7 @@
                     <el-form-item prop="content">
                         <el-input style="width: 100%;"
                                   type="textarea"
-                                  placeholder="评价内容~~"
+                                  :placeholder='"评价内容~~" + debug'
                                   @focus="scrollToViewLocation"
                                   :autosize="{ minRows: 2, maxRows: 5}"
                                   v-model="form.content"></el-input>
@@ -32,6 +32,7 @@
 
         data() {
             return {
+                debug: 'debug',
                 rules: {
                     content: {required: true, message: '请输入评论内容', trigger: 'blur'}
                 },
@@ -76,6 +77,27 @@
                     this.$refs['dom-to-scroll'].scrollIntoView({behavior: 'smooth', block: 'start'});
                 }, 500)
             }
+        },
+
+        mounted() {
+            let ua = window.navigator.userAgent.toLocaleLowerCase();
+
+            console.log(ua);
+            const originHeight = document.documentElement.clientHeight || document.body.clientHeight;
+            window.addEventListener('resize', () => {
+                const resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                if (resizeHeight < originHeight) {
+                    // 键盘弹起所后所需的页面逻辑
+                    this.debug = '1';
+                    this.scrollToViewLocation();
+                } else {
+                    // 键盘弹起所后所需的页面逻辑
+                    this.debug = '2';
+                    this.scrollToViewLocation();
+                }
+            }, false);
+
+
         }
     }
 </script>

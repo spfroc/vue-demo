@@ -1,6 +1,6 @@
 <template>
     <div class="container" style="height: 100%; overflow-y:auto;" v-infinite-scroll="getComments" ref="container">
-        <h4>{{detail.title}}~~~</h4>
+        <h4>{{detail.title}}-{{debug}}</h4>
         <div style="margin-top: 10px;color: gray;">
             <span>{{dateTimeToDate}}</span>
         </div>
@@ -8,7 +8,7 @@
         <div class="comment-container" style="margin-top: 20px">
             <el-row style="padding-bottom: 10px">
                 <el-col :span="4">
-                    <div style="font-weight: bold;">评论11</div>
+                    <div style="font-weight: bold;">评论</div>
                 </el-col>
                 <el-col :span="16">&nbsp;</el-col>
                 <el-col :span="4"><span @click="replyShow(0)" style="color: #fd7f04;">写评价</span></el-col>
@@ -77,7 +77,7 @@
                 form: {
                     content: ''
                 },
-
+                debug: 'debug',
                 dialogVisible: false,
                 detail: {},
                 queryParams: {},
