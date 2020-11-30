@@ -6,7 +6,7 @@
                     <el-form-item prop="content">
                         <el-input style="width: 100%;"
                                   type="textarea"
-                                  placeholder="评价内容"
+                                  placeholder="评价内容~~"
                                   @focus="scrollToViewLocation"
                                   :autosize="{ minRows: 2, maxRows: 5}"
                                   v-model="form.content"></el-input>
