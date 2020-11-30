@@ -33,7 +33,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="" prop="categoryId">
-                        <el-select v-model="search.villageId" placeholder="选择村庄">
+                        <el-select v-model="search.villageId" :clearable=true placeholder="选择村庄">
                             <el-option
                                     v-for="item in villageOptions"
                                     :key="item.id"
