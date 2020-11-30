@@ -8,7 +8,7 @@
         <div class="comment-container" style="margin-top: 20px">
             <el-row style="padding-bottom: 10px">
                 <el-col :span="4">
-                    <div style="font-weight: bold;">评论</div>
+                    <div style="font-weight: bold;">评论11</div>
                 </el-col>
                 <el-col :span="16">&nbsp;</el-col>
                 <el-col :span="4"><span @click="replyShow(0)" style="color: #fd7f04;">写评价</span></el-col>
