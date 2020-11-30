@@ -1,6 +1,6 @@
 <template>
     <div class="container" style="height: 100%; overflow-y:auto;" v-infinite-scroll="getComments" ref="container">
-        <h4>{{detail.title}}</h4>
+        <h4>{{detail.title}}~~~</h4>
         <div style="margin-top: 10px;color: gray;">
             <span>{{dateTimeToDate}}</span>
         </div>
