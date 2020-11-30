@@ -75,6 +75,34 @@
                             label="身份证号">
                     </el-table-column>
 
+                    <!--医生所属字段-->
+                    <el-table-column
+                            prop="hospital"
+                            min-width="165"
+                            align="center"
+                            label="医院">
+                    </el-table-column>
+                    <el-table-column
+                            prop="department"
+                            min-width="80"
+                            align="center"
+                            label="科室">
+                    </el-table-column>
+                    <el-table-column
+                            prop="ocupation"
+                            min-width="80"
+                            align="center"
+                            label="职务">
+                    </el-table-column>
+                    <el-table-column
+                            prop="serviceContent"
+                            min-width="80"
+                            align="center"
+                            label="服务项目">
+                    </el-table-column>
+                    <!--医生所属字段-->
+
+
                     <el-table-column
                             prop="createTime"
                             min-width="150"
@@ -108,25 +136,39 @@
 
                 <el-dialog :close-on-click-modal="false" :title="isUpdate ? '修改' : '添加'" :visible.sync="editing" :append-to-body="true">
                     <el-form ref="form" :rules="rules" :model="form" label-width="100px">
-                        <el-form-item v-show="form.id" label="ID" prop="id">
-                            <el-input :disabled="true" v-model="form.id"></el-input>
-                        </el-form-item>
-                        <el-form-item label="姓名" prop="name">
-                            <el-input v-model="form.name" ></el-input>
-                        </el-form-item>
-                        <el-form-item label="性别" prop="sex">
-                            <el-select v-model="form.sex" placeholder="请选择">
-                                <el-option
-                                        v-for="item in genderOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="手机号" prop="mobile">
-                            <el-input v-model="form.mobile"></el-input>
-                        </el-form-item>
+                        <el-row>
+                            <el-col :span="16">
+                                <el-form-item v-show="form.id" label="ID" prop="id">
+                                    <el-input :disabled="true" v-model="form.id"></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名" prop="name">
+                                    <el-input v-model="form.name" ></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别" prop="sex">
+                                    <el-select v-model="form.sex" placeholder="请选择">
+                                        <el-option
+                                                v-for="item in genderOptions"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="手机号" prop="mobile">
+                                    <el-input v-model="form.mobile"></el-input>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="8">
+                                <el-form-item label="" prop="headImg">
+                                    <single-image-upload
+                                            v-model="form.headImg"
+                                            width="150"
+                                            @change="picUploaded"
+                                            height="200"></single-image-upload>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+
                         <el-form-item label="年龄" prop="age">
                             <el-input v-model="form.age"></el-input>
                         </el-form-item>
@@ -136,6 +178,20 @@
                         <el-form-item label="家庭住址" prop="homeAddress">
                             <el-input v-model="form.homeAddress"></el-input>
                         </el-form-item>
+                        <!--医生所属字段-->
+                        <el-form-item label="医院" prop="hospital">
+                            <el-input v-model="form.hospital"></el-input>
+                        </el-form-item>
+                        <el-form-item label="科室" prop="department">
+                            <el-input v-model="form.department"></el-input>
+                        </el-form-item>
+                        <el-form-item label="职务" prop="ocupation">
+                            <el-input v-model="form.ocupation"></el-input>
+                        </el-form-item>
+                        <el-form-item label="服务项目" prop="serviceContent">
+                            <el-input v-model="form.serviceContent"></el-input>
+                        </el-form-item>
+                        <!--医生所属字段-->
                         <el-form-item label="权限是否开启登录权限" prop="homeAddress">
                             <el-radio v-model="form.canLogin" label=1>是</el-radio>
                             <el-radio v-model="form.canLogin" label=0>否</el-radio>
@@ -155,11 +211,12 @@
     import { isValidPhone } from '../../util/validate'
     import { checkNumber } from '../../util/validate'
     import ExportExcel from '../common/ExportExcel'
+    import SingleImageUpload from "../common/SingleImageUpload"
 
     export default {
         name: "Doctor",
         components: {
-            ExportExcel
+            ExportExcel, SingleImageUpload
         },
         data () {
             return {
@@ -180,6 +237,11 @@
                     age: '',
                     canLogin: '',
                     userType: 2,
+                    headImg: '',
+                    hospital: '',
+                    department: '',
+                    ocupation: '',
+                    serviceContent: '',
                 },
                 page: {
                     pageSize: 10
@@ -217,6 +279,9 @@
         },
 
         methods: {
+            picUploaded(res, file) {
+                this.form.headImg = res.pic
+            },
 
             genderFormatter (row, col, data) {
                 return row.sex == 1 ? '男' : '女';
