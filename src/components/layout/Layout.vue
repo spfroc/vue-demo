@@ -238,16 +238,9 @@
             icon: 'el-icon-picture',
             title: '胸牌管理',
             index: '/chest/card'
-          }
-        ]
-      }
-    },
-    computed: {
-      menuItems () {
-        const roleId = this.getRoleId()
-        let allMenus = Object.assign([], this.allMenuItems)
-        if (roleId == 1) {
-          allMenus.push({
+          },
+
+          {
             icon: 'el-icon-setting',
             title: '系统管理',
             index: '10',
@@ -257,43 +250,39 @@
                 title: '管理员'
               }
             ]
-          });
-          allMenus.push(
-            {
-              icon: 'el-icon-timer',
-              title: '操作日志',
-              index: '/log',
-              // subs: [
-              //   {
-              //     index: '/log/administration',
-              //     title: '管理员操作日志',
-              //     params: {type: 1}
-              //   },
-              //   {
-              //     index: '/log/social-worker',
-              //     title: '社工操作日志',
-              //     params: {type: 2}
-              //   },
-              //   {
-              //     index: '/log/message',
-              //     title: '消息推送日志',
-              //     params: {type: 3}
-              //   },
-              //   {
-              //     index: '/log/chest-card',
-              //     title: '胸牌操作日志'
-              //   },
-              //   {
-              //     index: '/log/elderly-information',
-              //     title: '老人信息操作日志'
-              //   },
-              //   {
-              //     index: '/log/children',
-              //     title: '子女信息操作日志'
-              //   },
-              // ]
-            }
-          );
+          },
+
+          {
+            icon: 'el-icon-timer',
+            title: '操作日志',
+            index: '/log',
+          }
+        ]
+      }
+    },
+    computed: {
+      menuItems () {
+        const roleId = this.getRoleId()
+        let allMenus = Object.assign([], this.allMenuItems)
+        if (roleId == 1) {
+          // allMenus.push({
+          //   icon: 'el-icon-setting',
+          //   title: '系统管理',
+          //   index: '10',
+          //   subs: [
+          //     {
+          //       index: '/system/administration',
+          //       title: '管理员'
+          //     }
+          //   ]
+          // });
+          // allMenus.push(
+          //   {
+          //     icon: 'el-icon-timer',
+          //     title: '操作日志',
+          //     index: '/log',
+          //   }
+          // );
           return allMenus;
 
         } else if (roleId == 2) {

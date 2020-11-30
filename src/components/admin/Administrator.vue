@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="header-bar">
-      <el-button type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
+      <el-button v-if="showCreateButton" type="primary" v-on:click="add" size="mini" icon="el-icon-circle-plus">添加</el-button>
     </section>
     <template>
       <div>
@@ -93,6 +93,7 @@
     name: 'Administrator',
     data () {
       return {
+        showCreateButton: false,
         tableData: [],
         roleOptions: [],
         page: {
@@ -251,6 +252,10 @@
     },
     mounted () {
         // console.log(12321321);return;
+      let roleId = localStorage.getItem('roleId')
+      if(roleId == 1) {
+        this.showCreateButton = true;
+      }
       this.fetchList();
       this.getRoleList();
     },
