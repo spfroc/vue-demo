@@ -1,8 +1,8 @@
 <template>
     <div class="comment-dialog" ref="dom-to-scroll">
-        <el-row>
+        <el-row >
             <el-col :span="20">
-                <el-form :model="form" :rules="rules" ref="form">
+                <el-form style="padding-top: 20px;padding-bottom: 20px;" :model="form" :rules="rules" ref="form">
                     <el-form-item prop="content">
                         <el-input style="width: 100%;"
                                   type="textarea"
@@ -13,12 +13,13 @@
                     </el-form-item>
                 </el-form>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="4" style="padding-top: 20px;padding-bottom: 20px;">
                 <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;font-weight: bold;" @click="reply">发布</span>
             </el-col>
+
         </el-row>
-        <span slot="footer" class="dialog-footer"></span>
         <div class="mask"></div>
+        <span slot="footer" class="dialog-footer"></span>
     </div>
 </template>
 
@@ -107,7 +108,7 @@
         top: 0px;
         background-color: white;
         width: 94%;
-        height: 125px;
+        height: 150px;
         z-index: 3000;
     }
 
@@ -115,7 +116,7 @@
         width: 100%;
         height: 1000px;
         z-index: 2999;
-        /*margin-top: -20px;*/
+        margin-top: -20px;
         position: relative;
         background-color: white;
     }
