@@ -40,6 +40,7 @@
     .text-container {
         padding-top: 10px;
         height: 800px;
-        overflow-y:auto
+        overflow-y:auto;
+        margin-bottom: 20px;
     }
 </style>
