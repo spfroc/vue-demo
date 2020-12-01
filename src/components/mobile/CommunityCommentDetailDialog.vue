@@ -12,13 +12,13 @@
                                   v-model="form.content"></el-input>
                     </el-form-item>
                 </el-form>
-
             </el-col>
             <el-col :span="4">
                 <span style="color: #fd7f04;font-size: 20px;margin-left: 15px;font-weight: bold;" @click="reply">发布</span>
             </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer"></span>
+        <div class="mask"></div>
     </div>
 </template>
 
@@ -109,5 +109,11 @@
         width: 94%;
         height: 120px;
         z-index: 3000;
+    }
+
+    .mask {
+        width: 100%;
+        height: 1000px;
+        z-index: 2999;
     }
 </style>
