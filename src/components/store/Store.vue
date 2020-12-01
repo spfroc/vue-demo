@@ -163,11 +163,34 @@
                             <el-input v-model="form.discount"></el-input>
                         </el-form-item>
                         <el-form-item label="简介" prop="introduction">
-                            <multiple-image-upload
-                                    v-model="form.introduction"
-                                    :file-list="fileListContainer"
-                                    :file-list-container="fileListContainer"
-                                    width="100" height="100"></multiple-image-upload>
+                            <!--<multiple-image-upload-->
+                                    <!--v-model="form.introduction"-->
+                                    <!--:file-list="fileListContainer"-->
+                                    <!--:file-count="fileListContainer.count || 0"-->
+                                    <!--:file-list-container="fileListContainer"-->
+                                    <!--width="100" height="100"></multiple-image-upload>-->
+
+                            <section>
+                                <el-upload
+                                        class="multiple-image-uploader"
+                                        action="/apis/upload/file"
+                                        :on-preview="handlePictureCardPreview"
+                                        :on-remove="handleRemove"
+                                        :file-list="fileListContainer"
+                                        :data="data"
+                                        :headers="headers"
+                                        :on-success="handleSuccess"
+                                        :limit="3"
+                                        :on-exceed="checkButton"
+                                        list-type="picture-card">
+                                    <el-button ref="btnContainer" size="small" type="primary">点击上传</el-button>
+                                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1M</div>
+
+                                </el-upload>
+                                <el-dialog @close="hidePicPreview" :modal="false" :visible.sync="dialogVisible">
+                                    <img width="100%"  :src="dialogImageUrl" alt="">
+                                </el-dialog>
+                            </section>
                         </el-form-item>
                         <el-form-item label="封面图" prop="cover">
                             <single-image-upload
@@ -254,10 +277,59 @@
                 map: null,
                 searchPlace: null,
                 storeType: [],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                data: {
+                    token: localStorage.getItem('auth-token')
+                },
+                headers: {
+                    token: localStorage.getItem('auth-token')
+                },
             }
 
         },
         methods: {
+            handleRemove(file, fileList) {
+                this.fileListContainer.forEach((f,index) => {
+                    if(file.name == f.name) {
+                        this.fileListContainer.splice(index, 1);
+                    }
+                })
+                this.checkButton();
+            },
+
+            hidePicPreview() {
+                this.dialogVisible = false;
+                return;
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+
+            handleSuccess(response, file, list) {
+                this.fileListContainer.push({
+                    name: file.response.data.pic,
+                    url: '/images'+file.response.data.pic,
+                    path: file.response.data.pic,
+                })
+                this.checkButton()
+            },
+
+            checkButton() {
+                // console.log('file list container: ', this.fileListContainer.length);
+                // console.log(this.$refs['btnContainer'].$parent.$el);
+                if (this.fileListContainer.length >= 3) {
+                    // if(this.$refs['btnContainer']) {
+                        this.$refs['btnContainer'].$parent.$el.style.display= 'none'
+                    // }
+                } else {
+                    // if(this.$refs['btnContainer']) {
+                        this.$refs['btnContainer'].$parent.$el.style.display= 'inline-block'
+                    // }
+                }
+            },
+
             coverUploaded(res, file) {
                 this.form.cover = res.pic;
             },
@@ -299,6 +371,8 @@
                             url: '/images'+ file.url
                         })
                     })
+                    // console.log('file list container: ', this.fileListContainer);
+                    this.checkButton();
                 });
             },
 
