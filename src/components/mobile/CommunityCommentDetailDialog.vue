@@ -107,7 +107,7 @@
         top: 0px;
         background-color: white;
         width: 94%;
-        height: 120px;
+        height: 125px;
         z-index: 3000;
     }
 
@@ -117,5 +117,6 @@
         z-index: 2999;
         /*margin-top: -20px;*/
         position: relative;
+        background-color: white;
     }
 </style>
