@@ -1,9 +1,11 @@
 <template>
     <div class="container" style="height: 100%; overflow-y:auto;">
         <h4>{{detail.name}}</h4>
-        <el-image :src="'/images' + detail.pic" style="margin-top: 10px;">
-            <img src="../../assets/img/default_user.png"/>
-        </el-image>
+        <div>
+            <el-image :src="'/images' + detail.pic" style="margin-top: 10px;">
+                <img src="../../assets/img/default_user.png"/>
+            </el-image>
+        </div>
         <div class="text-container" v-html="detail.text"></div>
     </div>
 </template>
