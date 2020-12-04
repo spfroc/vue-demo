@@ -271,7 +271,7 @@
                 this.$refs['form'].validate((valid) => {
                     if (valid) {
                         this.form.roleId = this.form.roleName
-                        this.$http.post('/apis/adminApi/badge/addOrUpdate', this.form).then(res => {
+                        this.$http.post('/apis/badge/addOrUpdate', this.form).then(res => {
                             this.$message({
                                 message: res.data.msg || '操作成功',
                                 type: 'success'

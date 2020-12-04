@@ -47,6 +47,7 @@
     .text-container {
 
         overflow-y: auto;
+        margin-bottom: 20px;
 
     }
 
