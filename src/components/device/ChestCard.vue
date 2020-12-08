@@ -2,8 +2,17 @@
     <div>
         <el-form :inline="true" :model="search" size="mini" class="">
             <el-form-item label="" prop="imei">
-                <el-input v-model="search.imei" style="width: 120px;" placeholder="imei号"></el-input>
+                <el-input v-model="search.imei" style="width: 150px;" placeholder="imei号"></el-input>
             </el-form-item>
+
+            <el-form-item label="" prop="oldManName">
+                <el-input v-model="search.oldManName" style="width: 120px;" placeholder="老人姓名"></el-input>
+            </el-form-item>
+
+            <el-form-item label="" prop="oldManMobile">
+                <el-input v-model="search.oldManMobile" style="width: 120px;" placeholder="老人手机号"></el-input>
+            </el-form-item>
+
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
             </el-form-item>
@@ -22,7 +31,16 @@
                             align="center"
                             label="设备imei号">
                     </el-table-column>
-
+                    <el-table-column
+                            prop="oldManName"
+                            align="center"
+                            label="老人姓名">
+                    </el-table-column>
+                    <el-table-column
+                            prop="oldManMobile"
+                            align="center"
+                            label="老人手机号">
+                    </el-table-column>
                     <el-table-column
                             prop="status"
                             align="center"
