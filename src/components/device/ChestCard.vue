@@ -337,9 +337,8 @@
 
             fetchList (currentPage) {
                 this.search.pageNum = currentPage || this.search.pageNum
-                // this.search = this.$common.searchParams(this.search);
-                // this.$http.get('/apis/badge/list', {
-                this.$http.get('http://rap2api.taobao.org/app/mock/261698/adminApi/badge/list', {
+                this.$http.get('/apis/badge/list', {
+                // this.$http.get('http://rap2api.taobao.org/app/mock/261698/adminApi/badge/list', {
                     params: Object.assign({
                         pageSize: 10,
                         // pageNum: 1
