@@ -14,7 +14,7 @@
             </el-form-item>
 
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" @click="fetchList">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="fetchList(1)">搜索</el-button>
             </el-form-item>
         </el-form>
         <section class="header-bar">
@@ -335,11 +335,14 @@
                 this.editing = false
             },
 
-            fetchList () {
-                this.$http.get('/apis/badge/list', {
+            fetchList (currentPage) {
+                this.search.pageNum = currentPage || this.search.pageNum
+                // this.search = this.$common.searchParams(this.search);
+                // this.$http.get('/apis/badge/list', {
+                this.$http.get('http://rap2api.taobao.org/app/mock/261698/adminApi/badge/list', {
                     params: Object.assign({
                         pageSize: 10,
-                        pageNum: 1
+                        // pageNum: 1
                     }, this.search)
                 }).then(res => {
                     this.page.total = res.data.data.total
